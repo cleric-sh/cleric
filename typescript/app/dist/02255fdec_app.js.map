@@ -1,1 +1,0 @@
-{"version":3,"sources":["/app/src/index.ts","/common/src/index.ts"],"names":[],"mappings":";;;;AAAA,kDAA2C;AAE3C,OAAO,CAAC,GAAG,CAAC,kBAAS,CAAC,CAAC;;;;;;ACFV,QAAA,SAAS,GAAG,aAAa,CAAC","file":"02255fdec_app","sourcesContent":["import { TestHello } from \"@cleric/common\";\n\nconsole.log(TestHello);","export const TestHello = \"Hello World\";"]}
