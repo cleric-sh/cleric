@@ -1,0 +1,19 @@
+{
+  "name": "cleric",
+  "version": "0.0.1",
+  "description": "Experimental monorepo",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "ws": "run.env ./scripts/workspace.sh"
+  },
+  "workspaces": [
+    "typescript/*"
+  ],
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^3.19.0",
+    "typescript": "^3.7.2"
+  }
+}
