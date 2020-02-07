@@ -1,1 +1,0 @@
-export const TestHello = "Hello World!";

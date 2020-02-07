@@ -7,7 +7,7 @@
     "ws": "run.env ./scripts/workspace.sh"
   },
   "workspaces": [
-    "typescript/*"
+    "packages/*"
   ],
   "license": "UNLICENSED",
   "dependencies": {},
