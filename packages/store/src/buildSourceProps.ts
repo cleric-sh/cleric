@@ -1,7 +1,7 @@
 import { buildSourceInput } from './buildSourceInput';
-import { SourceSpec, SourceMap } from './store';
+import { SourceObject, SourceMap } from './store';
 
-export const buildSourceProps = <TSourceSpec extends SourceSpec>(
+export const buildSourceProps = <TSourceSpec extends SourceObject>(
   sources: SourceMap<TSourceSpec>,
 ): SourceMap<TSourceSpec> =>
   Object.getOwnPropertyNames(sources).reduce((props, name) => {

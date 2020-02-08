@@ -1,6 +1,6 @@
 {
   "name": "@cleric/store",
-  "version": "0.0.1",
+  "version": "0.0.9",
   "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
   "main": "src/index.ts",
   "author": "Sebastian Nemeth",

@@ -1,6 +1,6 @@
 import { buildSourceProps } from './buildSourceProps';
 import {
-  SourceSpec,
+  SourceObject,
   SinkMap,
   ModuleSpec,
   Module,
@@ -12,11 +12,11 @@ import {
 import { mapSinksToProps } from './mapSinksToProps';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function createModule<TState, TSourceSpec extends SourceSpec>(name: string) {
+export function createModule<TState, TSourceSpec extends SourceObject>(name: string) {
   return <TSinkMap extends SinkMap = {}>(
     spec: ModuleSpec<TState, TSourceSpec, TSinkMap>,
   ): Module<TState, TSourceSpec, TSinkMap> => {
-    return (sources: SourceMap<SourceSpec>): ConnectedModule<TState, TSinkMap> => (
+    return (sources: SourceMap<SourceObject>): ConnectedModule<TState, TSinkMap> => (
       slice: Slice<TState>,
     ) => {
       const sourceProps = buildSourceProps(sources);

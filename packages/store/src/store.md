@@ -1,4 +1,4 @@
-# agnostic reactive store
+# Cleric reactive store
 
 Built unashamedly in Typescript for Typescript.
 

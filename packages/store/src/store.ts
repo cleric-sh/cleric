@@ -93,35 +93,37 @@ export interface ISliceApi<T> {
   ) => MountedModule<TSinkMap>;
 }
 
-export type SourceInput<T> = ISliceApi<T> | ObservableInput<T>;
+export type Source<T> = ISliceApi<T> | ObservableInput<T>;
 
-export type SourceSpec = { [key: string]: any };
+export type SourceObject = { [key: string]: any };
 
 export type SourceMap<TSourceMap> = {
-  [P in keyof TSourceMap]: SourceInput<TSourceMap[P]>;
+  [P in keyof TSourceMap]: Source<TSourceMap[P]>;
 };
 
-export type SourceProps<TSourceSpec extends SourceSpec> = {
-  [P in keyof TSourceSpec]: Observable<TSourceSpec[P]>;
+export type SourceProps<TSources extends SourceObject> = {
+  [P in keyof TSources]: Observable<TSources[P]>;
 };
 
-export type SourceProps$<TSourceMap extends SourceMap<SourceSpec>> = Observable<
-  {
-    [P in keyof TSourceMap]: TSourceMap[P] extends SourceInput<infer U> ? U : never;
-  }
->;
+export type FlatSourceProps<TSourceMap extends SourceMap<SourceObject>> = {
+  [P in keyof TSourceMap]: TSourceMap[P] extends Source<infer U> ? U : never;
+};
 
-export type SinkMap = { [key: string]: Subject<any> };
+export type SinkMap = { [key: string]: Subject<any> | Function };
 
 export type SinkProps<TSinkMap extends SinkMap> = {
-  [P in keyof TSinkMap]: TSinkMap[P] extends Subject<infer E> ? (payload: E) => void : never;
+  [P in keyof TSinkMap]: TSinkMap[P] extends Subject<infer E>
+    ? (payload: E) => void
+    : TSinkMap[P] extends (payload: infer E) => any
+    ? (payload: E) => void
+    : never;
 };
 
 export interface ISlice<T> extends ISliceApi<T>, INode {}
 
 type EffectMap = { [key: string]: Subscribable<any> };
 
-type EffectBuilder<TState, TSourceSpec extends SourceSpec, TSinkMap extends SinkMap> = (
+type EffectBuilder<TState, TSourceSpec extends SourceObject, TSinkMap extends SinkMap> = (
   props: SourceProps<TSourceSpec> & SinkProps<TSinkMap>,
   state: Slice<TState>,
 ) => EffectMap;
@@ -138,11 +140,11 @@ export type MountedModule<TSinkMap extends SinkMap> = {
   dispose: () => void;
 } & SinkExports<TSinkMap>;
 
-type ModuleSpec<TState, TSourceMap extends SourceSpec, TSinkMap extends SinkMap> = {
+export type ModuleSpec<TState, TSourceMap extends SourceObject, TSinkMap extends SinkMap> = {
   sinks?: () => TSinkMap;
   effects: EffectBuilder<TState, TSourceMap, TSinkMap>;
 };
 
-export type Module<TState, TSourceSpec extends SourceSpec, TSinkMap extends SinkMap> = (
+export type Module<TState, TSourceSpec extends SourceObject, TSinkMap extends SinkMap> = (
   sources: SourceMap<TSourceSpec>,
 ) => ConnectedModule<TState, TSinkMap>;

@@ -1,11 +1,11 @@
 import { buildSourceInput } from './buildSourceInput';
-import { SourceSpec, SourceMap, SourceProps$ } from './store';
-import { combineLatest } from 'rxjs';
+import { SourceObject, SourceMap, FlatSourceProps } from './store';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export const mapSourcesToProps = <TSourceMap extends SourceMap<SourceSpec>>(
+export const mapSourcesToProps = <TSourceMap extends SourceMap<SourceObject>>(
   sources: TSourceMap,
-): SourceProps$<TSourceMap> => {
+): Observable<FlatSourceProps<TSourceMap>> => {
   const names = Object.getOwnPropertyNames(sources);
   const observables = names.map(name => buildSourceInput(sources[name]));
   return combineLatest(...observables).pipe(
@@ -17,5 +17,5 @@ export const mapSourcesToProps = <TSourceMap extends SourceMap<SourceSpec>>(
       });
       return props;
     }),
-  ) as SourceProps$<TSourceMap>;
+  ) as Observable<FlatSourceProps<TSourceMap>>;
 };

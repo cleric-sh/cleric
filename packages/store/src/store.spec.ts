@@ -4,7 +4,7 @@ import { map, reduce, elementAt, mergeMap, switchMap, tap, toArray } from 'rxjs/
 import { Subject, BehaviorSubject, from, of } from 'rxjs';
 import { createStore } from './createStore';
 import { createModule } from './createModule';
-import { Store, EffectMap } from './store';
+import { Store } from './store';
 
 interface ISecondValState {
   nestedVal: number;
