@@ -1,0 +1,8 @@
+{
+  "name": "@cleric/hash",
+  "version": "0.0.1",
+  "description": "Fast in-memory object hashing, that can be incrementally updated.",
+  "main": "src/index.ts",
+  "author": "Sebastian Nemeth",
+  "license": "MIT"
+}

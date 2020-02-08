@@ -1,0 +1,8 @@
+{
+  "name": "@cleric/router",
+  "version": "0.0.1",
+  "description": "A state-driven reactive router solution.",
+  "main": "src/index.ts",
+  "author": "Sebastian Nemeth",
+  "license": "MIT"
+}
