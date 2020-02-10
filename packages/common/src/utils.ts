@@ -22,5 +22,3 @@ export type KeysOfArrays<T> = {
 
 export type FilterInclude<T, Type> = Pick<T, KeysOfType<T, Type>>;
 export type FilterExclude<T, Type> = Pick<T, KeysNotOfType<T, Type>>;
-
-export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };

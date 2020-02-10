@@ -1,51 +1,26 @@
-import { buildSourceProps } from './buildSourceProps';
-import {
-  SourceObject,
-  SinkMap,
-  ModuleSpec,
-  Module,
-  ConnectedModule,
-  Slice,
-  MountedModule,
-  SourceMap,
-} from './store';
-import { mapSinksToProps } from './mapSinksToProps';
+import { Observable, ObservableInput } from 'rxjs';
+import { Shape, Slice, SourceObservables, SourcesFromShape } from '@cleric/store/src/store';
+import { buildSourceObservables } from '@cleric/store/src/buildSourceObservables';
+import { DeepPartial } from 'utility-types';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function createModule<TState, TSourceSpec extends SourceObject>(name: string) {
-  return <TSinkMap extends SinkMap = {}>(
-    spec: ModuleSpec<TState, TSourceSpec, TSinkMap>,
-  ): Module<TState, TSourceSpec, TSinkMap> => {
-    return (sources: SourceMap<SourceObject>): ConnectedModule<TState, TSinkMap> => (
-      slice: Slice<TState>,
-    ) => {
-      const sourceProps = buildSourceProps(sources);
+type ReducerNode<TState> = {
+  [P in keyof TState]: TState[P] extends Shape
+    ? ObservableInput<TState[P]> | ReducerNode<TState[P]>
+    : ObservableInput<TState[P]>;
+};
 
-      const sinks = spec.sinks ? spec.sinks() : {};
+type Reducer<TState, TSources extends SourceObservables<Shape>> = (
+  state: Slice<TState>,
+  sources: TSources,
+) => ObservableInput<DeepPartial<TState>> | ReducerNode<DeepPartial<TState>>;
 
-      const sinkProps = mapSinksToProps(sinks);
-
-      const props = Object.assign(sourceProps, sinkProps);
-
-      const effects = spec.effects(props as any, slice);
-
-      const subscriptions = Object.getOwnPropertyNames(effects).map(name =>
-        effects[name].subscribe(),
-      );
-
-      const mountedModule = {
-        dispose: () => {
-          subscriptions.forEach(subscription => subscription.unsubscribe());
-        },
-      };
-
-      Object.assign(mountedModule, sinks);
-
-      slice.$.subscribe({
-        complete: () => mountedModule.dispose(),
-      });
-
-      return mountedModule as MountedModule<TSinkMap>;
-    };
+export const createModule = <TState, TSourceShape extends Shape>(
+  reducer: Reducer<TState, SourceObservables<TSourceShape>>,
+) => {
+  return (slice: Slice<TState>, sources: SourcesFromShape<TSourceShape>) => {
+    const sourceObservables = buildSourceObservables(sources);
   };
-}
+};
+
+// Todo: If this works, remove SourceSpec.
+// Todo: Make mapSourcesToProps recursive, to reduce a tree of observables to a single observable.

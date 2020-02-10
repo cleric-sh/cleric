@@ -1,13 +1,20 @@
 import { buildSourceInput } from './buildSourceInput';
-import { SourceObject, SourceMap, FlatSourceProps } from './store';
+import { Source, Sources, ShapeFromSources } from './store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { isSource } from './guards';
 
-export const mapSourcesToProps = <TSourceMap extends SourceMap<SourceObject>>(
-  sources: TSourceMap,
-): Observable<FlatSourceProps<TSourceMap>> => {
-  const names = Object.getOwnPropertyNames(sources);
-  const observables = names.map(name => buildSourceInput(sources[name]));
+export function mapSourcesToProps<T>(source: Source<T>): Observable<T>;
+export function mapSourcesToProps<TSources extends Sources>(
+  sources: TSources,
+): Observable<ShapeFromSources<TSources>>;
+export function mapSourcesToProps(input: any) {
+  if (isSource(input)) {
+    return buildSourceInput(input);
+  }
+
+  const names = Object.getOwnPropertyNames(input);
+  const observables = names.map(name => buildSourceInput(input[name]));
   return combineLatest(...observables).pipe(
     map(values => {
       const props = {};
@@ -17,5 +24,5 @@ export const mapSourcesToProps = <TSourceMap extends SourceMap<SourceObject>>(
       });
       return props;
     }),
-  ) as Observable<FlatSourceProps<TSourceMap>>;
-};
+  );
+}

@@ -1,22 +1,24 @@
-import { Source, ISliceApi } from './store';
+import { Source, Sources } from './store';
 import { from, Subscribable } from 'rxjs';
+import { mapSourcesToProps } from './mapSourcesToProps';
+import { isArrayLike } from 'lodash';
+import { isSlice, isSubscribable, isSource } from './guards';
 
-const isSlice = <T>(source: Source<T>): source is ISliceApi<T> => {
-  return !!source['$'];
-};
+export const buildSourceInput = <T>(source: Source<T> | Sources<T>): Subscribable<T> => {
+  if (typeof source === 'object' && !isSource(source)) {
+    console.log(source);
+    return mapSourcesToProps(source as any) as Subscribable<T>;
+  }
 
-const isSubscribable = <T>(source: Source<T>): source is Subscribable<T> => {
-  return !!source['subscribe'];
-};
-
-export const buildSourceInput = <T>(source: Source<T>): Subscribable<T> => {
   if (isSlice(source)) {
     return source.$;
   }
 
   if (isSubscribable(source)) {
     return source;
-  } else {
+  }
+
+  if (isArrayLike(source)) {
     return from(source);
   }
 };

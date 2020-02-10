@@ -4,5 +4,8 @@
   "description": "Common stuff for cleric libraries",
   "main": "src/index.ts",
   "typings": "src/index.ts",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "rxjs": "^6.5.4"
+  }
 }

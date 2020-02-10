@@ -3,7 +3,7 @@ import { marbles } from 'rxjs-marbles';
 import { map, reduce, elementAt, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { Subject, BehaviorSubject, from, of } from 'rxjs';
 import { createStore } from './createStore';
-import { createModule } from './createModule';
+import { createModule } from './_createModule';
 import { Store } from './store';
 
 interface ISecondValState {
