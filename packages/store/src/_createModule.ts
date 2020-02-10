@@ -1,4 +1,4 @@
-import { buildSourceObservables } from './buildSourceObservables';
+import { convertSourcesToObservables } from './buildSourceObservables';
 import {
   SourceSpec,
   SinkMap,
@@ -19,7 +19,7 @@ export function createModule<TState, TSourceSpec extends SourceSpec>(name: strin
     return (sources: SourceBuilt<SourceSpec>): ConnectedModule<TState, TSinkMap> => (
       slice: Slice<TState>,
     ) => {
-      const sourceProps = buildSourceObservables(sources);
+      const sourceProps = convertSourcesToObservables(sources);
 
       const sinks = spec.sinks ? spec.sinks() : {};
 

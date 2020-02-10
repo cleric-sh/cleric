@@ -14,7 +14,7 @@ export function mapSourcesToProps(input: any) {
   }
 
   const names = Object.getOwnPropertyNames(input);
-  const observables = names.map(name => buildSourceInput(input[name]));
+  const observables = names.map(name => mapSourcesToProps(input[name]));
   return combineLatest(...observables).pipe(
     map(values => {
       const props = {};

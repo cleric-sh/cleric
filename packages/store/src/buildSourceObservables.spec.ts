@@ -1,6 +1,8 @@
-import { from, isObservable } from 'rxjs';
+import { from } from 'rxjs';
 import { createStore } from './createStore';
-import { buildSourceObservables } from './buildSourceObservables';
+import { convertSourcesToObservables } from './buildSourceObservables';
+import { isSubscribable } from './guards';
+import { Source, Sources } from './store';
 
 describe('buildSourceObservables', () => {
   it('converts all props into observables', () => {
@@ -9,10 +11,14 @@ describe('buildSourceObservables', () => {
       one: [1, 2, 3],
       two: from([4, 5, 6]),
       three: store,
+      four: {
+        blah: [1],
+      },
     };
-    const sourceObservables = buildSourceObservables(props);
-    expect(isObservable(sourceObservables.one)).toBe(true);
-    expect(isObservable(sourceObservables.two)).toBe(true);
-    expect(isObservable(sourceObservables.three)).toBe(true);
+    const sourceObservables = convertSourcesToObservables(props);
+    expect(isSubscribable(sourceObservables.one)).toBe(true);
+    expect(isSubscribable(sourceObservables.two)).toBe(true);
+    expect(isSubscribable(sourceObservables.three)).toBe(true);
+    expect(isSubscribable(sourceObservables.four.blah)).toBe(true);
   });
 });

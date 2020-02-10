@@ -22,6 +22,6 @@ describe('buildSourceInput', () => {
   });
 
   it('throws when not observableinput', () => {
-    expect(() => buildSourceInput({} as any)).toThrow();
+    expect(() => buildSourceInput(21 as any)).toThrow();
   });
 });

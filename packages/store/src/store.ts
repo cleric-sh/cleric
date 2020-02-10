@@ -95,24 +95,81 @@ export interface ISliceApi<T> {
 }
 
 /**
- * Defines a single-value observable input source.
+ * A single-value observable input source.
  * Any store node, or construct compatible with ObservableInput is valid here.
  * This includes iterators, promises, arrays and observable-like objects.
+ *
+ * This Type excludes Subscribable<never>, which exists on ObservableInput,
+ * because it acts as a catch all on the type of the Source's values, and
+ * prevents Typescript from emitting errors when the source's values don't match.
  */
-export type Source<T> = ISliceApi<T> | ObservableInput<T>;
+export type Source<T> = Exclude<ISliceApi<T> | ObservableInput<T>, Subscribable<never>>;
 
+/**
+ * An object that is used to specify the shape of related objects.
+ * E.g. props, sources, sinks.
+ *
+ * Making the values of each key unknown forces TS to enforce
+ * type assertion before using them. This allows TS to resolve
+ * values properly in other types that use Shape.
+ */
 export type Shape = { [key: string]: unknown };
 
+/**
+ * An object whose properties are Sources that, when combined, must form the Shape
+ * specified by TShape.
+ *
+ * E.g.
+ * {
+ *  one: string;
+ *  two: number;
+ *  three: {
+ *    four: boolean;
+ *  }
+ * }
+ *
+ * Becomes:
+ * {
+ *  one: Source<string>;
+ *  two: Source<number>;
+ *  three: Source<{ four: boolean }> | {
+ *    four: Source<boolean>
+ *  }
+ * }
+ */
 export type SourcesFromShape<TSpec extends Shape> = {
   [P in keyof TSpec]:
     | Source<TSpec[P]>
     | SourcesFromShape<TSpec[P] extends Shape ? TSpec[P] : never>;
 };
 
+/**
+ * An object whose properties are Sources.
+ */
 export type Sources = {
   [key: string]: Source<unknown> | Sources;
 };
 
+/**
+ * Given a Sources type, returns the Shape of the value of the
+ * Observable that would be produced if all Sources were
+ * combined and reduced to the root type. E.g.
+ * {
+ *  one: Observable<string>;
+ *  two: [1,2,3];
+ *  three: Observable<{ four: boolean }> | {
+ *    four: Promise<boolean>
+ *  }
+ * }
+ * Becomes:
+ * {
+ *  one: string;
+ *  two: number;
+ *  three: {
+ *    four: boolean;
+ *  }
+ * }
+ */
 export type ShapeFromSources<TSources extends Sources> = {
   [P in keyof TSources]: TSources[P] extends Source<infer U>
     ? U
@@ -121,8 +178,10 @@ export type ShapeFromSources<TSources extends Sources> = {
     : never;
 };
 
-export type SourceObservables<TSpec extends Shape> = {
-  [P in keyof TSpec]: Observable<TSpec[P]>;
+export type SourceObserables<TSources extends Sources> = {
+  [P in keyof TSources]: TSources[P] extends Source<infer U>
+    ? Observable<U>
+    : SourceObserables<TSources[P] extends Sources ? TSources[P] : never>;
 };
 
 export type SinkMap = { [key: string]: Subject<any> | Function };

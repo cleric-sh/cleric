@@ -10,9 +10,11 @@
     "@cleric/store": "^0.0.9",
     "react": "^16.12.0",
     "rxjs": "^6.5.4",
+    "rxjs-marbles": "^5.0.4",
     "utility-types": "^3.10.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.19"
+    "@types/react": "^16.9.19",
+    "rxjs-marbles": "^5.0.4"
   }
 }

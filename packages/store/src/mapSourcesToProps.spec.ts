@@ -12,7 +12,7 @@ describe('mapSourcesToProps', () => {
         narf: [1],
       },
     });
-    sourceProps.subscribe(({ arr, obs, obj: { narf } }) => console.log(arr, obs, narf));
+    sourceProps.subscribe(({ arr, obs, obj }) => console.log(arr, obs, obj));
   });
 
   it('should return observable when observable provided as param', () => {
