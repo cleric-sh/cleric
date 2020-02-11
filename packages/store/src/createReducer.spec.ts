@@ -1,5 +1,5 @@
 import { createReducer } from './createReducer';
-import { scan, map, withLatestFrom } from 'rxjs/operators';
+import { scan, map, withLatestFrom, tap, combineLatest } from 'rxjs/operators';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Source } from './store';
 import { createStore } from './createStore';
@@ -33,11 +33,21 @@ describe('createReducer', () => {
 
   it('does stuff', () => {
     const Reducer = createReducer<State, Sources>((state, { isMouseOver, toggleExpand }) => ({
-      isLayoutExpanded: toggleExpand.pipe(scan(last => !last, false)),
-      isSidebarExpanded: state.isLayoutExpanded.$.pipe(
-        withLatestFrom(isMouseOver),
-        map(([isExpanded, isMouseOver]) => isExpanded || isMouseOver),
-      ),
+      // isLayoutExpanded: toggleExpand.pipe(scan(last => !last, false)),
+      // isSidebarExpanded: state.isLayoutExpanded.$.pipe(
+      //   withLatestFrom(isMouseOver),
+      //   map(([isExpanded, isMouseOver]) => isExpanded || isMouseOver),
+      // ),
+      test: {
+        someNum: $ =>
+          $.pipe(
+            // tap(v => console.log(v)),
+            combineLatest(isMouseOver),
+            // tap(v => console.log(v)),
+            map(([_, isMouseOver]) => (isMouseOver ? 10 : 0)),
+            // tap(v => console.log(v)),
+          ),
+      },
       // test: {
       //   someNum: toggleExpand.pipe(scan(last => last + 1, 0)),
       //   someProp: ['Foo'],
@@ -56,7 +66,10 @@ describe('createReducer', () => {
 
     const subscriptions = Reducer(store, MyActions);
 
-    MyActions.toggleExpand.next();
+    // MyActions.toggleExpand.next();
+    MyActions.isMouseOver.next(true);
+    MyActions.isMouseOver.next(false);
+    MyActions.isMouseOver.next(true);
     // MyActions.toggleExpand.next({});
 
     subscriptions.map(sub => sub.unsubscribe());

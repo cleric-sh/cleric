@@ -1,6 +1,14 @@
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { get } from 'lodash';
-import { ISliceApi, State, IStore, ISlice, SinkMap, ConnectedModule, MountedModule } from './store';
+import {
+  ISliceApi,
+  State,
+  IStore,
+  ISlice,
+  SinkArgs,
+  MountableModule,
+  MountedModule,
+} from './store';
 import { Observable } from 'rxjs';
 
 /**
@@ -56,8 +64,8 @@ export class SliceNode implements ISliceApi<any> {
     this.store.mutate(this.path, undefined, 'DELETE');
   };
 
-  $mount<T, TSinkMap extends SinkMap>(
-    mountableModule: ConnectedModule<T, TSinkMap>,
+  $mount<T, TSinkMap extends SinkArgs>(
+    mountableModule: MountableModule<T, TSinkMap>,
   ): MountedModule<TSinkMap> {
     return mountableModule(this as any) as MountedModule<TSinkMap>;
   }

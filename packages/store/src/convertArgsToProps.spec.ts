@@ -1,8 +1,8 @@
 import { from } from 'rxjs';
 import { createStore } from './createStore';
-import { convertSourcesToObservables } from './buildSourceObservables';
+import { convertArgsToProps } from './convertArgsToProps';
 import { isSubscribable } from './guards';
-import { Source, Sources } from './store';
+import { Source, SourceArgs } from './store';
 
 describe('buildSourceObservables', () => {
   it('converts all props into observables', () => {
@@ -15,7 +15,7 @@ describe('buildSourceObservables', () => {
         blah: [1],
       },
     };
-    const sourceObservables = convertSourcesToObservables(props);
+    const sourceObservables = convertArgsToProps(props);
     expect(isSubscribable(sourceObservables.one)).toBe(true);
     expect(isSubscribable(sourceObservables.two)).toBe(true);
     expect(isSubscribable(sourceObservables.three)).toBe(true);

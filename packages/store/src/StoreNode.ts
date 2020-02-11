@@ -3,8 +3,8 @@ import { applyMerge } from './applyMerge';
 import { applySet } from './applySet';
 import {
   IStore,
-  SinkMap,
-  ConnectedModule,
+  SinkArgs,
+  MountableModule,
   MountedModule,
   State,
   Mutation,
@@ -77,8 +77,8 @@ export class StoreNode implements IStore<any> {
     }
   };
 
-  $mount<T, TSinkMap extends SinkMap>(
-    mountableModule: ConnectedModule<T, TSinkMap>,
+  $mount<T, TSinkMap extends SinkArgs>(
+    mountableModule: MountableModule<T, TSinkMap>,
   ): MountedModule<TSinkMap> {
     return mountableModule(this as any) as MountedModule<TSinkMap>;
   }

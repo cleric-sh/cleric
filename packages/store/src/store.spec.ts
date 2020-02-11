@@ -1,10 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { marbles } from 'rxjs-marbles';
 import { map, reduce, elementAt, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
-import { Subject, BehaviorSubject, from, of } from 'rxjs';
+import { Subject, BehaviorSubject, from, of, Observable } from 'rxjs';
 import { createStore } from './createStore';
 import { createModule } from './_createModule';
-import { Store } from './store';
+import { Store, Source } from './store';
+import { Reducer } from './createReducer';
 
 interface ISecondValState {
   nestedVal: number;
@@ -261,18 +262,33 @@ describe('StoreNode', () => {
     };
 
     type MyExampleSources = {
-      onOff: boolean;
-      something: { moreCh: string };
-      myExtraSource: number;
+      onOff: Source<boolean>;
+      something: { moreCh: Source<string> };
+      myExtraSource: Source<number>;
     };
+
+    // type ValueOf<TReducer extends Reducer<unknown>> = TReducer extends Reducer<infer U>
+    //   ? U
+    //   : never;
+
+    // function reduce<TReducer extends Reducer<unknown>>(
+    //   reducerFn: (state: Observable<ValueOf<TReducer>>) => Observable<ValueOf<TReducer>>,
+    // ): TReducer {
+    //   return null;
+    // }
 
     const MyExampleModule = createModule<MyExampleState, MyExampleSources>('MY_EXAMPLE_MODULE')({
       sinks: () => ({
         didSomething: new Subject<number>(),
       }),
+      reducer: (state, { myExtraSource }) => ({
+        someNestedValue: {
+          somethingElse: ,
+        },
+      }),
       effects: (
-        { didSomething, something, onOff, myExtraSource },
         { someNestedValue, someNestedValue: { $set: setSnv, $merge: mergeSnv }, blah },
+        { didSomething, something: { moreCh }, onOff, myExtraSource },
       ) => {
         // const map: EffectMap = {
         //     blah: onOff.pipe(
@@ -326,7 +342,9 @@ describe('StoreNode', () => {
     const mountedFoo = store.foo.$mount(
       MyExampleModule({
         ...MyActions,
-        something: from([{ moreCh: 'blah' }]),
+        something: {
+          moreCh: from(['blah']),
+        },
         myExtraSource: [1, 2, 3, 4],
       }),
     );

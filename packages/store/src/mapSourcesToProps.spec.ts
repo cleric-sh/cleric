@@ -1,7 +1,7 @@
 import { mapSourcesToProps } from './mapSourcesToProps';
 import { Subject, BehaviorSubject, Observable, from, ObservableInput } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { Sources, ShapeFromSources, Shape, SourcesFromShape } from './store';
+import { SourceArgs, ShapeFromSourceArgs, Shape, SourceArgsFromShape } from './store';
 
 describe('mapSourcesToProps', () => {
   it('should return an observable with all observables combined in shape', () => {
@@ -28,19 +28,21 @@ type Test = {
   };
 };
 
-const sources: Sources = {
+const sources: SourceArgs = {
   arr: [3],
   obj: [],
   obs: from([123]),
 };
 
-function sourceToSpec<TSources extends Sources>(sources: TSources): ShapeFromSources<TSources> {
+function sourceToSpec<TSources extends SourceArgs>(
+  sources: TSources,
+): ShapeFromSourceArgs<TSources> {
   return null as any;
 }
 
 function specToSources<TSpec extends Shape>(
-  sources: SourcesFromShape<TSpec>,
-): SourcesFromShape<TSpec> {
+  sources: SourceArgsFromShape<TSpec>,
+): SourceArgsFromShape<TSpec> {
   return null as any;
 }
 

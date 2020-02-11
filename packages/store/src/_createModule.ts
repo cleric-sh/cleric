@@ -1,37 +1,47 @@
-import { convertSourcesToObservables } from './buildSourceObservables';
+import { convertArgsToProps } from './convertArgsToProps';
 import {
-  SourceSpec,
-  SinkMap,
+  SinkArgs,
   ModuleSpec,
   Module,
-  ConnectedModule,
+  MountableModule,
   Slice,
   MountedModule,
-  SourceBuilt,
+  SourceProps,
+  SourceArgs,
+  SinkProps,
 } from './store';
 import { mapSinksToProps } from './mapSinksToProps';
+import { connectReducer, createReducer } from './createReducer';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function createModule<TState, TSourceSpec extends SourceSpec>(name: string) {
-  return <TSinkMap extends SinkMap = {}>(
-    spec: ModuleSpec<TState, TSourceSpec, TSinkMap>,
-  ): Module<TState, TSourceSpec, TSinkMap> => {
-    return (sources: SourceBuilt<SourceSpec>): ConnectedModule<TState, TSinkMap> => (
+export function createModule<TState, TSourceArgs extends SourceArgs>(name: string) {
+  return <TSinkArgs extends SinkArgs = {}>(
+    spec: ModuleSpec<TState, TSourceArgs, TSinkArgs>,
+  ): Module<TState, TSourceArgs, TSinkArgs> => {
+    return (sources: TSourceArgs): MountableModule<TState, TSinkArgs> => (
       slice: Slice<TState>,
     ) => {
-      const sourceProps = convertSourcesToObservables(sources);
+      const sourceProps = convertArgsToProps(sources);
 
       const sinks = spec.sinks ? spec.sinks() : {};
 
       const sinkProps = mapSinksToProps(sinks);
 
-      const props = Object.assign(sourceProps, sinkProps);
+      const props = Object.assign(sourceProps, sinkProps) as SourceProps<TSourceArgs> &
+        SinkProps<TSinkArgs>;
 
-      const effects = spec.effects(props as any, slice);
+      const effects = spec.effects ? spec.effects(slice, props) : [];
 
       const subscriptions = Object.getOwnPropertyNames(effects).map(name =>
         effects[name].subscribe(),
       );
+
+      if (spec.reducer) {
+        const reducer = spec.reducer(slice, sourceProps);
+        const reducerObservables = convertArgsToProps(reducer);
+        const reducerSubscrptions = connectReducer(slice, reducerObservables);
+        subscriptions.push(reducerSubscrptions);
+      }
 
       const mountedModule = {
         dispose: () => {
@@ -45,7 +55,7 @@ export function createModule<TState, TSourceSpec extends SourceSpec>(name: strin
         complete: () => mountedModule.dispose(),
       });
 
-      return mountedModule as MountedModule<TSinkMap>;
+      return mountedModule as MountedModule<TSinkArgs>;
     };
   };
 }
