@@ -1,4 +1,4 @@
-import { Source, ISliceApi, SourceArgs } from './store';
+import { Source, ISliceApi } from './store';
 import { Subscribable, ObservableInput } from 'rxjs';
 import { isArrayLike } from 'lodash';
 

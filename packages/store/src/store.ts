@@ -90,8 +90,9 @@ export interface ISliceApi<T> {
   /**
    * Mounts the specified module to this Slice node.
    */
-  $mount: <T, TSinkArgs extends SinkArgs>(
-    mountableModule: MountableModule<T, TSinkArgs>,
+  $mount: <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
+    module: Module<T, TSourceArgs, TSinkArgs>,
+    sources: TSourceArgs,
   ) => MountedModule<TSinkArgs>;
 }
 
@@ -147,37 +148,11 @@ export type SourceArgsFromShape<TSpec extends Shape> = {
 /**
  * An object whose properties are Sources.
  */
-export type SourceArgs = {
-  [key: string]: Source<unknown> | SourceArgs;
-};
-
-/**
- * Given a Sources type, returns the Shape of the value of the
- * Observable that would be produced if all Sources were
- * combined and reduced to the root type. E.g.
- * {
- *  one: Observable<string>;
- *  two: [1,2,3];
- *  three: Observable<{ four: boolean }> | {
- *    four: Promise<boolean>
- *  }
- * }
- * Becomes:
- * {
- *  one: string;
- *  two: number;
- *  three: {
- *    four: boolean;
- *  }
- * }
- */
-export type ShapeFromSourceArgs<TSources extends SourceArgs> = {
-  [P in keyof TSources]: TSources[P] extends Source<infer U>
-    ? U
-    : TSources[P] extends SourceArgs
-    ? ShapeFromSourceArgs<TSources[P]>
-    : never;
-};
+export type SourceArgs =
+  | Source<unknown>
+  | {
+      [key: string]: Source<unknown> | SourceArgs;
+    };
 
 export type SourceProps<TSources extends SourceArgs> = {
   [P in keyof TSources]: TSources[P] extends Source<infer U>

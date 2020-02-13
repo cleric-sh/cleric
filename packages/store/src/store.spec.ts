@@ -346,15 +346,13 @@ describe('StoreNode', () => {
       onOff: new BehaviorSubject<boolean>(false),
     };
 
-    const mountedFoo = store.foo.$mount(
-      MyExampleModule({
-        ...MyActions,
-        something: {
-          moreCh: from(['blah']),
-        },
-        myExtraSource: [1, 2, 3, 4],
-      }),
-    );
+    const mountedFoo = store.foo.$mount(MyExampleModule, {
+      ...MyActions,
+      something: {
+        moreCh: from(['blah']),
+      },
+      myExtraSource: [1, 2, 3, 4],
+    });
 
     mountedFoo.didSomething.subscribe(value => {
       console.log(value);

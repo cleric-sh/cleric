@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { SourceObject, SourceMap, SinkMap, SinkProps, FlatSourceProps } from '@cleric/store';
+import { SourceArgs, SinkArgs, SinkProps, ShapeFromSourceArgs } from '@cleric/store';
 import { Subtract } from 'utility-types';
 import { mapSinksToProps, mapSourcesToProps } from '@cleric/store';
 import { Subscription } from 'rxjs';
 
-export const connect = <TSinkMap extends SinkMap, TSourceSpec extends SourceObject>(
-  sources: SourceMap<TSourceSpec>,
-  sinks: TSinkMap,
+export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
+  sources: TSourceArgs,
+  sinks?: TSinkArgs,
 ) => {
-  type InjectedProps = TSourceSpec & SinkProps<TSinkMap>;
+  type InjectedProps = ShapeFromSourceArgs<TSourceArgs> & SinkProps<TSinkArgs>;
 
-  const sinkProps = mapSinksToProps(sinks);
   const sourceProps = mapSourcesToProps(sources);
+  const sinkProps = mapSinksToProps(sinks);
 
   return <BaseProps extends InjectedProps>(BaseComponent: React.ComponentType<BaseProps>) => {
     type HocProps = Subtract<BaseProps, InjectedProps> & {
       // here you can extend hoc with new props
     };
 
-    type HocState = FlatSourceProps<SourceMap<TSourceSpec>> & {
+    type HocState = ShapeFromSourceArgs<SourceArgs> & {
       // Extend HOC state here.
     };
 
@@ -40,17 +40,19 @@ export const connect = <TSinkMap extends SinkMap, TSourceSpec extends SourceObje
       };
 
       onNext = (state: HocState) => {
+        console.log('got value: ', state);
         this.setState(state);
       };
 
       render() {
+        console.log('rendering');
         const props = {
           ...this.state,
           ...this.props,
           ...sinkProps,
         };
 
-        return <BaseComponent {...(props as BaseProps)} />;
+        return <BaseComponent {...((props as unknown) as BaseProps)} />;
       }
     };
   };

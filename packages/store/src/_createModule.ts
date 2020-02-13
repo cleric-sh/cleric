@@ -11,7 +11,7 @@ import {
   SinkProps,
 } from './store';
 import { mapSinksToProps } from './mapSinksToProps';
-import { connectReducer, createReducer, convertReducerArgsToObservables } from './createReducer';
+import { connectReducer, convertReducerArgsToObservables } from './createReducer';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createModule<TState, TSourceArgs extends SourceArgs>(name: string) {
@@ -22,26 +22,23 @@ export function createModule<TState, TSourceArgs extends SourceArgs>(name: strin
       slice: Slice<TState>,
     ) => {
       const sourceProps = convertArgsToProps(sources);
-
       const sinks = spec.sinks ? spec.sinks() : {};
-
       const sinkProps = mapSinksToProps(sinks);
 
       const props = Object.assign(sourceProps, sinkProps) as SourceProps<TSourceArgs> &
         SinkProps<TSinkArgs>;
 
-      const effects = spec.effects ? spec.effects(slice, props) : [];
+      const effects = spec.effects ? spec.effects(props, slice) : {};
 
-      const subscriptions = Object.getOwnPropertyNames(effects).map(name =>
-        effects[name].subscribe(),
-      );
+      const subscriptions = Object.getOwnPropertyNames(effects).map(name => {
+        effects[name].subscribe();
+      });
 
       if (spec.reducer) {
-        const reducer = spec.reducer(slice, sourceProps);
+        const reducer = spec.reducer(sourceProps, slice);
         const reducerObservables = convertReducerArgsToObservables(slice, reducer);
         const reducerSubscriptions = connectReducer(slice, reducerObservables);
         subscriptions.push(reducerSubscriptions);
-        console.log(reducerSubscriptions);
       }
 
       const mountedModule = {

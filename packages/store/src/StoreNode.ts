@@ -9,6 +9,8 @@ import {
   State,
   Mutation,
   MutationType,
+  SourceArgs,
+  Module,
 } from './store';
 import { applyDelete } from './applyDelete';
 import { createState } from './createState';
@@ -77,9 +79,11 @@ export class StoreNode implements IStore<any> {
     }
   };
 
-  $mount<T, TSinkMap extends SinkArgs>(
-    mountableModule: MountableModule<T, TSinkMap>,
-  ): MountedModule<TSinkMap> {
-    return mountableModule(this as any) as MountedModule<TSinkMap>;
+  $mount<T, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
+    module: Module<T, TSourceArgs, TSinkArgs>,
+    sources: TSourceArgs,
+  ): MountedModule<TSinkArgs> {
+    const mountableModule = module(sources);
+    return mountableModule(this as any) as MountedModule<TSinkArgs>;
   }
 }

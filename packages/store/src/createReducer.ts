@@ -1,10 +1,8 @@
 import { Subscription, isObservable, Observable, from } from 'rxjs';
-import { Slice, SourceProps, SourceArgs, Source } from '@cleric/store/src/store';
-import { convertArgsToProps } from '@cleric/store/src/convertArgsToProps';
+import { Slice, SourceProps, SourceArgs, Source } from './store';
+import { convertArgsToProps } from './convertArgsToProps';
 import { isSource, isSlice, isSubscribable } from './guards';
 import { isArrayLike } from 'lodash';
-import { DeepPartial } from 'utility-types';
-import { _DeepPartialObject, _DeepPartialArray } from 'utility-types/dist/mapped-types';
 
 export type ReducerObject<TState> = {
   [P in keyof TState]: Reducer<TState[P]>;

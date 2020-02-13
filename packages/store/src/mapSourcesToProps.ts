@@ -1,8 +1,9 @@
 import { buildSourceInput } from './buildSourceInput';
-import { Source, SourceArgs, ShapeFromSourceArgs } from './store';
+import { Source, SourceArgs } from './store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isSource } from './guards';
+import { ShapeFromSourceArgs } from '.';
 
 export function mapSourcesToProps<T>(source: Source<T>): Observable<T>;
 export function mapSourcesToProps<TSources extends SourceArgs>(

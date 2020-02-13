@@ -6,8 +6,9 @@ import {
   IStore,
   ISlice,
   SinkArgs,
-  MountableModule,
   MountedModule,
+  SourceArgs,
+  Module,
 } from './store';
 import { Observable } from 'rxjs';
 
@@ -64,9 +65,11 @@ export class SliceNode implements ISliceApi<any> {
     this.store.mutate(this.path, undefined, 'DELETE');
   };
 
-  $mount<T, TSinkMap extends SinkArgs>(
-    mountableModule: MountableModule<T, TSinkMap>,
-  ): MountedModule<TSinkMap> {
-    return mountableModule(this as any) as MountedModule<TSinkMap>;
+  $mount<T, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
+    module: Module<T, TSourceArgs, TSinkArgs>,
+    sources: TSourceArgs,
+  ): MountedModule<TSinkArgs> {
+    const mountableModule = module(sources);
+    return mountableModule(this as any) as MountedModule<TSinkArgs>;
   }
 }
