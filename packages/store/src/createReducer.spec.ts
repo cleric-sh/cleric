@@ -32,12 +32,13 @@ describe('createReducer', () => {
   });
 
   it('does stuff', () => {
-    const Reducer = createReducer<State, Sources>((state, { isMouseOver, toggleExpand }) => ({
+    const Reducer = createReducer<State, Sources>(({ isMouseOver, toggleExpand }) => ({
       // isLayoutExpanded: toggleExpand.pipe(scan(last => !last, false)),
       // isSidebarExpanded: state.isLayoutExpanded.$.pipe(
       //   withLatestFrom(isMouseOver),
       //   map(([isExpanded, isMouseOver]) => isExpanded || isMouseOver),
       // ),
+      // test: $ => $,
       test: {
         someNum: $ =>
           $.pipe(

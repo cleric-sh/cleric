@@ -200,8 +200,8 @@ export interface ISlice<T> extends ISliceApi<T>, INode {}
 type EffectArgs = { [key: string]: Subscribable<any> };
 
 type EffectBuilder<TState, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs> = (
-  state: Slice<TState>,
   props: SourceProps<TSourceArgs> & SinkProps<TSinkArgs>,
+  state?: Slice<TState>,
 ) => EffectArgs;
 
 export type MountableModule<TState, TSinkMap extends SinkArgs> = (

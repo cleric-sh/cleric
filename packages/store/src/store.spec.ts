@@ -1,6 +1,15 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { marbles } from 'rxjs-marbles';
-import { map, reduce, elementAt, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import {
+  map,
+  reduce,
+  elementAt,
+  mergeMap,
+  switchMap,
+  tap,
+  toArray,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { Subject, BehaviorSubject, from, of, Observable } from 'rxjs';
 import { createStore } from './createStore';
 import { createModule } from './_createModule';
@@ -281,22 +290,20 @@ describe('StoreNode', () => {
       sinks: () => ({
         didSomething: new Subject<number>(),
       }),
-      reducer: (state, { myExtraSource }) => ({
+      reducer: ({ myExtraSource }, state) => ({
         someNestedValue: {
-          somethingElse: ,
+          somethingElse: $ =>
+            $.pipe(
+              withLatestFrom(myExtraSource),
+              map(([_, x]) => _ + x),
+            ),
         },
       }),
       effects: (
-        { someNestedValue, someNestedValue: { $set: setSnv, $merge: mergeSnv }, blah },
         { didSomething, something: { moreCh }, onOff, myExtraSource },
+        { someNestedValue: { $set: setSnv, $merge: mergeSnv }, blah },
       ) => {
-        // const map: EffectMap = {
-        //     blah: onOff.pipe(
-        //         tap(value => {
-
-        //         })
-        //     )
-        // }
+        // TODO: Switch state and props in reducer and effects, so state can be optional.
 
         return {
           DO_SOMETHING: onOff.pipe(

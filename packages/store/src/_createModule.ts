@@ -11,7 +11,7 @@ import {
   SinkProps,
 } from './store';
 import { mapSinksToProps } from './mapSinksToProps';
-import { connectReducer, createReducer } from './createReducer';
+import { connectReducer, createReducer, convertReducerArgsToObservables } from './createReducer';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createModule<TState, TSourceArgs extends SourceArgs>(name: string) {
@@ -38,14 +38,17 @@ export function createModule<TState, TSourceArgs extends SourceArgs>(name: strin
 
       if (spec.reducer) {
         const reducer = spec.reducer(slice, sourceProps);
-        const reducerObservables = convertArgsToProps(reducer);
-        const reducerSubscrptions = connectReducer(slice, reducerObservables);
-        subscriptions.push(reducerSubscrptions);
+        const reducerObservables = convertReducerArgsToObservables(slice, reducer);
+        const reducerSubscriptions = connectReducer(slice, reducerObservables);
+        subscriptions.push(reducerSubscriptions);
+        console.log(reducerSubscriptions);
       }
 
       const mountedModule = {
         dispose: () => {
-          subscriptions.forEach(subscription => subscription.unsubscribe());
+          subscriptions.forEach(subscription => {
+            subscription.unsubscribe();
+          });
         },
       };
 

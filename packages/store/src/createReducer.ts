@@ -3,7 +3,8 @@ import { Slice, SourceProps, SourceArgs, Source } from '@cleric/store/src/store'
 import { convertArgsToProps } from '@cleric/store/src/convertArgsToProps';
 import { isSource, isSlice, isSubscribable } from './guards';
 import { isArrayLike } from 'lodash';
-import { DeepPartial } from '@bernie/web/src/tools/deepPartial';
+import { DeepPartial } from 'utility-types';
+import { _DeepPartialObject, _DeepPartialArray } from 'utility-types/dist/mapped-types';
 
 export type ReducerObject<TState> = {
   [P in keyof TState]: Reducer<TState[P]>;
@@ -11,14 +12,11 @@ export type ReducerObject<TState> = {
 
 export type ReducerFn<TState> = (state: Observable<TState>) => Source<TState>;
 
-export type Reducer<TState> =
-  | ReducerFn<TState>
-  | Source<TState>
-  | ReducerObject<DeepPartial<TState>>;
+export type Reducer<TState> = ReducerFn<TState> | Source<TState> | ReducerObject<Partial<TState>>;
 
 export type ReducerBuilder<TState, TSourceArgs extends SourceArgs> = (
-  state: Slice<TState>,
   sources: SourceProps<TSourceArgs>,
+  state?: Slice<TState>,
 ) => Reducer<TState>;
 
 export type ReducerObservables<TState> =
@@ -63,7 +61,7 @@ export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
 const isReducerFn = <T>(reducer: Reducer<T>): reducer is ReducerFn<T> =>
   typeof reducer === 'function';
 
-function convertReducerArgsToObservables<TState>(
+export function convertReducerArgsToObservables<TState>(
   slice: Slice<TState>,
   reducer: Reducer<TState>,
 ): ReducerObservables<TState> {
@@ -90,8 +88,7 @@ export const createReducer = <TState, TSourceArgs extends SourceArgs>(
 ) => {
   return (slice: Slice<TState>, sources: TSourceArgs): Subscription[] => {
     const sourceObservables = convertArgsToProps(sources);
-    // sourceObservables['isMouseOver'].subscribe(v => console.log(v));
-    const reducer = reducerBuilder(slice, sourceObservables);
+    const reducer = reducerBuilder(sourceObservables, slice);
     const reducerObservables = convertReducerArgsToObservables(slice, reducer);
     return connectReducer(slice, reducerObservables);
   };
