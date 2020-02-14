@@ -31,14 +31,15 @@ export function createModule<TState, TSourceArgs extends SourceArgs>(name: strin
       const effects = spec.effects ? spec.effects(props, slice) : {};
 
       const subscriptions = Object.getOwnPropertyNames(effects).map(name => {
-        effects[name].subscribe();
+        return effects[name].subscribe();
       });
 
       if (spec.reducer) {
         const reducer = spec.reducer(sourceProps, slice);
         const reducerObservables = convertReducerArgsToObservables(slice, reducer);
         const reducerSubscriptions = connectReducer(slice, reducerObservables);
-        subscriptions.push(reducerSubscriptions);
+
+        subscriptions.push(...reducerSubscriptions);
       }
 
       const mountedModule = {

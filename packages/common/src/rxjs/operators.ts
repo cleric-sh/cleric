@@ -1,5 +1,5 @@
 import { Observable, MonoTypeOperatorFunction } from 'rxjs';
-import { withLatestFrom, scan } from 'rxjs/operators';
+import { scan, mergeMap, first } from 'rxjs/operators';
 
 /**
  * Inverts a boolean signal every time the specified event is received.
@@ -7,6 +7,6 @@ import { withLatestFrom, scan } from 'rxjs/operators';
  */
 export const toggle = (event: Observable<any>): MonoTypeOperatorFunction<boolean> => $ =>
   $.pipe(
-    withLatestFrom(event),
-    scan((_, [last]) => !last, false),
+    first(),
+    mergeMap(initial => event.pipe(scan((last, []) => !last, initial))),
   );

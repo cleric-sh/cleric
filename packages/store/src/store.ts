@@ -96,6 +96,7 @@ export interface ISliceApi<T> {
   ) => MountedModule<TSinkArgs>;
 }
 
+export type AsyncFunction<T> = { (): PromiseLike<T> };
 /**
  * A single-value observable input source.
  * Any store node, or construct compatible with ObservableInput is valid here.
@@ -105,7 +106,10 @@ export interface ISliceApi<T> {
  * because it acts as a catch all on the type of the Source's values, and
  * prevents Typescript from emitting errors when the source's values don't match.
  */
-export type Source<T> = Exclude<ISliceApi<T> | ObservableInput<T>, Subscribable<never>>;
+export type Source<T> =
+  | ISliceApi<T>
+  | Exclude<ObservableInput<T>, Subscribable<never>>
+  | AsyncFunction<T>;
 
 /**
  * An object that is used to specify the shape of related objects.

@@ -10,14 +10,27 @@ describe('mapSourcesToProps', () => {
       arr: number;
       obs: string;
       obj: { narf: number };
+      asy: string;
     }> = mapSourcesToProps({
       arr: [1],
       obs: from(['bar', 'dee', 'foo']),
       obj: {
         narf: [1],
       },
+      // asy: async () => {
+      //   console.log('running');
+      //   await new Promise((resolve, reject) => () => {
+      //     console.log('running');
+      //     setTimeout(() => {
+      //       console.log('off');
+      //       resolve();
+      //     }, 50);
+      //   });
+      //   console.log('ran');
+      //   return 'foo';
+      // },
     });
-    actual.subscribe(({ arr, obs, obj }) => console.log(arr, obs, obj));
+    actual.subscribe(({ arr, obs, obj, asy }) => console.log(arr, obs, obj, asy));
     expect(isObservable(actual)).toBe(true);
   });
 
