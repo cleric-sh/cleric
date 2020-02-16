@@ -1,7 +1,7 @@
 describe('function', () => {
   it('can constrain to function', () => {
-    const func: Func = () => '';
-    const nonFunc: Exclude<any, Func> = () => '';
+    const func: Function = () => '';
+    const nonFunc: Exclude<any, Function> = () => '';
     console.log(nonFunc);
   });
 });

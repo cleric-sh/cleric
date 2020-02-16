@@ -4,14 +4,14 @@ import { Subtract } from 'utility-types';
 import { mapSinksToProps, mapSourcesToProps } from '@cleric/store';
 import { Subscription } from 'rxjs';
 
-export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
+export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs = {}>(
   sources: TSourceArgs,
   sinks?: TSinkArgs,
 ) => {
   type InjectedProps = ShapeFromSourceArgs<TSourceArgs> & SinkProps<TSinkArgs>;
 
   const sourceProps = mapSourcesToProps(sources);
-  const sinkProps = mapSinksToProps(sinks);
+  const sinkProps = sinks ? mapSinksToProps(sinks) : {};
 
   return <BaseProps extends InjectedProps>(BaseComponent: React.ComponentType<BaseProps>) => {
     type HocProps = Subtract<BaseProps, InjectedProps> & {
@@ -40,12 +40,10 @@ export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkAr
       };
 
       onNext = (state: HocState) => {
-        console.log('got value: ', state);
         this.setState(state);
       };
 
       render() {
-        console.log('rendering');
         const props = {
           ...this.state,
           ...this.props,

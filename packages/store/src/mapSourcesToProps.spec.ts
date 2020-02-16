@@ -10,7 +10,7 @@ describe('mapSourcesToProps', () => {
       arr: number;
       obs: string;
       obj: { narf: number };
-      asy: string;
+      // asy: string;
     }> = mapSourcesToProps({
       arr: [1],
       obs: from(['bar', 'dee', 'foo']),
@@ -30,7 +30,7 @@ describe('mapSourcesToProps', () => {
       //   return 'foo';
       // },
     });
-    actual.subscribe(({ arr, obs, obj, asy }) => console.log(arr, obs, obj, asy));
+    actual.subscribe(({ arr, obs, obj }) => console.log(arr, obs, obj));
     expect(isObservable(actual)).toBe(true);
   });
 
