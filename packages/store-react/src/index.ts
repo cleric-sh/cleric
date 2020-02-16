@@ -1,10 +1,11 @@
-import { connect } from './connect';
+import { connect, inject } from './connect';
 import { useSinks } from './useSinks';
 import { useSources } from './useSources';
 import { StoreNode } from '@cleric/store/src/StoreNode';
 import { SliceNode } from '@cleric/store/src/SliceNode';
 import { ISliceApi } from '@cleric/store/src/store';
-export { connect, useSinks, useSources };
+
+export { connect, useSinks, useSources, inject };
 
 declare module '@cleric/store/src/store' {
   export interface ISliceApi<T> {

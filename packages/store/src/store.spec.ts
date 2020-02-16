@@ -16,18 +16,18 @@ import { createModule } from './_createModule';
 import { Store, Source } from './store';
 import { Reducer } from './createReducer';
 
-interface ISecondValState {
+interface SecondValState {
   nestedVal: number;
   secondNestedValue: number;
 }
 
-interface IBlahState {
+interface BlahState {
   firstVal: string;
-  secondVal: ISecondValState;
+  secondVal: SecondValState;
   arr: string[];
 }
 
-const INITIAL_STATE: IBlahState = {
+const INITIAL_STATE: BlahState = {
   firstVal: 'blah',
   secondVal: {
     nestedVal: 22,
@@ -37,7 +37,7 @@ const INITIAL_STATE: IBlahState = {
 };
 
 describe('StoreNode', () => {
-  let store: Store<IBlahState>;
+  let store: Store<BlahState>;
 
   beforeEach(() => {
     store = createStore(INITIAL_STATE);
@@ -252,7 +252,7 @@ describe('StoreNode', () => {
   });
 
   it('should allow no initial state', () => {
-    const blankStore = createStore<IBlahState>();
+    const blankStore = createStore<BlahState>();
     blankStore.$.subscribe(value => {
       console.log(value);
     });

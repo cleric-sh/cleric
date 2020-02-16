@@ -1,19 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import { SourceArgs, SinkArgs, SinkProps, ShapeFromSourceArgs } from '@cleric/store';
 import { Subtract } from 'utility-types';
 import { mapSinksToProps, mapSourcesToProps } from '@cleric/store';
 import { Subscription } from 'rxjs';
 
-export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs = {}>(
-  sources: TSourceArgs,
-  sinks?: TSinkArgs,
-) => {
+type Inject<T> = {};
+
+export function inject<TProps>(defaultProps?: TProps): Inject<TProps> {
+  return defaultProps;
+}
+
+export function connect<
+  TSourceArgs extends SourceArgs,
+  TSinkArgs extends SinkArgs = {},
+  TProps = {}
+>(sources: TSourceArgs, sinks?: TSinkArgs, inject?: Inject<TProps>) {
   type InjectedProps = ShapeFromSourceArgs<TSourceArgs> & SinkProps<TSinkArgs>;
 
   const sourceProps = mapSourcesToProps(sources);
   const sinkProps = sinks ? mapSinksToProps(sinks) : {};
 
-  return <BaseProps extends InjectedProps>(BaseComponent: React.ComponentType<BaseProps>) => {
+  return function enhance<BaseProps extends InjectedProps & TProps>(
+    BaseComponent: React.ComponentType<BaseProps>,
+  ) {
     type HocProps = Subtract<BaseProps, InjectedProps> & {
       // here you can extend hoc with new props
     };
@@ -54,4 +64,4 @@ export const connect = <TSourceArgs extends SourceArgs, TSinkArgs extends SinkAr
       }
     };
   };
-};
+}
