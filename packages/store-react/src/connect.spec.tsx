@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createStore } from '@cleric/store';
 import { connect, inject } from './connect';
 

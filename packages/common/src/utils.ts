@@ -36,23 +36,3 @@ export interface DeepPartialArray<T> extends Array<DeepPartial<T>> {}
 export declare type DeepPartialObject<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
-const test = {
-  one: 1,
-  two: 'two',
-  three: [1],
-  four: {
-    five: true,
-  },
-};
-
-const partIn: (part: DeepPartial<typeof test>) => {} = part => {};
-
-partIn({
-  three: [3],
-  foo: '',
-});
-
-const partOut: () => DeepPartial<typeof test> = () => ({
-  three: [3],
-  foo: '',
-});
