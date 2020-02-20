@@ -4,7 +4,9 @@
   "description": "Experimental monorepo",
   "private": true,
   "scripts": {
-    "ws": "run.env ./scripts/workspace.sh"
+    "ws": "run.env ./scripts/workspace.sh",
+    "git:c": "run.env ./scripts/git-commit.sh",
+    "git:cp": "run.env ./scripts/git-commit-and-push.sh"
   },
   "workspaces": [
     "packages/*"
