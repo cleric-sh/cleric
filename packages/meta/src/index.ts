@@ -4,6 +4,7 @@ import * as path from 'path';
 import schema from "./schemas/json/package";
 import { curry } from "ramda";
 import { json } from './generators/json';
+import * as os from "os";
 
 const packageJson = curry(json)(schema);
 
@@ -11,7 +12,7 @@ const content = packageJson(`{
     "name": "test"
 }`);
 
-const outPath = path.join(__dirname, "../out");
+const outPath = "~/Projects/experiments/output".replace("~", os.homedir());
 const file = "package.json";
 
 const exists = promisify(fs.exists);
@@ -25,7 +26,9 @@ const generate = async () => {
     const dirExists = await exists(outPath);
 
     if (!dirExists) {
+        console.log("making...")
         await mkdir(outPath);
+        console.log("made...")
     }
 
     writeFile(filePath, content);
