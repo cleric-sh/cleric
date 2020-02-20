@@ -1,0 +1,7 @@
+{
+    "watch": [
+        "./dist/**"
+    ],
+    "exec": "node ./dist/_server_entry.js",
+    "inspect": "0.0.0.0:9229"
+}

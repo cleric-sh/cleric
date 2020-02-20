@@ -1,0 +1,8 @@
+{
+    "watch": [
+        "./fuse.ts"
+    ],
+    "ext": "ts",
+    "exec": "ts-node ./fuse.ts",
+    "inspect": "0.0.0.0:9229"
+}

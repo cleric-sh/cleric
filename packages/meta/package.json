@@ -6,7 +6,21 @@
   "author": "Sebastian Nemeth",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "fuse": "nodemon --config nodemon.fuse.json",
+    "generate": "nodemon --config nodemon.generate.json"
+  },
   "devDependencies": {
-    "fuse-box": "^4.0.0-next.165"
+    "@types/jsonschema": "^1.1.1",
+    "@types/node": "^13.7.4",
+    "fuse-box": "^4.0.0-next.165",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2"
+  },
+  "dependencies": {
+    "@types/ramda": "^0.26.41",
+    "json-schema-to-typescript": "^7.1.0",
+    "jsonschema": "^1.2.5",
+    "ramda": "^0.27.0"
   }
 }

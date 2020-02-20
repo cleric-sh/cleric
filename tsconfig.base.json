@@ -3,8 +3,25 @@
         "baseUrl": "./",
         "paths": {
             "@cleric/*": [
-                "./typescript/*"
+                "./cleric/packages/*"
             ]
-        }
-    }
+        },
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitUseStrict": false,
+        "removeComments": true,
+        "importHelpers": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "noEmitHelpers": true,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noImplicitAny": true
+    },
+    "exclude": [
+        "**/node_modules",
+        "**/dist"
+    ]
 }
