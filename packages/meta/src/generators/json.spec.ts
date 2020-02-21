@@ -10,29 +10,26 @@ describe('jsonFile', () => {
 }`;
 
     it('accepts plain string, without schema', () => {
-        const actual = json(undefined, jsonStr);
+        const actual = json(undefined)(jsonStr);
         expect(actual).toBe(formatted);
     })
 
     it('fails on invalid json string, without schema', () => {
-        expect(() => json(undefined, 'rubbish')).toThrow();
+        expect(() => json(undefined)('rubbish')).toThrow();
     })
 
     it('accepts plain object, without schema', () => {
-        const actual = json(undefined, jsonObj);
+        const actual = json(undefined)(jsonObj);
         expect(actual).toBe(formatted);
     })
 
     it('accepts tagged template literals, without schema', () => {
-        const func = curry(json)(undefined)
-
-        const actual = func`{ "test": "value" }`
+        const actual = json(undefined)`{ "test": "value" }`
         expect(actual).toBe(formatted);
     })
 
     it('fails on invalid json template literal, without schema', () => {
-        const func = curry(json)(undefined)
 
-        expect(() => func`rubbish`).toThrow();
+        expect(() => json(undefined)`rubbish`).toThrow();
     })
 })
