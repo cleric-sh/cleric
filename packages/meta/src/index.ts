@@ -1,16 +1,15 @@
 import * as fs from 'fs';
 import { promisify } from 'util';
 import * as path from 'path';
-import { packageSchema } from "./schemas/json/package";
-import { curry } from "ramda";
-import { json } from './generators/json';
 import * as os from "os";
+import { packageJson } from './generators/packageJson';
 
-const packageJson = curry(json)(packageSchema);
+const c2 = packageJson({
+    name: "test",
+})
 
 const content = packageJson`{
-    "name": "testing",
-    "foo": "tests"
+    "name": "testing"
 }`;
 
 const outPath = "~/Projects/experiments/output".replace("~", os.homedir());

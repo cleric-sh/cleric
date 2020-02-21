@@ -2,7 +2,11 @@ import { isString, isArray, isObject } from "util";
 
 import { validate } from "jsonschema";
 
-export const json = (schema: object, value: string | object | TemplateStringsArray, ...placeholders: string[]) => {
+export type Json<T extends object> = {
+    (schema: object, value: T | TemplateStringsArray, ...placeholders: string[]): string;
+}
+
+export const json = <T extends object>(schema: object, value: string | T | TemplateStringsArray, ...placeholders: string[]) => {
 
     let input: object = undefined;
 
