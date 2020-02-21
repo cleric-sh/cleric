@@ -8,7 +8,8 @@
   "private": false,
   "scripts": {
     "fuse": "nodemon --config nodemon.fuse.json",
-    "generate": "nodemon --config nodemon.generate.json"
+    "generate": "nodemon --config nodemon.generate.json",
+    "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
     "@types/jsonschema": "^1.1.1",
@@ -19,8 +20,8 @@
   },
   "dependencies": {
     "@types/ramda": "^0.26.41",
-    "json-schema-to-typescript": "^7.1.0",
     "jsonschema": "^1.2.5",
+    "quicktype": "^15.0.210",
     "ramda": "^0.27.0"
   }
 }

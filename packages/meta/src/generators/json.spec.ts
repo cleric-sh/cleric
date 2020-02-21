@@ -1,7 +1,7 @@
 import { json } from "./json"
 import { curry } from "ramda"
 
-describe('json', () => {
+describe('jsonFile', () => {
 
     const jsonStr = '{ "test": "value" }';
     const jsonObj = { test: "value" };
