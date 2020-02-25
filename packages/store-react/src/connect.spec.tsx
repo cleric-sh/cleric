@@ -20,7 +20,7 @@ describe('connect', () => {
     const Nested: React.FC<Props> = ({ myProps, extra }) => (
       <div>
         {myProps}
-        {/* {extra} */}
+        {extra}
       </div>
     );
     const Hoc = connect({ myProps: store.myProp }, { blah: () => {} })(Nested);

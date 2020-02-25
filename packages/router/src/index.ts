@@ -17,9 +17,6 @@ type Routes<T extends IRouteMap> = {
   [P in keyof T]: T[P]['children'] extends never
     ? IRouteState<T[P]['params']>
     : Routes<NonNullable<T[P]['children']>> & IRouteState<T[P]['params']>;
-  // : T[P]['children'] extends IRouteMap
-  // ? Routes<T[P]['children']> & IRouteState<T[P]['params']>
-  // : never;
 };
 
 const createRoutes = <T extends IRouteMap>(input: T) => (state: any): Routes<T> => {
@@ -43,6 +40,7 @@ const routes = createRoutes({
   LOGIN: route<IMyParams>()('/login', {
     REGISTER: route()('/register', {
       SUBMITTED: route<{ id: string }>()('/submitted'),
+      CANCELLED: route<{}>()('/cancelled'),
     }),
   }),
 });
