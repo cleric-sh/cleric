@@ -24,7 +24,7 @@ export class StoreNode implements IStore<any> {
   private mutations = new Subject<Mutation>();
   public state$: Observable<State<any>>;
   private subscription: Subscription;
-  public readonly path = [];
+  public readonly path: string[] = [];
 
   constructor(initial?: any) {
     const state = createState(initial);

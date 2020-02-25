@@ -4,7 +4,7 @@ import { SourceArgs, ShapeFromSourceArgs, mapSourcesToProps } from '@cleric/stor
 export function useSources<TSources extends SourceArgs>(sources: TSources) {
   const props$ = mapSourcesToProps(sources);
 
-  const [state, setState] = useState<ShapeFromSourceArgs<TSources>>(undefined);
+  const [state, setState] = useState<ShapeFromSourceArgs<TSources>>(undefined as any);
 
   useEffect(() => {
     const subscription = props$.subscribe(setState);

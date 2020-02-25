@@ -94,7 +94,7 @@ describe('hash', () => {
       nested: string;
     };
 
-    const first = createHash<MyState>(undefined);
+    const first = createHash<MyState>((undefined as any) as MyState);
     expect(first.__hash).toBe(0);
     console.log(first);
 

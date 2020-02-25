@@ -15,9 +15,10 @@ describe('ShapeFromSourceArgs', () => {
       blah: true,
       nested: {
         value: 1,
-        // optional: 1
+        // optional: 123,
       },
     };
+
     console.log(shape);
   });
 });

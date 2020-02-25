@@ -13,7 +13,7 @@ import {
 import { Subject, BehaviorSubject, from, of, Observable } from 'rxjs';
 import { createStore } from './createStore';
 import { createModule } from './_createModule';
-import { Store, Source } from './store';
+import { Store, Source, Slice } from './store';
 import { Reducer } from './createReducer';
 
 interface SecondValState {
@@ -301,7 +301,7 @@ describe('StoreNode', () => {
       }),
       effects: (
         { didSomething, something: { moreCh }, onOff, myExtraSource },
-        { someNestedValue: { $set: setSnv, $merge: mergeSnv }, blah },
+        { someNestedValue: { $set: setSnv, $merge: mergeSnv } },
       ) => {
         // TODO: Switch state and props in reducer and effects, so state can be optional.
 
@@ -460,7 +460,7 @@ test(
     const actions = m.cold('---a-b-c-d-e---|', payloads);
     const actionsToReplay = { a: [0, 1, 2, 3, 4], b: [0, 1, 2] };
     const initialState = 0;
-    const reducer = (acc, val) => acc + val;
+    const reducer = (acc: any, val: any) => acc + val;
 
     const currentActionsToReplay = m.cold('ab|', actionsToReplay);
 

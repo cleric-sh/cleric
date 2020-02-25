@@ -1,4 +1,5 @@
 import { SourceArgs, Source } from './store';
+
 /**
  * Given a Sources type, returns the Shape of the value of the
  * Observable that would be produced if all Sources were
@@ -19,12 +20,14 @@ import { SourceArgs, Source } from './store';
  *  }
  * }
  */
-export type ShapeFromSourceArgs<TSources extends SourceArgs> = TSources extends Source<infer U>
+export type ShapeFromSourceArgs<TSources extends SourceArgs | undefined> = TSources extends Source<
+  infer U
+>
   ? U
   : {
       [P in keyof TSources]: TSources[P] extends Source<infer V>
         ? V
-        : TSources[P] extends SourceArgs
+        : TSources[P] extends SourceArgs | undefined
         ? ShapeFromSourceArgs<TSources[P]>
         : never;
     };

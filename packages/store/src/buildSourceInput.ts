@@ -5,7 +5,7 @@ import { isSlice, isSubscribable, isPromise, isAsyncFunction } from './guards';
 
 export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
   if (isSlice(source)) {
-    return source.$;
+    return source.$ as Observable<T>;
   }
 
   if (isSubscribable(source)) {

@@ -44,11 +44,11 @@ export interface IStoreApi<T> extends ISliceApi<T> {
   /**
    * Disposes the Store, completing all observers and closing all dependent subscriptions.
    */
-  $dispose();
+  $dispose(): void;
 }
 
 export interface IStore<T> extends IStoreApi<T>, INode {
-  mutate(path: string[], state: any, type: MutationType);
+  mutate(path: string[], state: any, type: MutationType): void;
 }
 
 /**
@@ -153,9 +153,9 @@ export type SourceArgsFromShape<TSpec extends Shape> = {
  * An object whose properties are Sources.
  */
 export type SourceArgs =
-  | Source<unknown>
+  | Source<any>
   | {
-      [key: string]: Source<unknown> | SourceArgs;
+      [key: string]: Source<any> | SourceArgs | undefined;
     };
 
 export type SourceProps<TSources extends SourceArgs> = {
@@ -180,7 +180,7 @@ type EffectArgs = { [key: string]: Subscribable<any> };
 
 type EffectBuilder<TState, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs> = (
   props: SourceProps<TSourceArgs> & SinkProps<TSinkArgs>,
-  state?: Slice<TState>,
+  state: Slice<TState>,
 ) => EffectArgs;
 
 export type MountableModule<TState, TSinkMap extends SinkArgs> = (

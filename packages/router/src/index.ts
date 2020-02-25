@@ -16,7 +16,10 @@ interface IRouteState<TParams> {
 type Routes<T extends IRouteMap> = {
   [P in keyof T]: T[P]['children'] extends never
     ? IRouteState<T[P]['params']>
-    : Routes<T[P]['children']> & IRouteState<T[P]['params']>;
+    : Routes<NonNullable<T[P]['children']>> & IRouteState<T[P]['params']>;
+  // : T[P]['children'] extends IRouteMap
+  // ? Routes<T[P]['children']> & IRouteState<T[P]['params']>
+  // : never;
 };
 
 const createRoutes = <T extends IRouteMap>(input: T) => (state: any): Routes<T> => {
@@ -25,6 +28,7 @@ const createRoutes = <T extends IRouteMap>(input: T) => (state: any): Routes<T> 
     state,
   } as any) as Routes<T>;
 };
+
 interface IMyParams {
   blah: string;
 }
@@ -43,6 +47,6 @@ const routes = createRoutes({
   }),
 });
 
-routes({}).LOGIN.REGISTER.activated;
+routes({}).LOGIN.REGISTER;
 
 routes({}).LOGIN.REGISTER.SUBMITTED.params;

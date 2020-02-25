@@ -3,15 +3,18 @@ import { Subscribable, ObservableInput } from 'rxjs';
 import { isArrayLike } from 'lodash';
 
 export const isSlice = <T>(source: unknown): source is ISliceApi<T> => {
-  return !!source['$'];
+  if (typeof source === 'object' && source) return !!source['$'];
+  return false;
 };
 
 export const isSubscribable = <T>(source: unknown): source is Subscribable<T> => {
-  return !!source['subscribe'];
+  if (typeof source === 'object' && source) return !!source['subscribe'];
+  return false;
 };
 
 export const isPromise = <T>(source: unknown): source is Promise<T> => {
-  return !!source['then'];
+  if (typeof source === 'object' && source) return !!source['then'];
+  return false;
 };
 
 export const isObservableInput = <T>(source: unknown): source is ObservableInput<T> => {

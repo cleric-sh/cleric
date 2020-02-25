@@ -1,14 +1,11 @@
 {
+    "extends": "./packages/tsconfig/tsconfig.json",
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
             "@cleric/*": [
                 "./packages/*"
             ]
-        },
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true
+        }
     }
 }

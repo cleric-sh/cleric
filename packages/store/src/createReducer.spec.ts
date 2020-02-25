@@ -59,9 +59,9 @@ describe('createReducer', () => {
 
     const MyActions = {
       isMouseOver: new BehaviorSubject(false),
-      toggleExpand: new Subject(),
+      toggleExpand: new Subject<{}>(),
       someSource: {
-        trigger: [],
+        trigger: [] as any[],
       },
     };
 

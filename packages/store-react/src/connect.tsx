@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 
 type Inject<T> = {};
 
-export function inject<TProps>(defaultProps?: TProps): Inject<TProps> {
+export function inject<TProps>(defaultProps?: TProps): Inject<TProps> | undefined {
   return defaultProps;
 }
 
@@ -24,13 +24,9 @@ export function connect<
   return function enhance<BaseProps extends InjectedProps & TProps>(
     BaseComponent: React.ComponentType<BaseProps>,
   ) {
-    type HocProps = Subtract<BaseProps, InjectedProps> & {
-      // here you can extend hoc with new props
-    };
+    type HocProps = Subtract<BaseProps, InjectedProps>;
 
-    type HocState = ShapeFromSourceArgs<SourceArgs> & {
-      // Extend HOC state here.
-    };
+    type HocState = ShapeFromSourceArgs<SourceArgs>;
 
     return class StoreConnectorHoc extends React.Component<HocProps, HocState> {
       // Enhance component name for debugging and React-Dev-Tools
@@ -39,14 +35,16 @@ export function connect<
       // reference to original wrapped component
       static readonly WrappedComponent = BaseComponent;
 
-      private subscription: Subscription;
+      private subscription: Subscription | undefined = undefined;
 
       componentDidMount = () => {
         this.subscription = sourceProps.subscribe(this.onNext);
       };
 
       componentWillUnmount = () => {
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
       };
 
       onNext = (state: HocState) => {

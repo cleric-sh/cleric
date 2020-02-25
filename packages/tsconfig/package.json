@@ -1,0 +1,11 @@
+{
+    "name": "@cleric/tsconfig",
+    "version": "0.0.1",
+    "description": "Shared tsconfig for typescript projects",
+    "license": "MIT",
+    "author": "Sebastian Nemeth",
+    "main": "tsconfig.json",
+    "files": [
+        "tsconfig.json"
+    ]
+}
