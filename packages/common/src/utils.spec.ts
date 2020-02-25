@@ -5,7 +5,6 @@ import {
   FilterInclude,
   KeysNotOfType,
   FilterExclude,
-  DeepPartial,
 } from './utils';
 
 interface IFoo {
@@ -85,24 +84,6 @@ describe('Exclude', () => {
       four: 'four',
       // five: new Date(),
       // six: new Date()
-    };
-  });
-});
-
-describe('DeepPartial', () => {
-  type MyState = {
-    something: {
-      nested: {};
-      secondNested: {};
-    };
-    another: {};
-  };
-
-  it('allows partial of root and nested values', () => {
-    const value: DeepPartial<MyState> = {
-      something: {
-        nested: {},
-      },
     };
   });
 });

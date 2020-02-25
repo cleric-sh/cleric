@@ -4,7 +4,6 @@ import { applySet } from './applySet';
 import {
   IStore,
   SinkArgs,
-  MountableModule,
   MountedModule,
   State,
   Mutation,

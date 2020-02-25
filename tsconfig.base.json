@@ -8,15 +8,7 @@
         },
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declaration": false,
-        "noImplicitAny": false,
-        "noImplicitUseStrict": false,
-        "removeComments": true,
-        "importHelpers": true,
         "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "noEmitHelpers": true,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "esModuleInterop": true
     }
 }
