@@ -4,5 +4,14 @@
   "description": "A state-first, type strong, reactive router solution.",
   "main": "src/index.ts",
   "author": "Sebastian Nemeth",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "fp-ts": "^2.5.1",
+    "io-ts": "^2.1.2",
+    "monolite": "^0.8.0",
+    "router5": "^7.0.2",
+    "rxjs": "^6.5.4"
+  },
+  "devDependencies": {}
 }
