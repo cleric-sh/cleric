@@ -1,5 +1,6 @@
 import { convertRouteMapToInitialState } from './convertRouteMapToInitialState';
-import { route, Routes } from '.';
+import { Routes } from '.';
+import { route } from './route';
 
 describe('convertRouteMapToInitialState', () => {
   it('should', () => {

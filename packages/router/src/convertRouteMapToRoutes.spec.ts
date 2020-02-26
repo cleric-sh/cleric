@@ -1,5 +1,6 @@
 import { convertRouteMapToRoutes } from './convertRouteMapToRoutes';
-import { IRouteMap, route } from '.';
+import { IRouteMap } from '.';
+import { route } from './route';
 import { Route } from 'router5';
 
 describe('convertRouteMapToRoutes', () => {
