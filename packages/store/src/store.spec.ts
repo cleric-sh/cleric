@@ -16,6 +16,8 @@ import { createModule } from './_createModule';
 import { Store, Source, Slice } from './store';
 import { Reducer } from './createReducer';
 
+const listen = <T>($: Observable<T>) => $.pipe(toArray()).toPromise();
+
 interface SecondValState {
   nestedVal: number;
   secondNestedValue: number;
@@ -47,26 +49,18 @@ describe('StoreNode', () => {
     store.$dispose();
   });
 
-  it('should only propogate changes when setting actual different values', () => {
+  it('should only propogate changes when setting actual different values', async () => {
     const SECOND_STATE = {
       firstVal: 'second blah',
       secondVal: {
-        nestedVal: INITIAL_STATE.secondVal.nestedVal,
+        nestedVal: 22,
         secondNestedValue: 50,
       },
       arr: ['second'],
     };
 
-    store.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(2);
-      expect(values[0]).toBe(INITIAL_STATE);
-      expect(values[1]).toBe(SECOND_STATE);
-    });
-
-    store.secondVal.nestedVal.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(1); // nestedVal doesn't change, so we should only ever have one value for it.
-      expect(values[0]).toBe(INITIAL_STATE.secondVal.nestedVal); // The value should be the original value we inputted
-    });
+    const _storeValues = listen(store.$);
+    const _nestedValValues = listen(store.secondVal.nestedVal.$);
 
     // This call should emit a new state, however it keeps store.secondVal.nestedVal the same.
     // Store should emit a new state, but nestedVal shouldn't.
@@ -74,70 +68,58 @@ describe('StoreNode', () => {
 
     // This call should not emit a new value anywhere.
     store.$set(SECOND_STATE);
+
+    store.$dispose();
+
+    // At the store level, we get new values once, so we should have exactly two values.
+    expect(await _storeValues).toMatchObject([INITIAL_STATE, SECOND_STATE]);
+
+    // At the nestedVal level, we don't get any new values, so we should only have the initial value, once.
+    expect(await _nestedValValues).toMatchObject([INITIAL_STATE.secondVal.nestedVal]);
   });
 
-  it('should only propogate changes when merging different values', () => {
+  it('should only propogate changes when merging different values', async () => {
     const SECOND_STATE = {
       firstVal: 'second blah',
       secondVal: {
+        // Deliberately leave out nestedVal. It should be preserved.
         secondNestedValue: 50,
       },
       arr: ['second'],
     };
 
-    store.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(2);
-      expect(values[0]).toBe(INITIAL_STATE);
-      expect(values[1]).toMatchObject({
+    const _storeValues = listen(store.$);
+    const _nestedValValues = listen(store.secondVal.nestedVal.$);
+
+    // This call should emit a new state, however it keeps store.secondVal.nestedVal the same.
+    // Store should emit a new state, but nestedVal shouldn't.
+    store.$merge(SECOND_STATE);
+
+    // This call should not emit a new value anywhere.
+    store.$merge(SECOND_STATE);
+
+    store.$dispose();
+
+    expect(await _storeValues).toMatchObject([
+      INITIAL_STATE,
+      {
         firstVal: 'second blah',
         secondVal: {
           nestedVal: 22,
           secondNestedValue: 50,
         },
         arr: ['second'],
-      });
-    });
+      },
+    ]);
 
-    store.secondVal.nestedVal.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(1); // nestedVal doesn't change, so we should only ever have one value for it.
-      expect(values[0]).toBe(INITIAL_STATE.secondVal.nestedVal); // The value should be the original value we inputted
-    });
-
-    // This call should emit a new state, however it keeps store.secondVal.nestedVal the same.
-    // Store should emit a new state, but nestedVal shouldn't.
-    store.$merge(SECOND_STATE);
-
-    // This call should not emit a new value anywhere.
-    store.$merge(SECOND_STATE);
+    // At the nestedVal level, we don't get any new values, so we should only have the initial value, once.
+    expect(await _nestedValValues).toMatchObject([INITIAL_STATE.secondVal.nestedVal]);
   });
 
-  it('should only propogate changes when deleting existing values', () => {
-    store.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(3);
-      expect(values[0]).toBe(INITIAL_STATE);
-      expect(values[1]).toMatchObject({
-        firstVal: 'blah',
-        secondVal: {
-          nestedVal: 22,
-          secondNestedValue: 10,
-        },
-        // arr: ['testing']
-      });
-      expect(values[2]).toBe(undefined);
-    });
-
-    store.secondVal.nestedVal.$.pipe(toArray()).subscribe(values => {
-      //No change to secondVal.nestedVal since we're editing a different branch of the tree.
-      expect(values.length).toBe(2);
-      expect(values[0]).toBe(22);
-      expect(values[1]).toBe(undefined);
-    });
-
-    store.arr.$.pipe(toArray()).subscribe(values => {
-      expect(values.length).toBe(2);
-      expect(values[0]).toMatchObject(INITIAL_STATE.arr);
-      expect(values[1]).toBe(undefined);
-    });
+  it('should only propogate changes when deleting existing values', async () => {
+    const _store = listen(store.$);
+    const _nestedVal = listen(store.secondVal.nestedVal.$);
+    const _arr = listen(store.arr.$);
 
     // This call should emit a new state, however it keeps store.secondVal.nestedVal the same.
     // Store should emit a new state, but nestedVal shouldn't.
@@ -148,55 +130,100 @@ describe('StoreNode', () => {
 
     // This call should make everything emit undefined.
     store.$delete();
+
+    store.$dispose();
+
+    expect(await _store).toMatchObject([
+      INITIAL_STATE,
+      {
+        firstVal: 'blah',
+        secondVal: {
+          nestedVal: 22,
+          secondNestedValue: 10,
+        },
+        // arr: ['testing']
+      },
+      undefined,
+    ]);
+
+    // No change to secondVal.nestedVal since we're editing a different branch of the tree.
+    expect(await _nestedVal).toMatchObject([22, undefined]);
+
+    // The array should only emit a single undefined value once deleted.
+    // When the store is deleted, it hasn't actually changed value, it's still undefined.
+    expect(await _arr).toMatchObject([INITIAL_STATE.arr, undefined]);
   });
 
-  it('set on root should preserve orignal values (be immutable)', () => {
+  it('set on root should preserve orignal values (be immutable)', async () => {
     const initial = {
       myValue: 1,
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
+
     store.$set({
       myValue: 2,
     });
 
+    store.$dispose();
+
+    await _store;
+
     expect(initial.myValue).toBe(1);
   });
 
-  it('merge on root should preserve original values (be immutable)', () => {
+  it('merge on root should preserve original values (be immutable)', async () => {
     const initial = {
       myValue: {
         nested: 1,
       },
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
+
     store.$merge({ myValue: { nested: 2 } });
 
+    store.$dispose();
+
+    await _store;
+
     expect(initial.myValue.nested).toBe(1);
   });
 
-  it('delete on root should preserve original values (be immutable)', () => {
+  it('delete on root should preserve original values (be immutable)', async () => {
     const initial = {
       myValue: {
         nested: 1,
       },
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
     store.$delete();
+
+    store.$dispose();
+
+    await _store;
 
     expect(initial.myValue.nested).toBe(1);
   });
 
-  it('set on nested should preserve original values (be immutable)', () => {
+  it('set on nested should preserve original values (be immutable)', async () => {
     const initial = {
       myValue: 1,
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
+
     store.myValue.$set(2);
+
+    store.$dispose();
+
+    await _store;
 
     expect(initial.myValue).toBe(1);
   });
 
-  it('merge on nested should preserve original values (be immutable)', () => {
+  it('merge on nested should preserve original values (be immutable)', async () => {
     const initial = {
       myValue: {
         nested: {
@@ -206,60 +233,76 @@ describe('StoreNode', () => {
       },
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
+
     store.myValue.$merge({ nested: { deeperNested: 2 } });
+
+    store.$dispose();
+
+    await _store;
 
     expect(initial.myValue.nested.deeperNested).toBe(1);
     expect(initial.myValue.second).toBe(4);
   });
 
-  it('delete on nested should preserve original values (be immutable)', () => {
+  it('delete on nested should preserve original values (be immutable)', async () => {
     const initial = {
       myValue: {
         nested: 1,
       },
     };
     const store = createStore(initial);
+    const _store = listen(store.$);
+
     store.myValue.nested.$delete();
+
+    store.$dispose();
+
+    await _store;
 
     expect(initial.myValue.nested).toBe(1);
   });
 
-  it('should propogate changes when setting nested values', () => {
-    store.$.pipe(toArray()).subscribe(values => {
-      expect(values).toMatchObject([
-        INITIAL_STATE,
-        {
-          firstVal: 'blah',
-          secondVal: {
-            nestedVal: 42,
-            secondNestedValue: 10,
-          },
-          arr: ['testing'],
+  it('should propogate changes when setting nested values', async () => {
+    const _store = listen(store.$);
+    const _firstVal = listen(store.firstVal.$);
+    const _nestedVal = listen(store.secondVal.nestedVal.$);
+
+    store.secondVal.nestedVal.$set(42);
+    store.secondVal.nestedVal.$set(42);
+
+    store.$dispose();
+
+    expect(await _store).toMatchObject([
+      INITIAL_STATE,
+      {
+        firstVal: 'blah',
+        secondVal: {
+          nestedVal: 42,
+          secondNestedValue: 10,
         },
-      ]);
-    });
+        arr: ['testing'],
+      },
+    ]);
 
-    store.firstVal.$.pipe(toArray()).subscribe(values => {
-      expect(values).toMatchObject([INITIAL_STATE.firstVal]);
-    });
+    expect(await _firstVal).toMatchObject([INITIAL_STATE.firstVal]);
 
-    store.secondVal.nestedVal.$.pipe(toArray()).subscribe(values => {
-      expect(values).toMatchObject([INITIAL_STATE.secondVal.nestedVal, 42]);
-    });
-
-    store.secondVal.nestedVal.$set(42);
-    store.secondVal.nestedVal.$set(42);
+    expect(await _nestedVal).toMatchObject([INITIAL_STATE.secondVal.nestedVal, 42]);
   });
 
-  it('should allow no initial state', () => {
+  it('should allow no initial state', async () => {
     const blankStore = createStore<BlahState>();
-    blankStore.$.subscribe(value => {
-      console.log(value);
-    });
 
-    blankStore.secondVal.$.subscribe(value => {
-      console.log(value);
-    });
+    const watchStore = listen(blankStore.$);
+    const watchSecondVal = listen(blankStore.secondVal.$);
+
+    blankStore.$dispose();
+
+    const storeValues = await watchStore;
+    expect(storeValues.length).toBe(0);
+
+    const secondValValues = await watchSecondVal;
+    expect(secondValValues.length).toBe(0);
   });
 
   it('can attach modules and dispose them', () => {
@@ -300,11 +343,9 @@ describe('StoreNode', () => {
         },
       }),
       effects: (
-        { didSomething, something: { moreCh }, onOff, myExtraSource },
+        { didSomething, something: { moreCh }, onOff },
         { someNestedValue: { $set: setSnv, $merge: mergeSnv } },
       ) => {
-        // TODO: Switch state and props in reducer and effects, so state can be optional.
-
         return {
           DO_SOMETHING: onOff.pipe(
             tap(isOn => {
@@ -379,9 +420,11 @@ describe('StoreNode', () => {
    * 1000 ms gives a benchmark for how long it takes to consume a single mutation.
    * 500ms / 1000 gives us a rate of about 0.5 ms to consume a set of 7x mutations.
    */
-  it('is reasonably performant', () => {
+  it('is reasonably performant', async () => {
+    const _store = listen(store.$);
     const before = performance.now();
-    for (let i = 0; i < 1000; i++) {
+    const times = 1000;
+    for (let i = 0; i < times; i++) {
       // This is a full state set, so an expensive operation. The entire hash tree is regenerated here.
       // In practical applications, we will avoid these operations except for init, or re-setting state.
       store.$set({
@@ -401,8 +444,11 @@ describe('StoreNode', () => {
       store.secondVal.$merge({ nestedVal: 2 });
       store.secondVal.$merge({ secondNestedValue: 1116 });
     }
+    store.$dispose();
+    await _store;
     const after = performance.now();
-    console.log(`Took ${after - before} milliseconds`);
+    console.log(`Took ${after - before} ms`);
+    console.log(`Average ${(after - before) / times / 7} ms per mutation`);
   });
 
   /**

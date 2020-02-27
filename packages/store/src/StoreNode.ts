@@ -13,7 +13,7 @@ import {
 } from './store';
 import { applyDelete } from './applyDelete';
 import { createState } from './createState';
-import { Subject, Observable, Subscription, ConnectableObservable } from 'rxjs';
+import { Subject, Observable, Subscription, ConnectableObservable, OperatorFunction } from 'rxjs';
 
 /**
  * A StoreNode is the root wrapper for the current state, allowing slices to be created for any path of properties within its state.
@@ -29,24 +29,28 @@ export class StoreNode implements IStore<any> {
   constructor(initial?: any) {
     const state = createState(initial);
 
-    const mutation$ = this.mutations.pipe(
-      startWith(state as any),
-      scan(
-        (state: State<any>, mutation: Mutation): State<any> => {
-          const { path, state: next } = mutation;
+    const handleScanMutation = (state: State<any>, mutation: Mutation): State<any> => {
+      const { path, state: next } = mutation;
+      if (mutation.type === 'SET') return applySet(state, path, next);
+      if (mutation.type === 'MERGE') return applyMerge(state, path, next);
+      if (mutation.type === 'DELETE') return applyDelete(state, path);
+      return state;
+    };
 
-          if (mutation.type === 'SET') return applySet(state, path, next);
-          if (mutation.type === 'MERGE') return applyMerge(state, path, next);
-          if (mutation.type === 'DELETE') return applyDelete(state, path);
-          return state;
-        },
-      ),
+    const mutations: OperatorFunction<Mutation, State<any>> = $ =>
+      initial
+        ? $.pipe(startWith(state as any), scan(handleScanMutation))
+        : $.pipe(scan(handleScanMutation));
+
+    const mutation$ = this.mutations.pipe(
+      mutations,
       distinctUntilChanged(
         (x, y) => x === y,
         state => state.hash.__hash,
       ),
       publishReplay(1),
     ) as ConnectableObservable<any>;
+
     this.subscription = mutation$.connect();
     this.state$ = mutation$;
   }
