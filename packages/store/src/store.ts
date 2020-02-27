@@ -59,19 +59,12 @@ export type Slice<T, TValid = Utils.FilterExclude<T, Function>> = ISliceApi<T> &
     [P in keyof TValid]: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
   };
 
-/**
- * Public functionality exposed by each slice node (including the root Store node)
- */
-export interface ISliceApi<T> {
-  //   $current: T;
+export type Mutator<T> = IMutationApi<T> &
+  {
+    [P in keyof T]: IMutationApi<T[P]>;
+  };
 
-  //   $hash: HashState<T>;
-
-  /**
-   * Returns an observable of this Slice node's state.
-   */
-  $: Observable<T>;
-
+export interface IMutationApi<T> {
   /**
    * Sets the value of this Slice node's state.
    */
@@ -86,6 +79,20 @@ export interface ISliceApi<T> {
    * Deletes the value at the specified node, removing its reference from the parent node.
    */
   $delete: () => void;
+}
+
+/**
+ * Public functionality exposed by each slice node (including the root Store node)
+ */
+export interface ISliceApi<T> extends IMutationApi<T> {
+  //   $current: T;
+
+  //   $hash: HashState<T>;
+
+  /**
+   * Returns an observable of this Slice node's state.
+   */
+  $: Observable<T>;
 
   /**
    * Mounts the specified module to this Slice node.
