@@ -48,7 +48,7 @@ export interface IStoreApi<T> extends ISliceApi<T> {
 }
 
 export interface IStore<T> extends IStoreApi<T>, INode {
-  mutate(path: string[], state: any, type: MutationType): void;
+  mutate(mutations: Mutation[]): void;
 }
 
 /**
@@ -97,6 +97,7 @@ export interface ISliceApi<T> {
 }
 
 export type AsyncFunction<T> = { (): PromiseLike<T> };
+
 /**
  * A single-value observable input source.
  * Any store node, or construct compatible with ObservableInput is valid here.

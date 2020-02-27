@@ -8,7 +8,9 @@ export const readRouteState = <TRouteMap extends IRouteMap>(
   state: SubscribeState,
 ) => {
   const names = state.route.name.split('.');
+
   let out = initial;
+
   for (let i = 0; i < names.length; i++) {
     const path = names.filter((v, k) => k <= i);
 
@@ -22,6 +24,7 @@ export const readRouteState = <TRouteMap extends IRouteMap>(
 
     if (codec) {
       const params = codec.decode(state.route.params);
+
       if (params._tag == 'Right') {
         out = set(out, [...path, 'params'], params.right);
       }

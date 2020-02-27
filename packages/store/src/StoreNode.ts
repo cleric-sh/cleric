@@ -1,16 +1,7 @@
 import { startWith, scan, distinctUntilChanged, publishReplay, map } from 'rxjs/operators';
 import { applyMerge } from './applyMerge';
 import { applySet } from './applySet';
-import {
-  IStore,
-  SinkArgs,
-  MountedModule,
-  State,
-  Mutation,
-  MutationType,
-  SourceArgs,
-  Module,
-} from './store';
+import { IStore, SinkArgs, MountedModule, State, Mutation, SourceArgs, Module } from './store';
 import { applyDelete } from './applyDelete';
 import { createState } from './createState';
 import { Subject, Observable, Subscription, ConnectableObservable, OperatorFunction } from 'rxjs';
@@ -19,9 +10,8 @@ import { Subject, Observable, Subscription, ConnectableObservable, OperatorFunct
  * A StoreNode is the root wrapper for the current state, allowing slices to be created for any path of properties within its state.
  * It applies set and merge operations, re-calculating hash values as required, ensuring only value-based changes are emitted.
  */
-
 export class StoreNode implements IStore<any> {
-  private mutations = new Subject<Mutation>();
+  private mutations = new Subject<Mutation[]>();
   public state$: Observable<State<any>>;
   private subscription: Subscription;
   public readonly path: string[] = [];
@@ -29,7 +19,7 @@ export class StoreNode implements IStore<any> {
   constructor(initial?: any) {
     const state = createState(initial);
 
-    const handleScanMutation = (state: State<any>, mutation: Mutation): State<any> => {
+    const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
       const { path, state: next } = mutation;
       if (mutation.type === 'SET') return applySet(state, path, next);
       if (mutation.type === 'MERGE') return applyMerge(state, path, next);
@@ -37,10 +27,14 @@ export class StoreNode implements IStore<any> {
       return state;
     };
 
-    const mutations: OperatorFunction<Mutation, State<any>> = $ =>
+    const applyMutations = (state: State<any>, mutations: Mutation[]): State<any> => {
+      return mutations.reduce(applyMutation, state);
+    };
+
+    const mutations: OperatorFunction<Mutation[], State<any>> = $ =>
       initial
-        ? $.pipe(startWith(state as any), scan(handleScanMutation))
-        : $.pipe(scan(handleScanMutation));
+        ? $.pipe(startWith(state as any), scan(applyMutations))
+        : $.pipe(scan(applyMutations));
 
     const mutation$ = this.mutations.pipe(
       mutations,
@@ -60,19 +54,19 @@ export class StoreNode implements IStore<any> {
   }
 
   $set = (state: any) => {
-    this.mutate(this.path, state, 'SET');
+    this.mutate([{ path: this.path, state, type: 'SET' }]);
   };
 
   $merge = (state: any) => {
-    this.mutate(this.path, state, 'MERGE');
+    this.mutate([{ path: this.path, state, type: 'MERGE' }]);
   };
 
   $delete = () => {
-    this.mutate(this.path, undefined, 'DELETE');
+    this.mutate([{ path: this.path, state: undefined, type: 'DELETE' }]);
   };
 
-  mutate = (path: string[], state: any, type: MutationType) => {
-    this.mutations.next({ path, state, type });
+  mutate = (mutations: Mutation[]) => {
+    this.mutations.next(mutations);
   };
 
   $dispose = () => {

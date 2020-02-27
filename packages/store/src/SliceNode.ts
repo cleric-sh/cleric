@@ -54,15 +54,15 @@ export class SliceNode implements ISliceApi<any> {
   }
 
   $set = (state: any) => {
-    this.store.mutate(this.path, state, 'SET');
+    this.store.mutate([{ path: this.path, state, type: 'SET' }]);
   };
 
   $merge = (state: any) => {
-    this.store.mutate(this.path, state, 'MERGE');
+    this.store.mutate([{ path: this.path, state, type: 'MERGE' }]);
   };
 
   $delete = () => {
-    this.store.mutate(this.path, undefined, 'DELETE');
+    this.store.mutate([{ path: this.path, state: undefined, type: 'DELETE' }]);
   };
 
   $mount<T, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
