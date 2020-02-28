@@ -15,22 +15,22 @@ class MutatorNode<T> implements IMutationApi<T> {
   $delete = () => this.mutations.push({ path: this.path, state: undefined, type: 'DELETE' });
 }
 
-const createProxy = (mutations: Mutation[], mutator: MutatorNode<any>) => {
-  return new Proxy(mutator, {
+const createMutatorProxy = <T>(mutations: Mutation[], mutator: MutatorNode<T>): Mutator<T> => {
+  return (new Proxy(mutator, {
     get: (target, key, receiver) => {
       if (!Reflect.has(target, key)) {
         const name = key.toString();
-        const proxy = createProxy(mutations, new MutatorNode(mutations, mutator, name));
+        const proxy = createMutatorProxy(mutations, new MutatorNode(mutations, mutator, name));
         Reflect.set(target, key, proxy, receiver);
       }
       return Reflect.get(target, key, receiver);
     },
-  });
+  }) as unknown) as Mutator<T>;
 };
 
 export const createMutator = <T>(): [Mutation[], Mutator<T>] => {
   const mutations: Mutation[] = [];
-  const mutator = new MutatorNode(mutations);
-  const proxy = (createProxy(mutations, mutator) as unknown) as Mutator<T>;
+  const mutator = new MutatorNode<T>(mutations);
+  const proxy = createMutatorProxy(mutations, mutator);
   return [mutations, proxy];
 };
