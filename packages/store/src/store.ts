@@ -61,7 +61,7 @@ export type Slice<T, TValid = Utils.FilterExclude<T, Function>> = ISliceApi<T> &
 
 export type Mutator<T> = IMutationApi<T> &
   {
-    [P in keyof T]: IMutationApi<T[P]>;
+    [P in keyof T]: Mutator<T[P]>;
   };
 
 export interface IMutationApi<T> {
@@ -93,6 +93,8 @@ export interface ISliceApi<T> extends IMutationApi<T> {
    * Returns an observable of this Slice node's state.
    */
   $: Observable<T>;
+
+  $batch: (mutationFn: (mutator: Mutator<T>) => void) => void;
 
   /**
    * Mounts the specified module to this Slice node.

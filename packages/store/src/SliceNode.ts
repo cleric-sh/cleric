@@ -9,8 +9,10 @@ import {
   MountedModule,
   SourceArgs,
   Module,
+  Mutator,
 } from './store';
 import { Observable } from 'rxjs';
+import { createMutator } from './createMutator';
 
 /**
  * A SliceNode observes a child property of a parent node and exposes an API to modify it.
@@ -63,6 +65,12 @@ export class SliceNode implements ISliceApi<any> {
 
   $delete = () => {
     this.store.mutate([{ path: this.path, state: undefined, type: 'DELETE' }]);
+  };
+
+  $batch = (mutationFn: (mutator: Mutator<any>) => void) => {
+    const [mutations, mutator] = createMutator();
+    mutationFn(mutator);
+    this.store.mutate(mutations);
   };
 
   $mount<T, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(

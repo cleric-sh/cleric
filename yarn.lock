@@ -5508,12 +5508,7 @@ moment@^2.22.1:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
-monolite@^0.4.6:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/monolite/-/monolite-0.4.6.tgz#26fd7e858ebf5c019c4ad1f40024f2a1567bc83e"
-  integrity sha1-Jv1+hY6/XAGcStH0ACTyoVZ7yD4=
-
-monolite@^0.8.0:
+monolite@0.8.0, monolite@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/monolite/-/monolite-0.8.0.tgz#05fda75fefe018de16ce604357351b28cd5b20df"
   integrity sha512-IQlv+l0KOnOQg6bGJmecbEAXiPgmuSXef2agBfplQFqrQvlJDeLd0YekGF+JxfZQY7ceqmUnv6doz6R0e2zZHA==

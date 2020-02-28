@@ -451,6 +451,39 @@ describe('StoreNode', () => {
     console.log(`Average ${(after - before) / times / 7} ms per mutation`);
   });
 
+  it('batch mutations emit one update only', async () => {
+    const _store = listen(store.$);
+
+    store.$batch(m => {
+      m.$set({
+        firstVal: 'foobar',
+        secondVal: {
+          nestedVal: 123,
+          secondNestedValue: 321,
+        },
+        arr: ['derp'],
+      });
+
+      m.arr.$delete();
+      m.arr.$set(['darp']);
+      m.secondVal.$merge({ secondNestedValue: 111 });
+    });
+
+    store.$dispose();
+
+    expect(await _store).toMatchObject([
+      INITIAL_STATE,
+      {
+        firstVal: 'foobar',
+        secondVal: {
+          nestedVal: 123,
+          secondNestedValue: 111,
+        },
+        arr: ['darp'],
+      },
+    ]);
+  });
+
   /**
    * This test ensures that dependent subscriptions are closed and completed correctly when the store is disposed.
    */

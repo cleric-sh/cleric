@@ -1,6 +1,6 @@
 import { updateHash } from '@cleric/hash';
 import { State } from './store';
-import { setFromAccessorChain } from 'monolite';
+import { set } from 'monolite';
 import { createState } from './createState';
 
 export const applySet = (state: State<any>, path: string[], next: any) => {
@@ -13,7 +13,7 @@ export const applySet = (state: State<any>, path: string[], next: any) => {
   }
 
   return {
-    current: setFromAccessorChain(last, path)(next),
+    current: set(last, path, next),
     hash: updateHash(lastHash, path, next),
   };
 };

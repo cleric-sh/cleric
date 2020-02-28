@@ -1,10 +1,20 @@
 import { startWith, scan, distinctUntilChanged, publishReplay, map } from 'rxjs/operators';
 import { applyMerge } from './applyMerge';
 import { applySet } from './applySet';
-import { IStore, SinkArgs, MountedModule, State, Mutation, SourceArgs, Module } from './store';
+import {
+  IStore,
+  SinkArgs,
+  MountedModule,
+  State,
+  Mutation,
+  SourceArgs,
+  Module,
+  Mutator,
+} from './store';
 import { applyDelete } from './applyDelete';
 import { createState } from './createState';
 import { Subject, Observable, Subscription, ConnectableObservable, OperatorFunction } from 'rxjs';
+import { createMutator } from './createMutator';
 
 /**
  * A StoreNode is the root wrapper for the current state, allowing slices to be created for any path of properties within its state.
@@ -63,6 +73,12 @@ export class StoreNode implements IStore<any> {
 
   $delete = () => {
     this.mutate([{ path: this.path, state: undefined, type: 'DELETE' }]);
+  };
+
+  $batch = (mutationFn: (mutator: Mutator<any>) => void) => {
+    const [mutations, mutator] = createMutator();
+    mutationFn(mutator);
+    this.mutate(mutations);
   };
 
   mutate = (mutations: Mutation[]) => {

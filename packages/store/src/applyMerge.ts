@@ -1,7 +1,7 @@
 import { merge, get } from 'lodash';
 import { updateHash } from '@cleric/hash';
 import { State } from './store';
-import { setFromAccessorChain } from 'monolite';
+import { set } from 'monolite';
 
 export const applyMerge = (state: State<any>, path: string[], next: any) => {
   const { current: last, hash: lastHash } = state;
@@ -20,7 +20,7 @@ export const applyMerge = (state: State<any>, path: string[], next: any) => {
   const value = merge({}, previous, next);
 
   return {
-    current: setFromAccessorChain(last, path)(value),
+    current: set(last, path, value),
     hash: updateHash(lastHash, path, value),
   };
 };

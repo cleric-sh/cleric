@@ -15,7 +15,7 @@
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.0.0",
     "lodash": "^4.17.5",
-    "monolite": "^0.4.6",
+    "monolite": "0.8.0",
     "rxjs": "^6.3.2",
     "utility-types": "^3.10.0"
   }

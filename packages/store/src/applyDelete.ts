@@ -1,7 +1,7 @@
 import { updateHash } from '@cleric/hash';
 import { State } from './store';
 import { createHash } from '@cleric/hash';
-import { setFromAccessorChain } from 'monolite';
+import { set } from 'monolite';
 import { get, omit } from 'lodash';
 
 export const applyDelete = (state: State<any>, path: string[]) => {
@@ -21,7 +21,7 @@ export const applyDelete = (state: State<any>, path: string[]) => {
   const parent = get(state.current, parentPath) || state.current;
   const newParent = omit(parent, nameToDelete);
   return {
-    current: setFromAccessorChain(last, parentPath)(newParent),
+    current: set(last, parentPath, newParent),
     hash: updateHash(lastHash, parentPath, newParent),
   };
 };
