@@ -1,36 +1,62 @@
 import { SubscribeState } from 'router5';
-import { IRouteMap, Routes } from './index';
-import { set } from 'monolite';
+import { IRouteMap, Routes, IRouteNode } from './index';
+import { Mutator } from '@cleric/store/src/store';
+import { get } from 'lodash';
+
+const walkRoutes = (
+  routeMap: IRouteMap,
+  name: string,
+  atNode: (node: IRouteNode<any, any>, path: string[]) => void,
+) => {
+  const prevNames = name.split('.');
+
+  for (let i = 0; i < prevNames.length; i++) {
+    const path = prevNames.filter((v, k) => k <= i);
+
+    const [first, ...rest] = path;
+    let node = routeMap[first];
+
+    for (const prop of rest) {
+      node = node['children'][prop];
+    }
+
+    atNode(node, path);
+  }
+};
 
 export const readRouteState = <TRouteMap extends IRouteMap>(
   routeMap: IRouteMap,
-  initial: Routes<TRouteMap>,
+  store: Mutator<Routes<TRouteMap>>,
   state: SubscribeState,
 ) => {
-  const names = state.route.name.split('.');
+  // Reset previous route state.
+  if (state.previousRoute) {
+    walkRoutes(routeMap, state.previousRoute.name, (node, path) => {
+      const codec = node.codec;
 
-  let out = initial;
+      if (codec) {
+        const params = codec.decode(state.previousRoute.params);
 
-  for (let i = 0; i < names.length; i++) {
-    const path = names.filter((v, k) => k <= i);
+        if (params._tag == 'Right') {
+          get(store, [...path, 'params']).$delete();
+        }
+      }
 
-    const [first, ...rest] = path;
-    let map = routeMap[first];
+      get(store, [...path, 'activated']).$set(false);
+    });
+  }
 
-    for (const prop of rest) {
-      map = map['children'][prop];
-    }
-    const codec = map.codec;
+  walkRoutes(routeMap, state.route.name, (node, path) => {
+    const codec = node.codec;
 
     if (codec) {
       const params = codec.decode(state.route.params);
 
       if (params._tag == 'Right') {
-        out = set(out, [...path, 'params'], params.right);
+        get(store, [...path, 'params']).$set(params.right);
       }
     }
 
-    out = set(out, [...path, 'activated'], true);
-  }
-  return out;
+    get(store, [...path, 'activated']).$set(true);
+  });
 };

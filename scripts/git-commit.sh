@@ -13,7 +13,7 @@ if [[ $BRANCH =~ (master$) ]]; then
 fi
 
 # Extracts JIRA issue number from current branch name, if one exists.
-if [[ $BRANCH =~ ($JIRAKEY-[0-9]+) ]]; then 
+if [[ $BRANCH =~ ($JIRAKEY-[0-9]+) ]]; then
     export ISSUE=${BASH_REMATCH[1] };
     echo "Detected JIRA issue: $ISSUE"
 fi

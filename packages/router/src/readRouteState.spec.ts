@@ -3,6 +3,7 @@ import { route } from './route';
 import { readRouteState } from './readRouteState';
 import { SubscribeState } from 'router5';
 import * as t from 'io-ts';
+import { createMutator } from '@cleric/store/src/createMutator';
 
 describe('readRouteState', () => {
   it('should', () => {
@@ -10,7 +11,7 @@ describe('readRouteState', () => {
       TEST: route({ anotherValue: t.string })('/test', {
         NESTED: route({ id: t.number })('/nested'),
       }),
-      SECOND: route()('/second'),
+      SECOND: route({ tag: t.string })('/second'),
     };
     const initial: Routes<typeof routeMap> = {
       TEST: {
@@ -20,10 +21,16 @@ describe('readRouteState', () => {
         },
       },
       SECOND: {
-        activated: false,
+        activated: true,
+        params: { tag: 'foo' },
       },
     };
     const state: SubscribeState = {
+      previousRoute: {
+        name: 'SECOND',
+        path: '/second',
+        params: { tag: 'foo' },
+      },
       route: {
         name: 'TEST.NESTED',
         params: {
@@ -35,22 +42,17 @@ describe('readRouteState', () => {
       },
     } as any;
 
-    const routeState = readRouteState(routeMap, initial, state);
+    const [mutations, mutator] = createMutator<typeof initial>();
 
-    expect(routeState).not.toBe(initial);
+    readRouteState(routeMap, mutator, state);
 
-    expect(routeState).toEqual({
-      TEST: {
-        activated: true,
-        params: { anotherValue: 'blah' },
-        NESTED: {
-          activated: true,
-          params: { id: 4 },
-        },
-      },
-      SECOND: {
-        activated: false,
-      },
-    });
+    expect(mutations).toEqual([
+      { path: ['SECOND', 'params'], state: undefined, type: 'DELETE' },
+      { path: ['SECOND', 'activated'], state: false, type: 'SET' },
+      { path: ['TEST', 'params'], state: { anotherValue: 'blah' }, type: 'SET' },
+      { path: ['TEST', 'activated'], state: true, type: 'SET' },
+      { path: ['TEST', 'NESTED', 'params'], state: { id: 4 }, type: 'SET' },
+      { path: ['TEST', 'NESTED', 'activated'], state: true, type: 'SET' },
+    ]);
   });
 });

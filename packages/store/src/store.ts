@@ -34,7 +34,7 @@ export interface INode {
  */
 export type Store<T, TValid = Utils.FilterExclude<T, Function>> = IStoreApi<T> &
   {
-    [P in keyof TValid]: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
+    [P in keyof TValid]-?: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
   };
 
 /**
@@ -56,7 +56,7 @@ export interface IStore<T> extends IStoreApi<T>, INode {
  */
 export type Slice<T, TValid = Utils.FilterExclude<T, Function>> = ISliceApi<T> &
   {
-    [P in keyof TValid]: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
+    [P in keyof TValid]-?: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
   };
 
 export type Mutator<T> = IMutationApi<T> &
