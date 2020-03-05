@@ -2,30 +2,50 @@ import { createRouter, SubscribeState, Route } from 'router5';
 import { from, Subscribable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { convertRouteMapToRoutes } from './convertRouteMapToRoutes';
-import { convertRouteMapToInitialState } from './convertRouteMapToInitialState';
 import { readRouteState } from './readRouteState';
-import { IRouteMap, Routes } from './index';
 import { createStore, createModule } from '@cleric/store';
-import { Source } from '@cleric/store/src/store';
+import { Source, Store } from '@cleric/store/src/store';
+import { RoutesArgs, RouteArgs } from './route';
+// import { RouteState } from '.';
+import browserPlugin from 'router5-plugin-browser';
+import * as t from 'io-ts';
+import { RouteMap, RouteNode, RoutesState } from '.';
 
-export const createRoutes = <TRouteMap extends IRouteMap>(routeMap: TRouteMap) => {
+const convertRoutesArgsToRouteMap = (args: RoutesArgs): RouteMap => {
+  const convertRouteArgsToRouteNode = ({
+    type,
+    children,
+    ...rest
+  }: RouteArgs<{}>): RouteNode<{}> => ({
+    codec: type ? t.exact(t.type(type)) : undefined,
+    children: children ? convertRoutesArgsToRouteMap(children) : undefined,
+    ...rest,
+  });
+
+  return Object.getOwnPropertyNames(args).reduce((acc, name) => {
+    acc[name] = convertRouteArgsToRouteNode(args[name]);
+    return acc;
+  }, {});
+};
+
+export const createRoutes = <TRoutesArgs extends RoutesArgs>(
+  routesArgs: TRoutesArgs,
+): Store<RoutesState<TRoutesArgs>> => {
+  const routeMap = convertRoutesArgsToRouteMap(routesArgs);
   const routes: Route[] = convertRouteMapToRoutes(routeMap);
-  const initial: Routes<TRouteMap> = convertRouteMapToInitialState(routeMap);
   const router = createRouter(routes);
   const router$ = from((router as any) as Subscribable<SubscribeState>);
+  const store = createStore<RoutesState<TRoutesArgs>>({} as any);
 
-  const store = createStore(initial);
-
-  const RouterModule = createModule<typeof initial, { router: Source<SubscribeState> }>('Router')({
-    reducer: ({ router }, store) =>
-      router.pipe(
-        map(state => {
-          store.$batch(mutator => {
-            readRouteState(routeMap, mutator, state);
-          });
-        }),
-      ),
+  const RouterModule = createModule<any, { router: Source<SubscribeState> }>('Router')({
+    reducer: ({ router }) => router.pipe(map(state => readRouteState(routesArgs, state))),
   });
   store.$mount(RouterModule, { router: router$ });
+  router.usePlugin(
+    browserPlugin({
+      useHash: false,
+    }),
+  );
+  router.start();
   return store;
 };

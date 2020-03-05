@@ -24,6 +24,7 @@
         "noFallthroughCasesInSwitch": true,
         "noEmitOnError": true,
         "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "noErrorTruncation": true
     },
 }

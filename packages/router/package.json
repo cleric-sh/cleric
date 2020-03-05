@@ -11,7 +11,9 @@
     "io-ts": "^2.1.2",
     "lodash": "^4.17.15",
     "router5": "^7.0.2",
-    "rxjs": "^6.5.4"
+    "router5-plugin-browser": "^7.0.2",
+    "rxjs": "^6.5.4",
+    "ts-toolbelt": "^6.3.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149"

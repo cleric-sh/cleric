@@ -21,6 +21,11 @@ const listen = <T>($: Observable<T>) => $.pipe(toArray()).toPromise();
 interface SecondValState {
   nestedVal: number;
   secondNestedValue: number;
+  deeper: {
+    nested: {
+      property: string;
+    };
+  };
 }
 
 interface BlahState {
@@ -34,6 +39,11 @@ const INITIAL_STATE: BlahState = {
   secondVal: {
     nestedVal: 22,
     secondNestedValue: 10,
+    deeper: {
+      nested: {
+        property: 'foo',
+      },
+    },
   },
   arr: ['testing'],
 };
@@ -50,17 +60,24 @@ describe('StoreNode', () => {
   });
 
   it('should only propogate changes when setting actual different values', async () => {
-    const SECOND_STATE = {
+    const SECOND_STATE: BlahState = {
       firstVal: 'second blah',
       secondVal: {
         nestedVal: 22,
         secondNestedValue: 50,
+        deeper: {
+          nested: {
+            property: 'foo',
+          },
+        },
       },
       arr: ['second'],
     };
 
     const _storeValues = listen(store.$);
     const _nestedValValues = listen(store.secondVal.nestedVal.$);
+
+    store.secondVal.deeper.nested.property.$;
 
     // This call should emit a new state, however it keeps store.secondVal.nestedVal the same.
     // Store should emit a new state, but nestedVal shouldn't.
@@ -414,6 +431,10 @@ describe('StoreNode', () => {
     MyActions.onOff.next(false);
   });
 
+  it('allows undefined state', () => {
+    store.$set(undefined as any);
+  });
+
   /**
    * We want to make sure we can consume a reasonable amount of changes with little to no performance impact.
    * Realistically, no application will ingest 1000 mutation at one time.
@@ -432,6 +453,11 @@ describe('StoreNode', () => {
         secondVal: {
           nestedVal: 2,
           secondNestedValue: 10,
+          deeper: {
+            nested: {
+              property: 'foo',
+            },
+          },
         },
         arr: ['testing'],
       });
@@ -460,6 +486,11 @@ describe('StoreNode', () => {
         secondVal: {
           nestedVal: 123,
           secondNestedValue: 321,
+          deeper: {
+            nested: {
+              property: 'foo',
+            },
+          },
         },
         arr: ['derp'],
       });
