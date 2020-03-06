@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import { createRoutes } from './createRoutes';
 import { route, RouteArgs, RoutesArgs } from './route';
-import { Strict } from 'Union/Strict';
+import { Union } from 'ts-toolbelt';
 import { Types } from '@cleric/common/src';
 
 export type RouteNode<TProps extends t.Props> = Omit<RouteArgs<TProps>, 'type' | 'children'> & {
@@ -26,12 +26,12 @@ type RouteProps = {
 
 export type RoutesState<TRoutesArgs extends RoutesArgs, TLastProps extends t.Props = {}> = {
   [P in keyof TRoutesArgs]: TRoutesArgs[P] extends RouteArgs<infer U>
-    ? Strict<
+    ? Union.Strict<
         RouteProps &
-          RouteParams<Strict<TLastProps & Types.OnlyKnown<U>>> &
+          RouteParams<Union.Strict<TLastProps & Types.OnlyKnown<U>>> &
           RoutesState<
             NonNullable<TRoutesArgs[P]['children']>,
-            Strict<TLastProps & Types.OnlyKnown<U>>
+            Union.Strict<TLastProps & Types.OnlyKnown<U>>
           >
       >
     : never;

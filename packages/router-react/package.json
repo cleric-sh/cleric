@@ -1,0 +1,14 @@
+{
+    "name": "@cleric/router-react",
+    "version": "0.0.1",
+    "description": "React bindings for @cleric/router.",
+    "main": "src/index.ts",
+    "author": "Sebastian Nemeth",
+    "license": "MIT",
+    "dependencies": {
+        "@cleric/router": "^0.0.9",
+        "@cleric/store": "^0.0.9",
+        "@cleric/store-react": "^0.0.9",
+        "react": "^16.13.0"
+    }
+}
