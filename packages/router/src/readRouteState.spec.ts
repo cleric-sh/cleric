@@ -2,18 +2,19 @@ import { route } from './route';
 import { readRouteState } from './readRouteState';
 import { SubscribeState } from 'router5';
 import * as t from 'io-ts';
+import { RouteMap } from '.';
 
 describe('readRouteState', () => {
   it('should', () => {
     const routeMap = {
-      TEST: route({
+      TEST: {
         path: '/test',
-        type: { anotherValue: t.string },
+        codec: t.exact(t.type({ anotherValue: t.string })),
         children: {
-          NESTED: route({ path: '/nested', type: { id: t.number } }),
+          NESTED: { path: '/nested', codec: t.exact(t.type({ id: t.number })) },
         },
-      }),
-      SECOND: route({ path: '/second', type: { tag: t.string } }),
+      },
+      SECOND: { path: '/second', type: t.exact(t.type({ tag: t.string })) },
     };
 
     const state: SubscribeState = {
@@ -35,7 +36,7 @@ describe('readRouteState', () => {
 
     // const [mutations, mutator] = createMutator<typeof initial>();
 
-    const expected = readRouteState(routeMap, state);
+    const expected = readRouteState(routeMap as any, state);
 
     expect(expected).toEqual({
       TEST: {

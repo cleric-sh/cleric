@@ -1,5 +1,5 @@
 import { HashState } from '@cleric/hash';
-import { Utils } from '@cleric/common';
+import { Types } from '@cleric/common';
 import { Observable, ObservableInput, Subject, Subscribable } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 import { ReducerBuilder } from './createReducer';
@@ -32,7 +32,7 @@ export interface INode {
 /**
  * Provides the API for interacting with a Store based on a specified state's Type.
  */
-export type Store<T, TValid = Utils.FilterExclude<T, Function>> = IStoreApi<T> &
+export type Store<T, TValid = Types.FilterExclude<T, Function>> = IStoreApi<T> &
   {
     [P in keyof TValid]-?: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
   };
@@ -54,9 +54,14 @@ export interface IStore<T> extends IStoreApi<T>, INode {
 /**
  * Provides the API for interacting with a Store based on a specified state's Type at a particular slice of the store.
  */
-export type Slice<T, TValid = Utils.FilterExclude<T, Function>> = ISliceApi<T> &
+export type Slice<T> = ISliceApi<T> &
   {
-    [P in keyof TValid]-?: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
+    [P in keyof Types.FilterExclude<T, Function>]-?: Types.FilterExclude<
+      T,
+      Function
+    >[P] extends object
+      ? Slice<Types.FilterExclude<T, Function>[P]>
+      : ISliceApi<Types.FilterExclude<T, Function>[P]>;
   };
 
 export type Mutator<T> = IMutationApi<T> &

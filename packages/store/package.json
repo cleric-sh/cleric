@@ -17,6 +17,7 @@
     "lodash": "^4.17.5",
     "monolite": "0.8.0",
     "rxjs": "^6.3.2",
+    "ts-toolbelt": "^6.3.5",
     "utility-types": "^3.10.0"
   }
 }

@@ -38,7 +38,7 @@ export const createRoutes = <TRoutesArgs extends RoutesArgs>(
   const store = createStore<RoutesState<TRoutesArgs>>({} as any);
 
   const RouterModule = createModule<any, { router: Source<SubscribeState> }>('Router')({
-    reducer: ({ router }) => router.pipe(map(state => readRouteState(routesArgs, state))),
+    reducer: ({ router }) => router.pipe(map(state => readRouteState(routeMap, state))),
   });
   store.$mount(RouterModule, { router: router$ });
   router.usePlugin(

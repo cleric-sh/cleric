@@ -22,3 +22,11 @@ export type KeysOfArrays<T> = {
 
 export type FilterInclude<T, Type> = Pick<T, KeysOfType<T, Type>>;
 export type FilterExclude<T, Type> = Pick<T, KeysNotOfType<T, Type>>;
+
+export type KnownKeys<T> = {
+  [K in keyof T]: string extends K ? never : number extends K ? never : K;
+} extends { [_ in keyof T]: infer U }
+  ? U
+  : never;
+
+export type OnlyKnown<T extends Record<any, any>> = Pick<T, KnownKeys<T>>;

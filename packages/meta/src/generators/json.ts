@@ -8,11 +8,11 @@ export type Json<T extends object> = {
   (value: TemplateStringsArray, ...placeholders: string[]): string;
 };
 
-export const json = <T extends object>(schema: object): Json<T> => (
+export const json = <T extends object>(schema: object | undefined): Json<T> => (
   value: unknown,
   ...placeholders: string[]
 ) => {
-  let input: object;
+  let input: object | undefined = undefined;
 
   if (isString(value)) {
     input = JSON.parse(value);

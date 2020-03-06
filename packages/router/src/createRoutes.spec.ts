@@ -39,7 +39,51 @@ describe('createRoutes', () => {
       }),
     });
 
-    const s: RoutesState<typeof spec> = {} as any;
+    const s: RoutesState<typeof spec> = {
+      LOGIN: {
+        name: 'LOGIN',
+        path: '/login',
+        params: {
+          blah: 'blah',
+        },
+        REGISTER: {
+          name: 'LOGIN.REGISTER',
+          path: '/login/register',
+          params: {
+            blah: 'blah',
+            ask: 'ask',
+          },
+          SUBMITTED: {
+            name: 'LOGIN.REGISTER.SUBMITTED',
+            path: '/login/register/submitted',
+            params: {
+              blah: 'blah',
+              ask: 'ask',
+              id: 1,
+            },
+          },
+          CANCELLED: {
+            name: 'LOGIN.REGISTER.CANCELLED',
+            path: '/login/register/cancelled',
+            params: {
+              ask: 'ask',
+              blah: 'blah',
+            },
+          },
+        },
+      },
+      SECOND: {
+        name: 'SECOND',
+        path: '/second',
+        OW: {
+          name: 'SECOND.OW',
+          path: '/second/ow',
+          params: {
+            grr: 'grr',
+          },
+        },
+      },
+    };
 
     s.LOGIN.name;
     s.LOGIN.path;
@@ -50,19 +94,19 @@ describe('createRoutes', () => {
     s.LOGIN.REGISTER.params;
     s.LOGIN.REGISTER.params.blah;
     s.LOGIN.REGISTER.params.ask;
-    s.LOGIN.REGISTER.params.foo;
+    // s.LOGIN.REGISTER.params.foo;
     s.LOGIN.REGISTER.SUBMITTED.name;
     s.LOGIN.REGISTER.SUBMITTED.path;
     s.LOGIN.REGISTER.SUBMITTED.params.blah;
     s.LOGIN.REGISTER.SUBMITTED.params.id;
     s.LOGIN.REGISTER.SUBMITTED.params.ask;
     s.LOGIN.REGISTER.SUBMITTED.params.id;
-    s.LOGIN.REGISTER.SUBMITTED.params.sdfjsk;
+    // s.LOGIN.REGISTER.SUBMITTED.params.sdfjsk;
     // s.LOGIN.REGISTER.CANCELLED.params.rubbish;
-    s.SECOND.params;
+    // s.SECOND.params;
     s.SECOND.OW.params.grr;
     s.SECOND.OW.params.grr;
-    s.SECOND.OW.params.asdsdf;
+    // s.SECOND.OW.params.asdsdf;
 
     const rs = createRoutes(spec);
 

@@ -5,7 +5,7 @@ import {
   FilterInclude,
   KeysNotOfType,
   FilterExclude,
-} from './utils';
+} from './types';
 
 interface IFoo {
   foo: string;
