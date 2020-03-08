@@ -3,6 +3,7 @@ import { Types } from '@cleric/common';
 import { Observable, ObservableInput, Subject, Subscribable } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 import { ReducerBuilder } from './createReducer';
+import { Clean, Type, Compute, Compute } from 'Any/_api';
 
 /**
  * The (serializable) type of the underlying state that also tracks the state's corresponding hash tree.
@@ -29,12 +30,16 @@ export interface INode {
   path: string[];
 }
 
+type Valid<T> = Types.FilterExclude<T, Function>;
+
 /**
  * Provides the API for interacting with a Store based on a specified state's Type.
  */
-export type Store<T, TValid = Types.FilterExclude<T, Function>> = IStoreApi<T> &
+export type Store<T> = IStoreApi<T> &
   {
-    [P in keyof TValid]-?: TValid[P] extends object ? Slice<TValid[P]> : ISliceApi<TValid[P]>;
+    [P in keyof Valid<T>]-?: Valid<T>[P] extends object
+      ? Slice<Valid<T>[P]>
+      : ISliceApi<Valid<T>[P]>;
   };
 
 /**
