@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import * as t from 'io-ts';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, from } from 'rxjs';
 import { isArray } from 'lodash';
 import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
@@ -29,93 +30,117 @@ type ObservableNode<T extends t.Any> = {
 };
 
 type UnionNode<TCS extends t.Any[]> = {
-  $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Store<TSubType>;
+  $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => SliceNode<TSubType>;
 };
 
 type InterfaceNode<P> = {
-  [K in keyof P]: P[K] extends t.Any ? Store<P[K]> : never;
+  [K in keyof P]: P[K] extends t.Any ? SliceNode<P[K]> : never;
 };
 
 type IntersectionNode<CS extends t.Any[]> = Union.Merge<
   Tuple.UnionOf<
     {
-      [K in keyof CS]: Store<Cast<CS[K], t.Any>>;
+      [K in keyof CS]: SliceNode<Cast<CS[K], t.Any>>;
     }
   >
 >;
 
-type Store<T extends t.Any> = ObservableNode<T> &
+type SliceNode<T extends t.Any> = ObservableNode<T> &
   (T extends t.UnionType<infer CS> ? UnionNode<CS> : {}) &
   (T extends t.IntersectionType<infer CS> ? IntersectionNode<CS> : {}) &
   (T extends t.InterfaceType<infer P> ? InterfaceNode<P> : {});
 
-interface CreateNode {
-  <T extends t.Any>(type: T, obs: Observable<t.TypeOf<T>>): Store<T>;
+interface CreateSlice {
+  <T extends t.Any>($type: T, $: Observable<t.TypeOf<T>>): SliceNode<T>;
 }
 
-const createNode: CreateNode = (type, $) => {
-  const node = {
-    $,
-    $type: type,
-  };
+class Slice<T extends t.Any> {
+  constructor(public $type: T, public $: Observable<t.TypeOf<T>>) {}
 
-  const addProperties = (type: t.InterfaceType<t.Any>) => {
+  protected createProperties = (type: t.InterfaceType<t.Any>) => {
     for (const name in type.props) {
-      Object.defineProperty(node, name, {
+      Object.defineProperty(this, name, {
         get: () => {
           const _name = '__' + name;
-          if (!node[_name]) {
+          if (!this[_name]) {
             const nextType = type.props[name];
-            const next$ = $.pipe(pluck(name));
-            node[_name] = createNode(nextType, next$);
+            const next$ = this.$.pipe(pluck(name));
+            this[_name] = createSlice(nextType, next$);
           }
-          return node[_name];
+          return this[_name];
         },
       });
     }
   };
+}
 
-  if (type instanceof t.InterfaceType) addProperties(type);
+class InterfaceSlice<T extends t.InterfaceType<any>> extends Slice<T> {
+  constructor(public $type: T, public $: Observable<t.TypeOf<T>>) {
+    super($type, $);
+    this.createProperties($type);
+  }
+}
 
-  if (type instanceof t.IntersectionType) {
-    for (const subType of type.types) {
-      addProperties(subType);
+class IntersectionSlice<T extends t.IntersectionType<any>> extends Slice<T> {
+  constructor(public $type: T, public $: Observable<t.TypeOf<T>>) {
+    super($type, $);
+    if (!isArray(this.$type.types)) throw 'This should never happen...';
+    for (const subType of this.$type.types) {
+      this.createProperties(subType);
     }
   }
+}
 
-  if (type instanceof t.UnionType) {
-    if (!isArray(type.types)) throw 'This should never happen...';
+class UnionSlice<T extends t.UnionType<t.Any[]>> extends Slice<T> {
+  private nodeCreators: Array<() => SliceNode<any>>;
+  private nodes: SliceNode<any>[] = [];
 
-    const types = type.types as t.Any[];
-    const nodeCreators = types.map(t => () => {
+  constructor(public $type: T, public $: Observable<t.TypeOf<T>>) {
+    super($type, $);
+    if (!isArray(this.$type.types)) throw 'This should never happen...';
+    for (const subType of this.$type.types) {
+      if (subType instanceof t.InterfaceType) {
+        this.createProperties(subType);
+      }
+    }
+
+    this.nodeCreators = this.$type.types.map(t => () => {
       const option$ = $.pipe(filter(t.is));
-      return createNode(t, option$);
+      return createSlice(t, option$);
     });
-    const nodes: Store<any>[] = [];
-
-    node['$is'] = (type: t.Any) => {
-      const index = types.findIndex(t => t === type);
-      if (index < 0) throw `Don't recognise this type...`;
-      if (!nodes[index]) nodes[index] = nodeCreators[index]();
-      return nodes[index];
-    };
   }
 
-  return node as any;
+  $is = (type: t.Any) => {
+    const index = this.$type.types.findIndex(t => t === type);
+    if (index < 0) throw `Don't recognise this type...`;
+    if (!this.nodes[index]) this.nodes[index] = this.nodeCreators[index]();
+    return this.nodes[index];
+  };
+}
+
+const createSlice: CreateSlice = (type, $) => {
+  if (type instanceof t.InterfaceType) return new InterfaceSlice<typeof type>(type, $);
+  if (type instanceof t.IntersectionType) return new IntersectionSlice<typeof type>(type, $);
+  if (type instanceof t.UnionType) return new UnionSlice<typeof type>(type, $);
+  return new Slice(type, $);
 };
 
-const src = new BehaviorSubject<t.TypeOf<typeof schema>>({
+const initial: t.TypeOf<typeof schema> = {
   bar: 1,
   foo: 'myString',
   obj: {
     val: 'valString',
   },
   union: {
-    two: 123,
+    one: '123',
   },
-});
+};
 
-const node = createNode(schema, src);
+const src = new BehaviorSubject(initial);
+
+const node = createSlice(schema, src);
 
 node.$.subscribe(p => console.log(p));
+console.log(node.obj.val);
 node.union.$is(two).$.subscribe(p => console.log(p));
+node.union.$is(one).one.$.subscribe(p => console.log(p));
