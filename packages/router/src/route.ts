@@ -17,23 +17,6 @@ export type RoutesArgs = {
   [key: string]: RouteArgs<{}>;
 };
 
-// export type RouteNode<TArgs extends RouteNodeArgs<any, any>> = TArgs extends RouteNodeArgs<
-//   infer P,
-//   infer C
-// >
-//   ? {
-//       codec?: t.ExactC<t.TypeC<P>>;
-//       defaultParams?: t.TypeOf<t.TypeC<P>>;
-//       children?: RouteMap<C>;
-//     } & Router5RestParams
-//   : never;
-
-// export type RouteMap<T extends RouteMapArgs> = {
-//   [P in keyof T]: T[P] extends RouteNodeArgs<infer P, infer C>
-//     ? RouteNode<RouteNodeArgs<P, C>>
-//     : never;
-// };
-
 interface RouteFn {
   <TRouteArgs extends RouteArgs<any>>(args: TRouteArgs): TRouteArgs;
 }

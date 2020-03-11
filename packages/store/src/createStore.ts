@@ -2,6 +2,41 @@ import { StoreNode } from './StoreNode';
 import { SliceNode } from './SliceNode';
 import { IStore, Store, ISlice } from './store';
 
+// Todo: Refactor this to take an io-ts schema instead.
+// Remove the use of proxies (ES5, yaye!).
+// Proxies don't play nice when dynamic code runs on the store, e.g.
+// expect(store) causes jest tests to hang, presumably because it's calling properties that don't exist and returning proxies.
+
+const reserved = [
+  'Array',
+  'Date',
+  'eval',
+  'function',
+  'hasOwnProperty',
+  'Infinity',
+  'isFinite',
+  'isNaN',
+  'isPrototypeOf',
+  'length',
+  'Math',
+  'NaN',
+  'name',
+  'Number',
+  'Object',
+  'prototype',
+  'String',
+  'toString',
+  'undefined',
+  'valueOf',
+];
+
+const isValidProperty = (key: string | number | symbol) => {
+  if (typeof key === 'symbol') return false;
+  if (typeof key === 'number') return true;
+  const isReserved = reserved.includes(key);
+  return !isReserved;
+};
+
 /**
  * Initialize a proxy node that creates SliceNodes for each property that's invoked from Store.
  * @param node
@@ -9,7 +44,8 @@ import { IStore, Store, ISlice } from './store';
 const createProxy = (store: IStore<any>, node: ISlice<any>) => {
   return new Proxy(node, {
     get: (target, key, receiver) => {
-      if (!Reflect.has(target, key)) {
+      if (!Reflect.has(target, key) && isValidProperty(key)) {
+        console.log(key);
         const name = key.toString();
         const proxy = createProxy(store, new SliceNode(store, target, name));
         Reflect.set(target, key, proxy, receiver);

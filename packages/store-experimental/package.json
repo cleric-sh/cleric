@@ -1,0 +1,23 @@
+{
+    "name": "@cleric/store-experimental",
+    "version": "0.0.1",
+    "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
+    "main": "src/index.ts",
+    "author": "Sebastian Nemeth",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/jest": "^25.1.2",
+        "@types/lodash": "^4.14.149",
+        "jest": "^25.1.0",
+        "rxjs-marbles": "^5.0.4",
+        "ts-jest": "^25.2.0"
+    },
+    "dependencies": {
+        "@sindresorhus/fnv1a": "^1.0.0",
+        "lodash": "^4.17.5",
+        "monolite": "0.8.0",
+        "rxjs": "^6.3.2",
+        "ts-toolbelt": "^6.3.5",
+        "utility-types": "^3.10.0"
+    }
+}
