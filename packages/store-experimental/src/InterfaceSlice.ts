@@ -7,6 +7,4 @@ export class InterfaceSlice<T extends t.InterfaceType<any>> extends Slice<T> {
     super($type, $);
     this.createProperties($type);
   }
-
-  static resolver: () => 'InterfaceSlice' = () => 'InterfaceSlice';
 }
