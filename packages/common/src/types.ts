@@ -30,3 +30,5 @@ export type KnownKeys<T> = {
   : never;
 
 export type OnlyKnown<T extends Record<any, any>> = Pick<T, KnownKeys<T>>;
+
+type Constructor<TClass = {}> = new (...args: any[]) => TClass;

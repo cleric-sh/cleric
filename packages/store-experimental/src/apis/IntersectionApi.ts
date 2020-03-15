@@ -2,10 +2,11 @@ import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
 import { ApiTypeOf } from '.';
 import * as t from 'io-ts';
-import { isArray } from 'lodash';
-import { decorateSlice } from '../decorateSlice';
+// import { decorateSlice } from '../decorateSlice';
 import { ConfigKey } from '../config';
 import { SliceApi } from './SliceApi';
+import { getMatchingApis } from '../getMatchingApis';
+import { getSliceConstructor } from '../getSliceConstructor';
 
 export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.Any[]> =>
   type instanceof t.IntersectionType;
@@ -13,14 +14,26 @@ export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.An
 export const IntersectionApi = SliceApi(
   'Intersection',
   isIntersectionType,
-  (apis, type, slice) => {
-    if (!isArray(type.types)) throw 'This should never happen...';
-    for (const subType of type.types) {
-      decorateSlice(apis, subType, slice);
-    }
-    return slice;
+  (configKey, type, SliceNode) => {
+    // eslint-disable-next-line sonarjs/prefer-immediate-return
+    const IntersectionSlice = class extends SliceNode {};
+    const apis = getMatchingApis(configKey, type.types);
+    return getSliceConstructor(configKey, apis, type, IntersectionSlice);
+    return IntersectionSlice;
   },
 );
+
+// export const IntersectionApi = SliceApi(
+//   'Intersection',
+//   isIntersectionType,
+//   (apis, type, slice) => {
+//     if (!isArray(type.types)) throw 'This should never happen...';
+//     for (const subType of type.types) {
+//       decorateSlice(apis, subType, slice);
+//     }
+//     return slice;
+//   },
+// );
 
 export type IntersectionApi<
   TConfigKey extends ConfigKey,

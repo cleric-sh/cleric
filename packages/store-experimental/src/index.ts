@@ -37,15 +37,15 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-const MyApis = { apis: [InterfaceApi, IntersectionApi, UnionApi] } as const;
+// const MyApis = { apis: [InterfaceApi, IntersectionApi, UnionApi] } as const;
 
-declare module './config' {
-  export interface Configs {
-    My: typeof MyApis;
-  }
-}
+// declare module './config' {
+//   export interface Configs {
+//     My: typeof MyApis;
+//   }
+// }
 
-Configs.My = MyApis;
+// Configs.My = MyApis;
 
 const node = createSlice(schema, src);
 

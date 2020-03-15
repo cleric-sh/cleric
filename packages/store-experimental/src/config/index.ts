@@ -9,8 +9,10 @@ export const Configs: Partial<Configs> = {};
 
 export type ConfigKey = keyof Configs;
 
+export type SliceApis = readonly SliceApi<ApiKey, t.Any>[];
+
 export interface Config {
-  apis: readonly SliceApi<ApiKey, t.Any>[];
+  apis: SliceApis;
 }
 
 export type GetApis<
@@ -21,4 +23,4 @@ export type GetApis<
   : TypeError<'Configuration must be a tuple of SliceApis.'>;
 
 export const getApis = <TConfigKey extends ConfigKey>(configKey: TConfigKey) =>
-  Configs[configKey]['apis'] as Config['apis'];
+  Configs[configKey]['apis'];

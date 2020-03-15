@@ -1,7 +1,6 @@
 /**
  * Based on Marius Schulz's pattern: https://mariusschulz.com/blog/mixin-classes-in-typescript
  */
-// Needed for all mixins
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // Simple class

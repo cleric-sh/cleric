@@ -6,10 +6,21 @@ import { Slice } from '.';
 
 export const hasProps = (type: t.Any): type is t.InterfaceType<t.Props> => !!type['props'];
 
-export const InterfaceApi = SliceApi('Interface', hasProps, (apis, type, slice) => {
-  defineProperties(apis, type, slice);
-  return slice;
-});
+export const InterfaceApi = SliceApi(
+  'Interface',
+  hasProps,
+  (configKey, type, SliceNode) =>
+    class extends SliceNode {
+      constructor(...args: any[]) {
+        super(args);
+        defineProperties(this.$configKey, this.$type, this);
+      }
+    },
+);
+// export const InterfaceApi = SliceApi('Interface', hasProps, (apis, type, slice) => {
+//   defineProperties(apis, type, slice);
+//   return slice;
+// });
 
 export type InterfaceApi<
   TConfigKey extends ConfigKey,
