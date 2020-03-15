@@ -1,11 +1,14 @@
 import * as t from 'io-ts';
 import { Slice } from '../Slice';
 import { Union, List } from 'ts-toolbelt';
+import { InterfaceApi } from './InterfaceApi';
+import { UnionApi } from './UnionApi';
+import { IntersectionApi } from './IntersectionApi';
 
 type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
 
 type SliceDecorator<T extends t.Any> = {
-  (type: T, slice: Slice<T>): Slice<T>;
+  (apis: Readonly<SliceApis>, type: T, slice: Slice<T>): Slice<T>;
 };
 
 export interface SliceApi<TKey extends ApiKeys, T extends t.Any> {
@@ -20,10 +23,10 @@ export const SliceApi = <TKey extends ApiKeys, T extends t.Any>(
   decorator: SliceDecorator<T>,
 ): SliceApi<TKey, T> => ({ key, guard, decorate: decorator });
 
-export interface ApiTypes<T extends Readonly<SliceApis>, A extends t.Any> {}
+export interface Apis<T extends Readonly<SliceApis>, A extends t.Any> {}
 
-export type ApiKeys = keyof ApiTypes<any, any>;
-export type ApiFor<T extends Readonly<SliceApis>, K extends ApiKeys, A extends t.Any> = ApiTypes<
+export type ApiKeys = keyof Apis<any, any>;
+export type ApiFor<T extends Readonly<SliceApis>, K extends ApiKeys, A extends t.Any> = Apis<
   T,
   A
 >[K];
@@ -56,3 +59,6 @@ export type MatchApis<TSliceApis extends Readonly<SliceApis>, T extends t.Any> =
 export type ApisFor<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Union.Merge<
   List.UnionOf<MatchApis<TSliceApis, T>>
 >;
+
+export type SliceNode<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Slice<T> &
+  ApisFor<TSliceApis, T>;
