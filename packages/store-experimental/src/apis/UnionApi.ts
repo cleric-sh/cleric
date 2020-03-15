@@ -1,5 +1,5 @@
 import { Tuple } from 'ts-toolbelt';
-import { SliceApi, SliceApis, SliceNode } from '.';
+import { SliceApi, SliceApis, SliceTypeOf } from '.';
 import * as t from 'io-ts';
 import { isArray } from 'lodash';
 import { createSlice } from '../createSlice';
@@ -40,12 +40,12 @@ export type UnionApi<
   ? {
       $is: <TSubType extends Tuple.UnionOf<TCS>>(
         type: TSubType,
-      ) => SliceNode<TSliceApis, TSubType>;
+      ) => SliceTypeOf<TSliceApis, TSubType>;
     }
   : never;
 
 declare module '.' {
-  export interface Apis<T, A> {
+  export interface ApiTypes<T, A> {
     Union: UnionApi<T, A>;
   }
 }

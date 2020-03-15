@@ -23,17 +23,23 @@ export const SliceApi = <TKey extends ApiKeys, T extends t.Any>(
   decorator: SliceDecorator<T>,
 ): SliceApi<TKey, T> => ({ key, guard, decorate: decorator });
 
-export interface Apis<T extends Readonly<SliceApis>, A extends t.Any> {}
+export const DefaultApis = [InterfaceApi, UnionApi, IntersectionApi] as const;
 
-export type ApiKeys = keyof Apis<any, any>;
-export type ApiFor<T extends Readonly<SliceApis>, K extends ApiKeys, A extends t.Any> = Apis<
-  T,
-  A
->[K];
+export interface Configurations {
+  Default: typeof DefaultApis;
+}
+
+export const Configurations: Partial<Configurations> = {
+  Default: DefaultApis,
+};
+
+export interface ApiTypes<T extends Readonly<SliceApis>, A extends t.Any> {}
+
+export type ApiKeys = keyof ApiTypes<any, any>;
 
 export type SliceApis = SliceApi<ApiKeys, t.Any>[];
 
-export type MatchKeys<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = List.UnionOf<
+export type MatchApiKeys<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = List.UnionOf<
   {
     [K in keyof TSliceApis]: TSliceApis[K] extends SliceApi<infer ApiKey, infer G>
       ? T extends G
@@ -43,22 +49,22 @@ export type MatchKeys<TSliceApis extends Readonly<SliceApis>, T extends t.Any> =
   }
 >;
 
-export type MatchApi<
+export type MatchApiType<
   TSliceApis extends Readonly<SliceApis>,
   K extends ApiKeys,
   G extends t.Any,
   T extends t.Any
-> = T extends G ? ApiFor<TSliceApis, K, T> : never;
+> = T extends G ? ApiTypes<TSliceApis, T>[K] : never;
 
-export type MatchApis<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = {
+export type MatchApiTypes<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = {
   [K in keyof TSliceApis]: TSliceApis[K] extends SliceApi<infer ApiKey, infer G>
-    ? MatchApi<TSliceApis, ApiKey, G, T>
+    ? MatchApiType<TSliceApis, ApiKey, G, T>
     : never;
 };
 
-export type ApisFor<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Union.Merge<
-  List.UnionOf<MatchApis<TSliceApis, T>>
+export type ApiTypeOf<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Union.Merge<
+  List.UnionOf<MatchApiTypes<TSliceApis, T>>
 >;
 
-export type SliceNode<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Slice<T> &
-  ApisFor<TSliceApis, T>;
+export type SliceTypeOf<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Slice<T> &
+  ApiTypeOf<TSliceApis, T>;

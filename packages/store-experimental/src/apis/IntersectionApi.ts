@@ -1,7 +1,7 @@
 import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
 import { SliceApi, SliceApis } from '.';
-import { ApisFor } from '.';
+import { ApiTypeOf } from '.';
 import * as t from 'io-ts';
 import { Slice } from '../Slice';
 import { isArray } from 'lodash';
@@ -22,19 +22,21 @@ export const IntersectionApi = SliceApi(
   },
 );
 
-export type IntersectionApi<TSliceApis extends Readonly<SliceApis>, T extends t.Any> = Slice<T> &
-  T extends t.IntersectionType<infer CS>
+export type IntersectionApi<
+  TSliceApis extends Readonly<SliceApis>,
+  T extends t.Any
+> = T extends t.IntersectionType<infer CS>
   ? Union.Merge<
       Tuple.UnionOf<
         {
-          [K in keyof CS]: ApisFor<TSliceApis, Cast<CS[K], t.Any>>;
+          [K in keyof CS]: ApiTypeOf<TSliceApis, Cast<CS[K], t.Any>>;
         }
       >
     >
   : never;
 
 declare module '.' {
-  export interface Apis<T, A> {
+  export interface ApiTypes<T, A> {
     Intersection: IntersectionApi<T, A>;
   }
 }
