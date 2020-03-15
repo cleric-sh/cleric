@@ -47,7 +47,7 @@ declare module './config' {
 
 Configs.My = MyApis;
 
-const node = createSlice(schema, src, 'Default');
+const node = createSlice(schema, src);
 
 node.$.subscribe(p => console.log(p));
 node.union.$is(two).$.subscribe(p => console.log(p));

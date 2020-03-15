@@ -14,8 +14,9 @@ interface CreateSlice {
   ): Slice<TConfiguration, T>;
 }
 
-export const createSlice: CreateSlice = (type, $, configuration) => {
+export const createSlice: CreateSlice = (type, $, configKey) => {
+  const configKeyOrDefault = configKey ?? 'Default';
   const slice = new SliceNode(type, $);
-  decorateSlice(configuration, type, slice);
-  return slice as Slice<typeof configuration, typeof type>;
+  decorateSlice(configKeyOrDefault, type, slice);
+  return slice as Slice<typeof configKey, typeof type>;
 };
