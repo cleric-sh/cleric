@@ -9,9 +9,7 @@ import { Configs } from './config';
 
 const one = t.type({ one: t.string });
 const two = t.type({ two: t.number });
-
 const union = t.union([one, two]);
-
 const partial = t.partial({ maybe: t.string });
 
 const schema = t.intersection([
@@ -39,7 +37,7 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-const MyApis = [InterfaceApi, IntersectionApi, UnionApi] as const;
+const MyApis = { apis: [InterfaceApi, IntersectionApi, UnionApi] } as const;
 
 declare module './config' {
   export interface Configs {

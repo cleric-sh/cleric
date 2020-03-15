@@ -16,6 +16,23 @@ import { createState } from './createState';
 import { Subject, Observable, Subscription, ConnectableObservable, OperatorFunction } from 'rxjs';
 import { createMutator } from './createMutator';
 
+const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
+  const { path, state: next } = mutation;
+  if (mutation.type === 'SET') return applySet(state, path, next);
+  if (mutation.type === 'MERGE') return applyMerge(state, path, next);
+  if (mutation.type === 'DELETE') return applyDelete(state, path);
+  return state;
+};
+
+const applyMutations = (state: State<any>, mutations: Mutation[]): State<any> => {
+  return mutations.reduce(applyMutation, state);
+};
+
+const scanMutate: (initial?: any) => OperatorFunction<Mutation[], State<any>> = initial => $ =>
+  initial
+    ? $.pipe(startWith(createState(initial) as any), scan(applyMutations))
+    : $.pipe(scan(applyMutations));
+
 /**
  * A StoreNode is the root wrapper for the current state, allowing slices to be created for any path of properties within its state.
  * It applies set and merge operations, re-calculating hash values as required, ensuring only value-based changes are emitted.
@@ -27,27 +44,8 @@ export class StoreNode implements IStore<any> {
   public readonly path: string[] = [];
 
   constructor(initial?: any) {
-    const state = createState(initial);
-
-    const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
-      const { path, state: next } = mutation;
-      if (mutation.type === 'SET') return applySet(state, path, next);
-      if (mutation.type === 'MERGE') return applyMerge(state, path, next);
-      if (mutation.type === 'DELETE') return applyDelete(state, path);
-      return state;
-    };
-
-    const applyMutations = (state: State<any>, mutations: Mutation[]): State<any> => {
-      return mutations.reduce(applyMutation, state);
-    };
-
-    const mutations: OperatorFunction<Mutation[], State<any>> = $ =>
-      initial
-        ? $.pipe(startWith(state as any), scan(applyMutations))
-        : $.pipe(scan(applyMutations));
-
     const mutation$ = this.mutations.pipe(
-      mutations,
+      scanMutate(initial),
       distinctUntilChanged(
         (x, y) => x === y,
         state => state.hash.__hash,

@@ -59,44 +59,44 @@ describe('StoreNode', () => {
     store.$dispose();
   });
 
-  it.only('should accept $static data in initial state', async () => {
-    const THIS_INITIAL_STATE = {
-      foo: '',
-    };
+  // it('should accept $static data in initial state', async () => {
+  //   const THIS_INITIAL_STATE = {
+  //     foo: '',
+  //   };
 
-    const thisStore = createStore(THIS_INITIAL_STATE);
-    const values = listen(thisStore.$);
+  //   const thisStore = createStore(THIS_INITIAL_STATE);
+  //   const values = listen(thisStore.$);
 
-    thisStore.$dispose();
+  //   thisStore.$dispose();
 
-    console.log(thisStore.foo);
+  //   console.log(thisStore.foo);
 
-    const createProxy = () =>
-      new Proxy(
-        {},
-        {
-          get: (target, key, receiver) => {
-            if (!Reflect.has(target, key) && typeof key !== 'symbol') {
-              console.log(key);
-              //   console.log(key);
-              //   const proxy = createProxy();
-              //   Reflect.set(target, key, proxy, receiver);
-            }
+  //   const createProxy = () =>
+  //     new Proxy(
+  //       {},
+  //       {
+  //         get: (target, key, receiver) => {
+  //           if (!Reflect.has(target, key) && typeof key !== 'symbol') {
+  //             console.log(key);
+  //             //   console.log(key);
+  //             //   const proxy = createProxy();
+  //             //   Reflect.set(target, key, proxy, receiver);
+  //           }
 
-            return Reflect.get(target, key, receiver);
-          },
-        },
-      );
+  //           return Reflect.get(target, key, receiver);
+  //         },
+  //       },
+  //     );
 
-    const proxy = createProxy();
-    expect(proxy).toBe(1);
+  //   const proxy = createProxy();
+  //   expect(proxy).toBe(1);
 
-    const subj = new BehaviorSubject(1);
-    expect(from(subj)).toBe(2);
-    // expect(thisStore.foo).toBe(2);
+  //   const subj = new BehaviorSubject(1);
+  //   expect(from(subj)).toBe(2);
+  //   // expect(thisStore.foo).toBe(2);
 
-    await values;
-  });
+  //   await values;
+  // });
 
   it('should only propogate changes when setting actual different values', async () => {
     const SECOND_STATE: BlahState = {

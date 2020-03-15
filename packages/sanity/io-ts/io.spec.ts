@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 
 describe('io-ts', () => {
-  it.only('can navigate through type graph', () => {
+  it('can navigate through type graph', () => {
     const ExactType = t.exact(
       t.type({
         bar: t.number,
