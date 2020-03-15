@@ -1,6 +1,7 @@
-import { SliceApi, SliceApis, SliceTypeOf } from '.';
+import { SliceApi, Slice } from '.';
 import * as t from 'io-ts';
 import { defineProperties } from './defineProperties';
+import { ConfigKey } from '../config';
 
 export const hasProps = (type: t.Any): type is t.InterfaceType<t.Props> => !!type['props'];
 
@@ -10,16 +11,16 @@ export const InterfaceApi = SliceApi('Interface', hasProps, (apis, type, slice) 
 });
 
 export type InterfaceApi<
-  TSliceApis extends Readonly<SliceApis>,
+  TConfigKey extends ConfigKey,
   T extends t.Any
 > = T extends t.InterfaceType<infer P>
   ? {
-      [K in keyof P]: P[K] extends t.Any ? SliceTypeOf<TSliceApis, P[K]> : never;
+      [K in keyof P]: P[K] extends t.Any ? Slice<TConfigKey, P[K]> : never;
     }
   : never;
 
 declare module '.' {
-  export interface ApiTypes<T, A> {
-    Interface: InterfaceApi<T, A>;
+  export interface ApiTypes<TConfigKey, TType> {
+    Interface: InterfaceApi<TConfigKey, TType>;
   }
 }

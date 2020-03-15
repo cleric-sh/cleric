@@ -1,13 +1,13 @@
-import { SliceApis } from '.';
+import { ConfigKey } from '../config';
 import { pluck } from 'rxjs/operators';
 import { createSlice } from '../createSlice';
-import { Slice } from '../Slice';
+import { SliceNode } from '../SliceNode';
 import * as t from 'io-ts';
 
 export const defineProperties = (
-  apis: Readonly<SliceApis>,
+  configKey: ConfigKey,
   type: t.InterfaceType<t.Props, any, any, unknown>,
-  slice: Slice<t.Any>,
+  slice: SliceNode<t.Any>,
 ) => {
   for (const name in type.props) {
     Object.defineProperty(slice, name, {
@@ -16,7 +16,7 @@ export const defineProperties = (
         if (!slice[_name]) {
           const nextType = type.props[name];
           const next$ = slice.$.pipe(pluck(name));
-          slice[_name] = createSlice(apis, nextType, next$);
+          slice[_name] = createSlice(nextType, next$, configKey);
         }
         return slice[_name];
       },

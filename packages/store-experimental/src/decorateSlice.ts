@@ -1,9 +1,11 @@
 import { SliceApis } from './apis';
-import { Slice } from './Slice';
+import { SliceNode } from './SliceNode';
 import * as t from 'io-ts';
+import { ConfigKey, Configs } from './config';
 
-export const decorateSlice = (apis: Readonly<SliceApis>, type: t.Any, slice: Slice<t.Any>) => {
+export const decorateSlice = (configKey: ConfigKey, type: t.Any, slice: SliceNode<t.Any>) => {
+  const apis = Configs[configKey] as Readonly<SliceApis>;
   for (const api of apis) {
-    if (api.guard(type)) api.decorate(apis, type, slice);
+    if (api.guard(type)) api.decorate(configKey, type, slice);
   }
 };

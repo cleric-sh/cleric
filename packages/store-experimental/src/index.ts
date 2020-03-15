@@ -5,7 +5,7 @@ import { createSlice } from './createSlice';
 import { InterfaceApi } from './apis/InterfaceApi';
 import { IntersectionApi } from './apis/IntersectionApi';
 import { UnionApi } from './apis/UnionApi';
-import { ApiTypes, Configurations } from './apis';
+import { Configs } from './config';
 
 const one = t.type({ one: t.string });
 const two = t.type({ two: t.number });
@@ -39,17 +39,17 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-const MyApis = [InterfaceApi, UnionApi, IntersectionApi] as const;
+const MyApis = [InterfaceApi, IntersectionApi, UnionApi] as const;
 
-declare module './apis' {
-  export interface Configurations {
+declare module './config' {
+  export interface Configs {
     My: typeof MyApis;
   }
 }
 
-Configurations.My = MyApis;
+Configs.My = MyApis;
 
-const node = createSlice(MyApis, schema, src);
+const node = createSlice(schema, src, 'Default');
 
 node.$.subscribe(p => console.log(p));
 node.union.$is(two).$.subscribe(p => console.log(p));

@@ -7,3 +7,5 @@ export { Types };
  */
 const Hello = 'Hello World!';
 export { Hello };
+
+export abstract class TypeError<TMsg extends string> {}

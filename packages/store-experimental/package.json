@@ -13,6 +13,7 @@
         "ts-jest": "^25.2.0"
     },
     "dependencies": {
+        "@cleric/common": "^0.0.9",
         "@sindresorhus/fnv1a": "^1.0.0",
         "lodash": "^4.17.5",
         "monolite": "0.8.0",
