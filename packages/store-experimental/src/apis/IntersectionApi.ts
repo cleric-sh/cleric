@@ -1,11 +1,11 @@
 import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
-import { SliceApi } from '.';
 import { ApiTypeOf } from '.';
 import * as t from 'io-ts';
 import { isArray } from 'lodash';
 import { decorateSlice } from '../decorateSlice';
 import { ConfigKey } from '../config';
+import { SliceApi } from './SliceApi';
 
 export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.Any[]> =>
   type instanceof t.IntersectionType;

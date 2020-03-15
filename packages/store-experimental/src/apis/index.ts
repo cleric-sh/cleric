@@ -2,24 +2,7 @@ import * as t from 'io-ts';
 import { SliceNode } from '../SliceNode';
 import { Union, List } from 'ts-toolbelt';
 import { ConfigKey, GetApis } from '../config';
-
-type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
-
-type SliceDecorator<T extends t.Any> = {
-  (configKey: ConfigKey, type: T, slice: SliceNode<T>): SliceNode<T>;
-};
-
-export interface SliceApi<TKey extends ApiKey, T extends t.Any> {
-  readonly key: TKey;
-  readonly guard: SliceGuard<T>;
-  readonly decorate: SliceDecorator<T>;
-}
-
-export const SliceApi = <TKey extends ApiKey, T extends t.Any>(
-  key: TKey,
-  guard: SliceGuard<T>,
-  decorator: SliceDecorator<T>,
-): SliceApi<TKey, T> => ({ key, guard, decorate: decorator });
+import { SliceApi } from './SliceApi';
 
 export interface ApiTypes<TConfigKey extends ConfigKey, TType extends t.Any> {}
 

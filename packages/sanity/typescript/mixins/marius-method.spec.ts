@@ -4,20 +4,47 @@
 // Needed for all mixins
 type Constructor<T = {}> = new (...args: any[]) => T;
 
+// Simple class
+class User {
+  name = '';
+}
+type UserCtor = Constructor<User>;
+
 ////////////////////
 // Example mixins
 ////////////////////
 
-// A mixin that adds a property
-function Timestamped<TBase extends Constructor>(Base: TBase) {
-  return class extends Base {
-    timestamp = Date.now();
-  };
+interface UserMixin {
+  <TBase extends Constructor<User>>(Base: TBase): TBase;
 }
 
+const MyMixin: UserMixin = User =>
+  class extends User {
+    foo = 'blah';
+  };
+const NewMixin = MyMixin(User);
+const myMixin = new NewMixin();
+// Using the Mixin interface guarantees a compatible type is returned,
+// but the return is typed as User, so we lose typing of the mixin properties.
+// myMixin.foo;
+
+// A mixin that adds a property
+const Timestamped = <TBase extends UserCtor>(User: TBase) =>
+  class extends User {
+    timestamp = Date.now();
+
+    constructor(...args: any[]) {
+      super(args);
+
+      this.name = 'foo';
+
+      console.log(this);
+    }
+  };
+
 // a mixin that adds a property and methods
-function Activatable<TBase extends Constructor>(Base: TBase) {
-  return class extends Base {
+const Activatable = <TBase extends Constructor<User>>(User: TBase) =>
+  class extends User {
     isActivated = false;
 
     activate() {
@@ -28,16 +55,10 @@ function Activatable<TBase extends Constructor>(Base: TBase) {
       this.isActivated = false;
     }
   };
-}
 
 ////////////////////
 // Usage to compose classes
 ////////////////////
-
-// Simple class
-class User {
-  name = '';
-}
 
 // User that is Timestamped
 const TimestampedUser = Timestamped(User);

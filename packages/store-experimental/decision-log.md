@@ -11,7 +11,10 @@ Decided to try an use mixins for API plugins, since they are prototypical.
  - This means that properties that APIs define can be defined only once (on the prototype), rather than instantiated for each node.
  - This shouldn't effect the prettiness of the typings intellisense.
  - This would enable each API to use 'this' semantically.
+ - Mixins produce a class constructor, so rather than building a new anonymous class for each node, we can cache them and look them up my matching API keys.
 
 Decided that I should be able to configure the base type of the Store node and Slice node.
  - This will allow the mechanism for read/write to be pluggable. E.g. I can create an 'Immer' Store, that uses immer for mutations, or others.
  - Apis can check the type of the Store and Slice node, and throw errors if they aren't what is expected.
+
+Decided I need to write some proper unit tests before I start to mess around with converting the objects to mixin classes.

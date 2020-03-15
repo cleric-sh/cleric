@@ -1,6 +1,7 @@
-import { SliceApi, ApiKey } from '../apis';
+import { ApiKey } from '../apis';
 import { TypeError } from '@cleric/common';
 import * as t from 'io-ts';
+import { SliceApi } from '../apis/SliceApi';
 
 export interface Configs {}
 

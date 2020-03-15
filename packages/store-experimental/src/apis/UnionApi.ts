@@ -1,11 +1,12 @@
 import { Tuple } from 'ts-toolbelt';
-import { SliceApi, Slice } from '.';
+import { Slice } from '.';
 import * as t from 'io-ts';
 import { isArray } from 'lodash';
 import { createSlice } from '../createSlice';
 import { filter } from 'rxjs/operators';
 import { decorateSlice } from '../decorateSlice';
 import { ConfigKey } from '../config';
+import { SliceApi } from './SliceApi';
 
 export const isUnionType = (type: t.Any): type is t.UnionType<t.Any[]> =>
   type instanceof t.UnionType;

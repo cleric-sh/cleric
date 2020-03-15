@@ -1,7 +1,8 @@
-import { SliceApi, Slice } from '.';
+import { SliceApi } from './SliceApi';
 import * as t from 'io-ts';
 import { defineProperties } from './defineProperties';
 import { ConfigKey } from '../config';
+import { Slice } from '.';
 
 export const hasProps = (type: t.Any): type is t.InterfaceType<t.Props> => !!type['props'];
 
