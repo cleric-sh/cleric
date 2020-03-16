@@ -1,5 +1,6 @@
 import * as Types from './types';
-export { Types };
+import { Test } from './ts-toolbelt/Test';
+export { Types, Test };
 
 /**
  * Dummy dependency for sanity checks to make sure deps are wired up

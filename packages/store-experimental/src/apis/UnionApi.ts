@@ -20,12 +20,7 @@ export const UnionApi = SliceApi(
 
       constructor(...args: any[]) {
         super(args);
-
         if (!isArray(this.$type.types)) throw 'This should never happen...';
-
-        // for (const subType of this.$type.types) {
-        //   decorateSlice(this.configKey, subType, this);
-        // }
       }
 
       $is = (guard: t.Any) => {
@@ -44,29 +39,6 @@ export const UnionApi = SliceApi(
       };
     },
 );
-// export const UnionApi = SliceApi('Union', isUnionType, (apis, type, slice) => {
-//   if (!isArray(type.types)) throw 'This should never happen...';
-
-//   for (const subType of type.types) {
-//     decorateSlice(apis, subType, slice);
-//   }
-
-//   const nodeCreators = type.types.map(t => () => {
-//     const option$ = slice.$.pipe(filter(t.is));
-//     return createSlice(t, option$, apis);
-//   });
-
-//   const nodes = [];
-
-//   slice['$is'] = (guard: t.Any) => {
-//     const index = type.types.findIndex(t => t === guard);
-//     if (index < 0) throw `Don't recognise this type...`;
-//     if (!nodes[index]) nodes[index] = nodeCreators[index]();
-//     return nodes[index];
-//   };
-
-//   return slice;
-// });
 
 export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.UnionType<
   infer TCS

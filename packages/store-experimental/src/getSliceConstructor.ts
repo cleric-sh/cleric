@@ -6,9 +6,9 @@ export const getSliceConstructor = <TSliceNode extends Constructor<SliceNode<t.A
   configKey: ConfigKey,
   apis: SliceApis,
   type: t.Any,
-  ctor: TSliceNode,
+  base: TSliceNode,
 ) => {
-  let Constructor = ctor;
+  let Constructor = base;
   for (const api of apis) {
     Constructor = api.mixin(configKey, type, Constructor);
   }

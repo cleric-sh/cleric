@@ -15,25 +15,12 @@ export const IntersectionApi = SliceApi(
   'Intersection',
   isIntersectionType,
   (configKey, type, SliceNode) => {
-    // eslint-disable-next-line sonarjs/prefer-immediate-return
-    const IntersectionSlice = class extends SliceNode {};
+    let IntersectionSlice = class extends SliceNode {};
     const apis = getMatchingApis(configKey, type.types);
-    return getSliceConstructor(configKey, apis, type, IntersectionSlice);
+    IntersectionSlice = getSliceConstructor(configKey, apis, type, IntersectionSlice);
     return IntersectionSlice;
   },
 );
-
-// export const IntersectionApi = SliceApi(
-//   'Intersection',
-//   isIntersectionType,
-//   (apis, type, slice) => {
-//     if (!isArray(type.types)) throw 'This should never happen...';
-//     for (const subType of type.types) {
-//       decorateSlice(apis, subType, slice);
-//     }
-//     return slice;
-//   },
-// );
 
 export type IntersectionApi<
   TConfigKey extends ConfigKey,
