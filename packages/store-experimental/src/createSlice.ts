@@ -7,6 +7,8 @@ import './config/default';
 import { getSliceConstructor } from './getSliceConstructor';
 import { getMatchingApis } from './getMatchingApis';
 
+const Ctors: { [key: string]: typeof SliceNode } = {};
+
 export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
   type: T,
   $: Observable<t.TypeOf<T>>,
@@ -14,7 +16,11 @@ export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 
 ) => {
   const configKeyOrDefault = configKey ?? 'Default';
   const apis = getMatchingApis(configKeyOrDefault, [type]);
-  const Constructor = getSliceConstructor(configKeyOrDefault, apis, type, SliceNode);
+  const key = apis.map(api => api.key).join('-');
+  if (!Ctors[key]) {
+    Ctors[key] = getSliceConstructor(configKeyOrDefault, apis, type, SliceNode);
+  }
+  const Constructor = Ctors[key];
   const slice = new Constructor(configKeyOrDefault, type, $);
   return slice as Slice<TConfiguration, T>;
 };
