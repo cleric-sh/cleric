@@ -1,17 +1,14 @@
 import { InterfaceApi } from '../apis/InterfaceApi';
 import { UnionApi } from '../apis/UnionApi';
 import { IntersectionApi } from '../apis/IntersectionApi';
+import { createConfig } from '.';
 
-import { Configs } from '.';
-
-export const DefaultConfig = {
+export const DefaultConfig = createConfig('Default', {
   apis: [InterfaceApi, UnionApi, IntersectionApi],
-} as const;
+});
 
 declare module '.' {
   export interface Configs {
     Default: typeof DefaultConfig;
   }
 }
-
-Configs.Default = DefaultConfig;

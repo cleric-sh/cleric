@@ -2,10 +2,10 @@
 import * as t from 'io-ts';
 import { BehaviorSubject } from 'rxjs';
 import { createSlice } from './createSlice';
+import { createConfig } from './config';
 import { InterfaceApi } from './apis/InterfaceApi';
 import { IntersectionApi } from './apis/IntersectionApi';
 import { UnionApi } from './apis/UnionApi';
-import { Configs } from './config';
 
 const one = t.type({ one: t.string });
 const two = t.type({ two: t.number });
@@ -37,17 +37,15 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-// const MyApis = { apis: [InterfaceApi, IntersectionApi, UnionApi] } as const;
+const MyConfig = createConfig('MyConfig', { apis: [InterfaceApi, IntersectionApi] });
 
-// declare module './config' {
-//   export interface Configs {
-//     My: typeof MyApis;
-//   }
-// }
+declare module './config' {
+  export interface Configs {
+    MyConfig: typeof MyConfig;
+  }
+}
 
-// Configs.My = MyApis;
-
-const node = createSlice(schema, src);
+const node = createSlice(schema, src, 'MyConfig');
 
 node.$.subscribe(p => console.log(p));
 node.union.$is(two).$.subscribe(p => console.log(p));

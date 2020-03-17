@@ -1,5 +1,6 @@
 import * as Types from './types';
 import { Test } from './ts-toolbelt/Test';
+import { TError } from './TError';
 export { Types, Test };
 
 /**
@@ -9,4 +10,4 @@ export { Types, Test };
 const Hello = 'Hello World!';
 export { Hello };
 
-export abstract class TypeError<TMsg extends string> {}
+export { TError };

@@ -7,19 +7,14 @@ import './config/default';
 import { getSliceConstructor } from './getSliceConstructor';
 import { getMatchingApis } from './getMatchingApis';
 
-interface CreateSlice {
-  <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
-    $type: T,
-    $: Observable<t.TypeOf<T>>,
-    configuration?: TConfiguration,
-  ): Slice<TConfiguration, T>;
-}
-
-export const createSlice: CreateSlice = (type, $, configKey) => {
+export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
+  type: T,
+  $: Observable<t.TypeOf<T>>,
+  configKey?: TConfiguration,
+) => {
   const configKeyOrDefault = configKey ?? 'Default';
   const apis = getMatchingApis(configKeyOrDefault, [type]);
   const Constructor = getSliceConstructor(configKeyOrDefault, apis, type, SliceNode);
-  const slice = new Constructor(configKey, type, $);
-  // decorateSlice(configKeyOrDefault, type, slice);
-  return slice as Slice<typeof configKey, typeof type>;
+  const slice = new Constructor(configKeyOrDefault, type, $);
+  return slice as Slice<TConfiguration, T>;
 };

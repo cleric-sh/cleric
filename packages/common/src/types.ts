@@ -31,4 +31,6 @@ export type KnownKeys<T> = {
 
 export type OnlyKnown<T extends Record<any, any>> = Pick<T, KnownKeys<T>>;
 
-type Constructor<TClass = {}> = new (...args: any[]) => TClass;
+export type Constructor<TClass = {}> = new (...args: any[]) => TClass;
+
+export type IsOr<T, E, O> = T extends E ? T : O;

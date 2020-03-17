@@ -3,18 +3,18 @@ import * as t from 'io-ts';
 import { ConfigKey } from '../config';
 import { SliceNode } from '../SliceNode';
 
-type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
+export type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
 
-type SliceDecorator<T extends t.Any> = {
+export type SliceDecorator<T extends t.Any> = {
   (configKey: ConfigKey, type: T, slice: SliceNode<T>): SliceNode<T>;
 };
 
-interface SliceMixin<T extends t.Any> {
-  <TSliceNode extends Constructor<SliceNode<T>>>(
+export interface SliceMixin<T extends t.Any> {
+  <TSliceCtor extends Constructor<SliceNode<T>>>(
     configKey: ConfigKey,
     type: T,
-    SliceNode: TSliceNode,
-  ): TSliceNode;
+    SliceNode: TSliceCtor,
+  ): TSliceCtor;
 }
 
 export interface SliceApi<TKey extends ApiKey, T extends t.Any> {

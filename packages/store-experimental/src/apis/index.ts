@@ -1,8 +1,9 @@
 import * as t from 'io-ts';
 import { SliceNode } from '../SliceNode';
-import { Union, List } from 'ts-toolbelt';
+import { Union, List, Any } from 'ts-toolbelt';
 import { ConfigKey, GetApis } from '../config';
 import { SliceApi } from './SliceApi';
+import { TError } from '@cleric/common';
 
 export interface ApiTypes<TConfigKey extends ConfigKey, TType extends t.Any> {}
 
@@ -24,21 +25,17 @@ type ActualM = MatchApiType<
 // type ExpectedM = InterfaceApi<'Default', t.InterfaceType<t.AnyProps>>;
 // Test.checks([Test.check<ActualM, ExpectedM, Test.Pass>()]);
 
-type IsOr<T, E, O> = T extends E ? T : O;
-
 export type MatchApiTypes<
   TConfigKey extends ConfigKey,
   T extends t.Any,
   TApis = GetApis<TConfigKey>
-> = IsOr<
-  {
-    [K in keyof TApis]: TApis[K] extends SliceApi<infer ApiKey, infer G>
-      ? MatchApiType<TConfigKey, ApiKey, G, T>
-      : never;
-  },
-  List.List,
-  []
->;
+> = TApis extends TError<infer M>
+  ? TError<M>
+  : {
+      [K in keyof TApis]: TApis[K] extends SliceApi<infer ApiKey, infer G>
+        ? MatchApiType<TConfigKey, ApiKey, G, T>
+        : never;
+    };
 
 // type Actual = MatchApiTypes<ConfigKey, t.Any>;
 // type Expected = List.List;
