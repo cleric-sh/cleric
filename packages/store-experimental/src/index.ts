@@ -37,7 +37,7 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-const MyConfig = createConfig('MyConfig', { apis: [InterfaceApi, IntersectionApi] });
+const MyConfig = createConfig('MyConfig', { apis: [InterfaceApi, IntersectionApi, UnionApi] });
 
 declare module './config' {
   export interface Configs {

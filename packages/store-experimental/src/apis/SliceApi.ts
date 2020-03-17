@@ -2,6 +2,7 @@ import { ApiKey } from './index';
 import * as t from 'io-ts';
 import { ConfigKey } from '../config';
 import { SliceNode } from '../SliceNode';
+import { Types } from '@cleric/common';
 
 export type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
 
@@ -10,7 +11,7 @@ export type SliceDecorator<T extends t.Any> = {
 };
 
 export interface SliceMixin<T extends t.Any> {
-  <TSliceCtor extends Constructor<SliceNode<T>>>(
+  <TSliceCtor extends Types.Constructor<SliceNode<T>>>(
     configKey: ConfigKey,
     type: T,
     SliceNode: TSliceCtor,

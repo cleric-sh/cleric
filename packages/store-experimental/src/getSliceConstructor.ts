@@ -1,8 +1,9 @@
 import { SliceNode } from './SliceNode';
 import { ConfigKey, SliceApis } from './config';
 import * as t from 'io-ts';
+import { Types } from '@cleric/common';
 
-export const getSliceConstructor = <TSliceNode extends Constructor<SliceNode<t.Any>>>(
+export const getSliceConstructor = <TSliceNode extends Types.Constructor<SliceNode<t.Any>>>(
   configKey: ConfigKey,
   apis: SliceApis,
   type: t.Any,
