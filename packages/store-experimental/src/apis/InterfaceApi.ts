@@ -1,29 +1,27 @@
 import { SliceApi } from './SliceApi';
 import * as t from 'io-ts';
-import { defineProperties } from './defineProperties';
 import { ConfigKey } from '../config';
 import { Slice } from '.';
+import { createSlice } from '../createSlice';
+import { pluck } from 'rxjs/operators';
 
 export const hasProps = (type: t.Any): type is t.InterfaceType<t.Props> => !!type['props'];
 
-export const InterfaceApi = SliceApi(
-  'Interface',
-  hasProps,
-  (configKey, type, SliceNode) =>
-    class extends SliceNode {
-      constructor(...args: any[]) {
-        console.log('InterfaceApi calling super...', args);
-        super(...args);
-        console.log('Constructing InterfaceApi:', args);
-        console.log('this:', this);
-        defineProperties(this.$configKey, this.$type, this);
-      }
-    },
-);
-// export const InterfaceApi = SliceApi('Interface', hasProps, (apis, type, slice) => {
-//   defineProperties(apis, type, slice);
-//   return slice;
-// });
+export const InterfaceApi = SliceApi('Interface', hasProps, (configKey, type, slice) => {
+  for (const name in type.props) {
+    Object.defineProperty(slice, name, {
+      get: () => {
+        const _name = '__' + name;
+        if (!slice[_name]) {
+          const nextType = type.props[name];
+          const next$ = slice.$.pipe(pluck(name));
+          slice[_name] = createSlice(nextType, next$, configKey);
+        }
+        return slice[_name];
+      },
+    });
+  }
+});
 
 export type InterfaceApi<
   TConfigKey extends ConfigKey,

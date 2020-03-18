@@ -2,11 +2,9 @@ import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
 import { ApiTypeOf } from '.';
 import * as t from 'io-ts';
-// import { decorateSlice } from '../decorateSlice';
 import { ConfigKey } from '../config';
 import { SliceApi } from './SliceApi';
-import { getMatchingApis } from '../getMatchingApis';
-import { getSliceConstructor } from '../getSliceConstructor';
+import { decorateSlice } from '../decorateSlice';
 
 export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.Any[]> =>
   type instanceof t.IntersectionType;
@@ -14,17 +12,10 @@ export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.An
 export const IntersectionApi = SliceApi(
   'Intersection',
   isIntersectionType,
-  (configKey, type, SliceNode) => {
-    let IntersectionSlice = class extends SliceNode {
-      constructor(...args: any[]) {
-        super(...args);
-      }
-    };
-    const apis = getMatchingApis(configKey, type.types);
-    console.log('Intersecting', type.types, apis);
-    IntersectionSlice = getSliceConstructor(configKey, apis, type, IntersectionSlice);
-    console.log('IntSlice:', IntersectionSlice);
-    return IntersectionSlice;
+  (configKey, type, slice) => {
+    for (const subType of type.types) {
+      decorateSlice(configKey, subType, slice);
+    }
   },
 );
 

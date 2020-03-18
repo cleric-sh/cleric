@@ -7,7 +7,7 @@ import { Types } from '@cleric/common';
 export type SliceGuard<T extends t.Any> = (type: t.Any) => type is T;
 
 export type SliceDecorator<T extends t.Any> = {
-  (configKey: ConfigKey, type: T, slice: SliceNode<T>): SliceNode<T>;
+  (configKey: ConfigKey, type: T, slice: SliceNode<T>): void;
 };
 
 export interface SliceMixin<T extends t.Any> {
@@ -21,14 +21,11 @@ export interface SliceMixin<T extends t.Any> {
 export interface SliceApi<TKey extends ApiKey, T extends t.Any> {
   readonly key: TKey;
   readonly guard: SliceGuard<T>;
-  // readonly decorate: SliceDecorator<T>;
-  readonly mixin: SliceMixin<T>;
+  readonly decorate: SliceDecorator<T>;
 }
 
 export const SliceApi = <TKey extends ApiKey, T extends t.Any>(
   key: TKey,
   guard: SliceGuard<T>,
-  // decorate: SliceDecorator<T>,
-  mixin: SliceMixin<T>,
-  // ): SliceApi<TKey, T> => ({ key, guard, decorate, mixin });
-): SliceApi<TKey, T> => ({ key, guard, mixin });
+  decorate: SliceDecorator<T>,
+): SliceApi<TKey, T> => ({ key, guard, decorate });

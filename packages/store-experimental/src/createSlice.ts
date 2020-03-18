@@ -4,10 +4,7 @@ import * as t from 'io-ts';
 import { Slice } from './apis';
 import { ConfigKey } from './config';
 import './config/default';
-import { getSliceConstructor } from './getSliceConstructor';
-import { getMatchingApis } from './getMatchingApis';
-
-const Ctors: { [key: string]: typeof SliceNode } = {};
+import { decorateSlice } from './decorateSlice';
 
 export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
   type: T,
@@ -15,13 +12,7 @@ export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 
   configKey?: TConfiguration,
 ) => {
   const configKeyOrDefault = configKey ?? 'Default';
-  const apis = getMatchingApis(configKeyOrDefault, [type]);
-  const key = apis.map(api => api.key).join('-');
-  if (!Ctors[key]) {
-    Ctors[key] = getSliceConstructor(configKeyOrDefault, apis, type, SliceNode);
-  }
-  const Constructor = Ctors[key];
-  console.log('Initializing Constructor: ', configKeyOrDefault, type, $);
-  const slice = new Constructor(configKeyOrDefault, type, $);
+  const slice = new SliceNode(type, $);
+  decorateSlice(configKeyOrDefault, type, slice);
   return slice as Slice<TConfiguration, T>;
 };
