@@ -2,10 +2,6 @@
 import * as t from 'io-ts';
 import { BehaviorSubject } from 'rxjs';
 import { createSlice } from './createSlice';
-import { createConfig } from './config';
-import { InterfaceApi } from './apis/InterfaceApi';
-import { IntersectionApi } from './apis/IntersectionApi';
-import { UnionApi } from './apis/UnionApi';
 
 const one = t.type({ one: t.string });
 const two = t.type({ two: t.number });
@@ -37,15 +33,7 @@ const initial: t.TypeOf<typeof schema> = {
 
 const src = new BehaviorSubject(initial);
 
-const MyConfig = createConfig('MyConfig', { apis: [InterfaceApi, IntersectionApi, UnionApi] });
-
-declare module './config' {
-  export interface Configs {
-    MyConfig: typeof MyConfig;
-  }
-}
-
-const node = createSlice(schema, src, 'MyConfig');
+const node = createSlice(schema, src);
 
 node.$.subscribe(p => console.log(p));
 node.bar.$.subscribe(p => console.log(p));

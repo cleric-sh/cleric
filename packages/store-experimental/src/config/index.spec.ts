@@ -2,14 +2,8 @@
 import { Test } from '@cleric/common';
 import { GetApis, Config, Configs, AsTuple } from '.';
 import { DefaultConfig } from './default';
-import { Any, List, Object } from 'ts-toolbelt';
+import { Any } from 'ts-toolbelt';
 import * as t from 'io-ts';
-import { SliceMixin } from '../apis/SliceApi';
-import { IntersectionApi } from '../apis/IntersectionApi';
-import { InterfaceApi } from '../apis/InterfaceApi';
-import { UnionApi } from '../apis/UnionApi';
-import { Writable } from 'List/_api';
-import { Required } from 'Object/_api';
 
 const { checks, check } = Test;
 

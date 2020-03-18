@@ -1,6 +1,6 @@
 import * as Types from './types';
 import { Test } from './ts-toolbelt/Test';
-import { TError } from './TError';
+import { TError } from './types/TError';
 export { Types, Test };
 
 /**

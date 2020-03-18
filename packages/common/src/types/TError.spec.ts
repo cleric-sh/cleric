@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { TError } from './TError';
+import { TError, TryCatch } from './TError';
 import { checks, check, Pass } from 'Test';
 import { Any } from 'ts-toolbelt';
 
@@ -22,5 +22,18 @@ describe('TError', () => {
         Pass
       >(),
     ]);
+  });
+});
+
+describe('TryCatch', () => {
+  it('Handles TError case in conditionals', () => {
+    /**
+     * WIP trying to figure out a nice pattern for better error messages in types.
+     */
+    type MyType<T> = T extends boolean ? 'Yes' : TError<'T must be boolean'>;
+
+    type ExpectsYes<T extends 'Yes'> = T extends 'Yes' ? 1 : 0;
+
+    type actual<T extends boolean> = ExpectsYes<MyType<T>>;
   });
 });

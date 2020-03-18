@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import { SliceNode } from '../SliceNode';
-import { Union, List, Any } from 'ts-toolbelt';
+import { Union, List } from 'ts-toolbelt';
 import { ConfigKey, GetApis } from '../config';
-import { SliceApi } from './SliceApi';
+import { ApiDefinition } from './createApi';
 import { TError } from '@cleric/common';
 
 export interface ApiTypes<TConfigKey extends ConfigKey, TType extends t.Any> {}
@@ -16,12 +16,6 @@ export type MatchApiType<
   T extends t.Any
 > = T extends G ? ApiTypes<TConfigKey, T>[K] : never;
 
-type ActualM = MatchApiType<
-  'Default',
-  'Interface',
-  t.InterfaceType<t.AnyProps>,
-  t.InterfaceType<t.AnyProps>
->;
 // type ExpectedM = InterfaceApi<'Default', t.InterfaceType<t.AnyProps>>;
 // Test.checks([Test.check<ActualM, ExpectedM, Test.Pass>()]);
 
@@ -32,7 +26,7 @@ export type MatchApiTypes<
 > = TApis extends TError<infer M>
   ? TError<M>
   : {
-      [K in keyof TApis]: TApis[K] extends SliceApi<infer ApiKey, infer G>
+      [K in keyof TApis]: TApis[K] extends ApiDefinition<infer ApiKey, infer G>
         ? MatchApiType<TConfigKey, ApiKey, G, T>
         : never;
     };
@@ -41,7 +35,7 @@ export type MatchApiTypes<
 // type Expected = List.List;
 // checks([check<Actual, Expected, Test.Pass>()]);
 
-export type ApiTypeOf<TConfigKey extends ConfigKey, T extends t.Any> = Union.Merge<
+export type ApiFor<TConfigKey extends ConfigKey, T extends t.Any> = Union.Merge<
   List.UnionOf<MatchApiTypes<TConfigKey, T>>
 >;
 
@@ -50,4 +44,4 @@ export type ApiTypeOf<TConfigKey extends ConfigKey, T extends t.Any> = Union.Mer
 // checks([check<typeof a, typeof t, Test.Pass>()]);
 
 export type Slice<TConfigKey extends ConfigKey, T extends t.Any> = SliceNode<T> &
-  ApiTypeOf<TConfigKey, T>;
+  ApiFor<TConfigKey, T>;

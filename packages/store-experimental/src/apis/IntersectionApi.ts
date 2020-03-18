@@ -1,23 +1,10 @@
 import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
-import { ApiTypeOf } from '.';
+import { ApiFor } from '../api';
 import * as t from 'io-ts';
 import { ConfigKey } from '../config';
-import { SliceApi } from './SliceApi';
+import { createApi } from '../api/createApi';
 import { decorateSlice } from '../decorateSlice';
-
-export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.Any[]> =>
-  type instanceof t.IntersectionType;
-
-export const IntersectionApi = SliceApi(
-  'Intersection',
-  isIntersectionType,
-  (configKey, type, slice) => {
-    for (const subType of type.types) {
-      decorateSlice(configKey, subType, slice);
-    }
-  },
-);
 
 export type IntersectionApi<
   TConfigKey extends ConfigKey,
@@ -26,14 +13,27 @@ export type IntersectionApi<
   ? Union.Merge<
       Tuple.UnionOf<
         {
-          [K in keyof CS]: ApiTypeOf<TConfigKey, Cast<CS[K], t.Any>>;
+          [K in keyof CS]: ApiFor<TConfigKey, Cast<CS[K], t.Any>>;
         }
       >
     >
   : never;
 
-declare module '.' {
+declare module '../api' {
   export interface ApiTypes<TConfigKey, TType> {
     Intersection: IntersectionApi<TConfigKey, TType>;
   }
 }
+
+export const isIntersectionType = (type: t.Any): type is t.IntersectionType<t.Any[]> =>
+  type instanceof t.IntersectionType;
+
+export const IntersectionApi = createApi(
+  'Intersection',
+  isIntersectionType,
+  (configKey, type, slice) => {
+    for (const subType of type.types) {
+      decorateSlice(configKey, subType, slice);
+    }
+  },
+);

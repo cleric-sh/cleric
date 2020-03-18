@@ -1,15 +1,29 @@
 import { Tuple } from 'ts-toolbelt';
-import { Slice } from '.';
+import { Slice } from '../api';
 import * as t from 'io-ts';
 import { createSlice } from '../createSlice';
 import { filter } from 'rxjs/operators';
 import { ConfigKey } from '../config';
-import { SliceApi } from './SliceApi';
+import { createApi } from '../api/createApi';
+
+export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.UnionType<
+  infer TCS
+>
+  ? {
+      $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
+    }
+  : never;
+
+declare module '../api' {
+  export interface ApiTypes<TConfigKey, TType> {
+    Union: UnionApi<TConfigKey, TType>;
+  }
+}
 
 export const isUnionType = (type: t.Any): type is t.UnionType<t.Any[]> =>
   type instanceof t.UnionType;
 
-export const UnionApi = SliceApi('Union', isUnionType, (configKey, type, slice) => {
+export const UnionApi = createApi('Union', isUnionType, (configKey, type, slice) => {
   const subSlices: Slice<ConfigKey, t.Any>[] = [];
 
   slice['$is'] = (guard: t.Any) => {
@@ -27,17 +41,3 @@ export const UnionApi = SliceApi('Union', isUnionType, (configKey, type, slice) 
     return subSlices[index];
   };
 });
-
-export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.UnionType<
-  infer TCS
->
-  ? {
-      $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
-    }
-  : never;
-
-declare module '.' {
-  export interface ApiTypes<TConfigKey, TType> {
-    Union: UnionApi<TConfigKey, TType>;
-  }
-}
