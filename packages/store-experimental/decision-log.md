@@ -18,3 +18,6 @@ Decided that I should be able to configure the base type of the Store node and S
  - Apis can check the type of the Store and Slice node, and throw errors if they aren't what is expected.
 
 Decided I need to write some proper unit tests before I start to mess around with converting the objects to mixin classes.
+
+2020-03-18:
+Decided mixins won't work, because they don't support scoping for composition. The problem is that all mixins will have the same arguments. In the case of the intersection api, which is composed of subtypes, this means that the other matching apis it delegates to will receive the parent type instead of their subtype.

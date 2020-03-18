@@ -9,7 +9,9 @@ export const defineProperties = (
   type: t.InterfaceType<t.Props, any, any, unknown>,
   slice: SliceNode<t.Any>,
 ) => {
+  console.log('props:', type, type.props);
   for (const name in type.props) {
+    console.log('name', name);
     Object.defineProperty(slice, name, {
       get: () => {
         const _name = '__' + name;

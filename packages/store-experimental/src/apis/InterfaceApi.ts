@@ -12,7 +12,10 @@ export const InterfaceApi = SliceApi(
   (configKey, type, SliceNode) =>
     class extends SliceNode {
       constructor(...args: any[]) {
-        super(args);
+        console.log('InterfaceApi calling super...', args);
+        super(...args);
+        console.log('Constructing InterfaceApi:', args);
+        console.log('this:', this);
         defineProperties(this.$configKey, this.$type, this);
       }
     },

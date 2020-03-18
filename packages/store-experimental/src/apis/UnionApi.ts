@@ -19,7 +19,7 @@ export const UnionApi = SliceApi(
       private $subSlices: Slice<ConfigKey, t.Any>[] = [];
 
       constructor(...args: any[]) {
-        super(args);
+        super(...args);
         if (!isArray(this.$type.types)) throw 'This should never happen...';
       }
 

@@ -15,9 +15,15 @@ export const IntersectionApi = SliceApi(
   'Intersection',
   isIntersectionType,
   (configKey, type, SliceNode) => {
-    let IntersectionSlice = class extends SliceNode {};
+    let IntersectionSlice = class extends SliceNode {
+      constructor(...args: any[]) {
+        super(...args);
+      }
+    };
     const apis = getMatchingApis(configKey, type.types);
+    console.log('Intersecting', type.types, apis);
     IntersectionSlice = getSliceConstructor(configKey, apis, type, IntersectionSlice);
+    console.log('IntSlice:', IntersectionSlice);
     return IntersectionSlice;
   },
 );

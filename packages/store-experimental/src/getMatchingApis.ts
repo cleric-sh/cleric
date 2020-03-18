@@ -3,7 +3,9 @@ import * as t from 'io-ts';
 
 export const getMatchingApis = (configKey: ConfigKey, types: t.Any[]): SliceApis => {
   const apis = getConfig(configKey).apis;
-  return (apis.filter(
+  const matches = (apis.filter(
     api => types.findIndex(type => api.guard(type)) > -1,
   ) as unknown) as SliceApis;
+  console.log(matches);
+  return matches;
 };

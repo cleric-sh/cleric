@@ -48,5 +48,6 @@ declare module './config' {
 const node = createSlice(schema, src, 'MyConfig');
 
 node.$.subscribe(p => console.log(p));
+node.bar.$.subscribe(p => console.log(p));
 node.union.$is(two).$.subscribe(p => console.log(p));
 node.union.$is(one).one.$.subscribe(p => console.log(p));

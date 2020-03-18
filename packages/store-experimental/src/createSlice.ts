@@ -21,6 +21,7 @@ export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 
     Ctors[key] = getSliceConstructor(configKeyOrDefault, apis, type, SliceNode);
   }
   const Constructor = Ctors[key];
+  console.log('Initializing Constructor: ', configKeyOrDefault, type, $);
   const slice = new Constructor(configKeyOrDefault, type, $);
   return slice as Slice<TConfiguration, T>;
 };

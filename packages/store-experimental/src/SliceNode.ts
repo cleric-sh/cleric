@@ -7,5 +7,11 @@ export class SliceNode<T extends t.Any> {
     protected $configKey: ConfigKey,
     public $type: T,
     public $: Observable<t.TypeOf<T>>,
-  ) {}
+  ) {
+    console.log('Constructing SliceNode.', $type, $);
+    this.$type = $type;
+    this.$ = $;
+    this.$configKey = $configKey;
+    console.log('SliceNode: ', this);
+  }
 }

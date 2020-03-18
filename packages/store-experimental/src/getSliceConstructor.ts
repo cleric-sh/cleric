@@ -11,6 +11,7 @@ export const getSliceConstructor = <TSliceNode extends Types.Constructor<SliceNo
 ) => {
   let Constructor = base;
   for (const api of apis) {
+    console.log('Mixing...', api.key);
     Constructor = api.mixin(configKey, type, Constructor);
   }
   return Constructor;
