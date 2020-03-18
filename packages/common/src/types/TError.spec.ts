@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { TError, TryCatch } from './TError';
-import { checks, check, Pass } from 'Test';
+import { checks, check, Pass } from '@cleric/common';
 import { Any } from 'ts-toolbelt';
 
 describe('TError', () => {

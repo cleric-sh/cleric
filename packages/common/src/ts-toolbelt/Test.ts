@@ -6,7 +6,7 @@ import { Test } from 'ts-toolbelt';
  * the ambient function definitions. This lets us mix type-level and runtime tests.
  */
 (TT as any).default.Test = {
-  checks: () => {},
+  checks: () => 1,
   check: () => 1 as 1,
 };
 
@@ -15,4 +15,4 @@ const check = Test.check;
 type Pass = Test.Pass;
 type Fail = Test.Fail;
 
-export { Test, checks, check, Pass, Fail };
+export { checks, check, Pass, Fail };

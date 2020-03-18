@@ -1,3 +1,3 @@
-import { TestConfig } from './testConfig';
+import { TestConfig } from './TestConfig';
 
 export { TestConfig };
