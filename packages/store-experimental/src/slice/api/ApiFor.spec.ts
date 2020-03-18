@@ -1,7 +1,7 @@
 import { ApiFor } from './ApiFor';
 import { checks, check, Pass } from '@cleric/common';
 import * as t from 'io-ts';
-import '../test';
+import '../../test';
 
 const type = t.type({
   foo: t.string,

@@ -1,4 +1,4 @@
-import { ConfigKey } from '../config';
+import { ConfigKey } from '../../config';
 import { SliceNode } from '../SliceNode';
 import * as t from 'io-ts';
 

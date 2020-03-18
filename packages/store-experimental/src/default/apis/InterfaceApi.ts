@@ -1,8 +1,8 @@
-import { createApi } from '../../api';
+import { createApi } from '../../slice/api';
 import * as t from 'io-ts';
 import { ConfigKey } from '../../config';
-import { createSlice } from '../../createSlice';
-import { Slice } from '../../Slice';
+import { createSlice } from '../../slice/createSlice';
+import { Slice } from '../../slice/Slice';
 import { pluck } from 'rxjs/operators';
 
 export type InterfaceApi<
@@ -14,7 +14,7 @@ export type InterfaceApi<
     }
   : never;
 
-declare module '../../api' {
+declare module '../../slice/api' {
   export interface ApiTypes<TConfigKey, TType> {
     Interface: InterfaceApi<TConfigKey, TType>;
   }

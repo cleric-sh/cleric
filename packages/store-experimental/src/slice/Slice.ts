@@ -1,5 +1,5 @@
 import { SliceNode } from './SliceNode';
-import { ConfigKey } from './config';
+import { ConfigKey } from '../config';
 import { ApiFor } from './api/ApiFor';
 import * as t from 'io-ts';
 

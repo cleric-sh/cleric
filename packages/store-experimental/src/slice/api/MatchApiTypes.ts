@@ -1,4 +1,4 @@
-import { ConfigKey, GetApis } from '../config';
+import { ConfigKey, GetApis } from '../../config';
 import { ApiDefinition } from './ApiDefinition';
 import { TError } from '@cleric/common';
 import { MatchApiType } from './MatchApiType';

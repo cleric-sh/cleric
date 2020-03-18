@@ -1,5 +1,5 @@
 import { Union, List } from 'ts-toolbelt';
-import { ConfigKey } from '../config';
+import { ConfigKey } from '../../config';
 import { MatchApiTypes } from './MatchApiTypes';
 import * as t from 'io-ts';
 
