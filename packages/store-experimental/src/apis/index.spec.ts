@@ -29,6 +29,6 @@ describe('MatchApiTypes', () => {
     type actual = MatchApiTypes<'Default', typeof type>;
     type expected = [ApiTypes<'Default', typeof type>['Interface'], never, never];
 
-    // checks([check<actual, expected, Test.Pass>()]);
+    checks([check<actual, expected, Test.Pass>()]);
   });
 });
