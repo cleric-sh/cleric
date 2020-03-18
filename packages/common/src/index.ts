@@ -1,6 +1,7 @@
 import * as Types from './types';
 import { Test } from './ts-toolbelt/Test';
 import { TError } from './types/TError';
+import { listen } from './rxjs/testing/listen';
 export { Types, Test };
 
 /**
@@ -11,3 +12,5 @@ const Hello = 'Hello World!';
 export { Hello };
 
 export { TError };
+
+export { listen };

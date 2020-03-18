@@ -1,22 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { marbles } from 'rxjs-marbles';
-import {
-  map,
-  reduce,
-  elementAt,
-  mergeMap,
-  switchMap,
-  tap,
-  toArray,
-  withLatestFrom,
-} from 'rxjs/operators';
-import { Subject, BehaviorSubject, from, of, Observable } from 'rxjs';
+import { map, reduce, elementAt, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Subject, BehaviorSubject, from, of } from 'rxjs';
 import { createStore } from './createStore';
 import { createModule } from './_createModule';
-import { Store, Source, Slice } from './store';
-import { Reducer } from './createReducer';
-
-const listen = <T>($: Observable<T>) => $.pipe(toArray()).toPromise();
+import { Store, Source } from './store';
+import { listen } from '@cleric/common';
 
 interface SecondValState {
   nestedVal: number;
@@ -389,7 +378,7 @@ describe('StoreNode', () => {
       sinks: () => ({
         didSomething: new Subject<number>(),
       }),
-      reducer: ({ myExtraSource }, state) => ({
+      reducer: ({ myExtraSource }) => ({
         someNestedValue: {
           somethingElse: $ =>
             $.pipe(
@@ -398,10 +387,7 @@ describe('StoreNode', () => {
             ),
         },
       }),
-      effects: (
-        { didSomething, something: { moreCh }, onOff },
-        { someNestedValue: { $set: setSnv, $merge: mergeSnv } },
-      ) => {
+      effects: ({ didSomething, onOff }, { someNestedValue: { $set: setSnv } }) => {
         return {
           DO_SOMETHING: onOff.pipe(
             tap(isOn => {

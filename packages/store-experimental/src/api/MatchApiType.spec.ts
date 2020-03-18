@@ -2,7 +2,6 @@ import * as t from 'io-ts';
 import { ApiTypes } from '.';
 import { Test } from '@cleric/common';
 import { MatchApiType } from './MatchApiType';
-import { MatchApiTypes } from './MatchApiTypes';
 
 const { checks, check } = Test;
 
@@ -21,15 +20,6 @@ describe('MatchApiType', () => {
   it('should return never when type guard doesnt match', () => {
     type actual = MatchApiType<'Default', 'Interface', t.IntersectionType<t.Any[]>, typeof type>;
     type expected = never;
-
-    checks([check<actual, expected, Test.Pass>()]);
-  });
-});
-
-describe('MatchApiTypes', () => {
-  it('should return API for type when type guard matches, otherwise never', () => {
-    type actual = MatchApiTypes<'Default', typeof type>;
-    type expected = [ApiTypes<'Default', typeof type>['Interface'], never, never];
 
     checks([check<actual, expected, Test.Pass>()]);
   });

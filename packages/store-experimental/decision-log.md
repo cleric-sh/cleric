@@ -21,3 +21,7 @@ Decided I need to write some proper unit tests before I start to mess around wit
 
 2020-03-18:
 Decided mixins won't work, because they don't support scoping for composition. The problem is that all mixins will have the same arguments. In the case of the intersection api, which is composed of subtypes, this means that the other matching apis it delegates to will receive the parent type instead of their subtype.
+
+Update: It's possible that mixins still have a place, in the sense that they could be used to create constructors for nodes with compound behavior around parent types, and they could be used in conjunction with decorators, which are always applied by SliceNode in the constructor. In this way, multi-type behavior that needs to be scoped could be achieved with a decorator, and isomorphic behavior could be kept in the mixin/class definition.
+
+Decided to make SliceNode 'parent aware' and configure its own '$' property from the parent's.
