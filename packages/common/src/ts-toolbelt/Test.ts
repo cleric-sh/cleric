@@ -10,4 +10,9 @@ import { Test } from 'ts-toolbelt';
   check: () => 1 as 1,
 };
 
-export { Test };
+const checks = Test.checks;
+const check = Test.check;
+type Pass = Test.Pass;
+type Fail = Test.Fail;
+
+export { Test, checks, check, Pass, Fail };

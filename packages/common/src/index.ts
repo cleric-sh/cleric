@@ -1,8 +1,9 @@
 import * as Types from './types';
-import { Test } from './ts-toolbelt/Test';
+import { Test, check, checks, Pass, Fail } from './ts-toolbelt/Test';
 import { TError } from './types/TError';
 import { listen } from './rxjs/testing/listen';
-export { Types, Test };
+
+export { Types, Test, checks, check, Pass, Fail };
 
 /**
  * Dummy dependency for sanity checks to make sure deps are wired up
