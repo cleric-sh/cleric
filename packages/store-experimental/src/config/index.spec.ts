@@ -1,9 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { Test } from '@cleric/common';
-import { GetApis, Config, Configs, AsTuple } from '.';
-import { DefaultConfig } from './default';
-import { Any } from 'ts-toolbelt';
+import { GetApis } from '.';
+import { DefaultConfig } from '../default/DefaultConfig';
+import { Any, List, Union } from 'ts-toolbelt';
 import * as t from 'io-ts';
+import { Configs } from './Configs';
+import { Config } from './Config';
 
 const { checks, check } = Test;
 
@@ -36,6 +38,10 @@ describe('Config', () => {
 
 describe('GetApis', () => {
   it('Returns APIs corresponding to key.', () => {
+    type AsTuple<L extends List.List<any>> = L extends List.List<infer L>
+      ? Union.ListOf<L>
+      : never;
+
     type actual = GetApis<'Default'>;
     type expected = AsTuple<NonNullable<typeof Configs['Default']>['apis']>;
 

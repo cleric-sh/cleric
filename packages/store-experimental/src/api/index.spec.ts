@@ -1,6 +1,8 @@
 import * as t from 'io-ts';
-import { MatchApiType, ApiTypes, MatchApiTypes } from '.';
+import { ApiTypes } from '.';
 import { Test } from '@cleric/common';
+import { MatchApiType } from './MatchApiType';
+import { MatchApiTypes } from './MatchApiTypes';
 
 const { checks, check } = Test;
 

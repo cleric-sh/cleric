@@ -1,10 +1,10 @@
 import { Tuple } from 'ts-toolbelt';
-import { Slice } from '../api';
 import * as t from 'io-ts';
-import { createSlice } from '../createSlice';
 import { filter } from 'rxjs/operators';
-import { ConfigKey } from '../config';
-import { createApi } from '../api/createApi';
+import { ConfigKey } from '../../config';
+import { createApi } from '../../api';
+import { SliceNode } from '../../SliceNode';
+import { Slice } from '../../Slice';
 
 export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.UnionType<
   infer TCS
@@ -14,7 +14,7 @@ export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends 
     }
   : never;
 
-declare module '../api' {
+declare module '../../api' {
   export interface ApiTypes<TConfigKey, TType> {
     Union: UnionApi<TConfigKey, TType>;
   }
@@ -35,7 +35,7 @@ export const UnionApi = createApi('Union', isUnionType, (configKey, type, slice)
 
     if (!subSlices[index]) {
       const option$ = slice.$.pipe(filter(subType.is));
-      subSlices[index] = createSlice(subType, option$, configKey);
+      subSlices[index] = new SliceNode(subType, option$, configKey);
     }
 
     return subSlices[index];
