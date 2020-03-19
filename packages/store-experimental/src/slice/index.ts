@@ -1,4 +1,4 @@
 import { createSlice } from './createSlice';
-import { SliceTypes } from './SliceTypes';
+import { SliceNodeTypes } from './node/SliceNodeTypes';
 
-export { createSlice, SliceTypes };
+export { createSlice, SliceNodeTypes as SliceTypes };

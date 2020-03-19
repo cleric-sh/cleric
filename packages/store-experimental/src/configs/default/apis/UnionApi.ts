@@ -3,15 +3,15 @@ import * as t from 'io-ts';
 import { filter } from 'rxjs/operators';
 import { ConfigKey } from '../../../config';
 import { createApi } from '../../../slice/api';
-import { SliceNode } from '../../../slice/SliceNode';
+import { SliceNode } from '../../../slice/node/SliceNode';
 import { Slice } from '../../../slice/Slice';
 
 export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.UnionType<
   infer TCS
 >
   ? {
-      $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
-    }
+    $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
+  }
   : never;
 
 declare module '../../../slice/api' {

@@ -1,8 +1,8 @@
 import { ApiKey } from '../slice/api';
 import { ApiDefinition } from '../slice/api/ApiDefinition';
-import { SliceKey } from "../slice/SliceKey";
+import { SliceNodeKey } from "../slice/node/SliceNodeKey";
 
 export interface Config {
   apis: ApiDefinition<ApiKey, any>[];
-  slice: SliceKey;
+  slice: SliceNodeKey;
 }
