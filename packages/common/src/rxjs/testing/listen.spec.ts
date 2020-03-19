@@ -10,6 +10,7 @@ describe('listen', () => {
     subject.next(1);
     subject.next(2);
     subject.next(3);
+
     subject.complete();
 
     expect(await _value).toEqual([1, 2, 3]);

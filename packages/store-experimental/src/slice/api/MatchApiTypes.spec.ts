@@ -1,9 +1,7 @@
 import * as t from 'io-ts';
 import { ApiTypes } from '.';
-import { Test } from '@cleric/common';
+import { checks, check, Pass } from '@cleric/common';
 import { MatchApiTypes } from './MatchApiTypes';
-
-const { checks, check } = Test;
 
 const type = t.type({
   foo: t.string,
@@ -14,6 +12,6 @@ describe('MatchApiTypes', () => {
     type actual = MatchApiTypes<'Default', typeof type>;
     type expected = [ApiTypes<'Default', typeof type>['Interface'], never, never];
 
-    checks([check<actual, expected, Test.Pass>()]);
+    checks([check<actual, expected, Pass>()]);
   });
 });

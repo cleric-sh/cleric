@@ -1,10 +1,8 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { Test } from '@cleric/common';
+import { checks, check, Pass } from '@cleric/common';
 import { GetApis } from '.';
 import { Any, List, Union } from 'ts-toolbelt';
 import { Configs } from './Configs';
-
-const { checks, check } = Test;
 
 describe('GetApis', () => {
   it('Returns APIs corresponding to key.', () => {
@@ -15,7 +13,7 @@ describe('GetApis', () => {
     type actual = GetApis<'Default'>;
     type expected = AsTuple<NonNullable<typeof Configs['Default']>['apis']>;
 
-    checks([check<Any.Extends<actual, expected>, 1, Test.Pass>()]);
-    checks([check<actual, expected, Test.Pass>()]);
+    checks([check<Any.Extends<actual, expected>, 1, Pass>()]);
+    checks([check<actual, expected, Pass>()]);
   });
 });

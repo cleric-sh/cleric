@@ -1,10 +1,11 @@
-// import { checks, check, Pass, Fail } from './Test';
+import { checks, check, Pass, Fail } from './Test';
 
 describe('Test', () => {
-  it.only('should do stuff', () => {
-    // const actual = {};
+  it('should allow us to import and actually execute checks, check functions', () => {
 
-    // expect(actual).toStrictEqual({});
-    console.log('foo');
+    checks([
+      check<{}, {}, Pass>(),
+      check<{}, '', Fail>(),
+    ])
   });
 });
