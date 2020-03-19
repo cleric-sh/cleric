@@ -1,12 +1,12 @@
 import { ApiFor } from './ApiFor';
 import { checks, check, Pass } from '@cleric/common';
-import '../../test';
-import { FooApi, FooGuard } from '../../test/apis/FooApi';
-import { Bar } from "../../test/types/Bar";
-import { Unknown } from "../../test/types/Unknown";
-import { Foo } from "../../test/types/Foo";
-import { BarApi, BarGuard } from '../../test/apis/BarApi';
-import { FooBar } from '../../test/types/FooBar';
+import '../../configs/test';
+import { FooApi, FooGuard } from '../../configs/test/apis/FooApi';
+import { Bar } from "../../configs/test/types/Bar";
+import { Unknown } from "../../configs/test/types/Unknown";
+import { Foo } from "../../configs/test/types/Foo";
+import { BarApi, BarGuard } from '../../configs/test/apis/BarApi';
+import { FooBar } from '../../configs/test/types/FooBar';
 import { Compute } from 'Any/_api';
 
 describe('ApiFor', () => {

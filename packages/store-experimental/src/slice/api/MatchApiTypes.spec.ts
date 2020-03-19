@@ -2,9 +2,9 @@ import * as t from 'io-ts';
 import { ApiTypes } from '.';
 import { checks, check, Pass } from '@cleric/common';
 import { MatchApiTypes } from './MatchApiTypes';
-import { Foo } from '../../test/types/Foo';
-import { FooBar } from '../../test/types/FooBar';
-import { Unknown } from '../../test/types/Unknown';
+import { Foo } from '../../configs/test/types/Foo';
+import { FooBar } from '../../configs/test/types/FooBar';
+import { Unknown } from '../../configs/test/types/Unknown';
 
 const type = t.type({
   foo: t.string,

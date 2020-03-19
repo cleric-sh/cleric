@@ -5,7 +5,7 @@ import { ConfigKey } from '../config';
 import { Slice } from './Slice';
 
 // Import the default configuration, so that it's always available.
-import '../default';
+import '../configs/default';
 
 export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
   type: T,

@@ -1,6 +1,6 @@
-import { createApi } from '../../slice/api';
+import { createApi } from '../../../slice/api';
 import * as t from 'io-ts';
-import { ConfigKey } from '../../config';
+import { ConfigKey } from '../../../config';
 import { Bar } from '../types/Bar';
 
 export const BarGuard = (type: t.Any): type is typeof Bar =>
@@ -14,7 +14,7 @@ export type BarApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.
   ? { doBar: () => string }
   : never;
 
-declare module '../../slice/api' {
+declare module '../../../slice/api' {
   export interface ApiTypes<TConfigKey, TType> {
     BarApi: BarApi<TConfigKey, TType>;
   }

@@ -3,8 +3,8 @@ import * as t from 'io-ts';
 import { BehaviorSubject } from 'rxjs';
 import { createSlice } from './createSlice';
 import { listen } from '@cleric/common';
-import { FooBar } from '../test/types/FooBar';
-import '../test';
+import { FooBar } from '../configs/test/types/FooBar';
+import '../configs/test';
 
 describe('createSlice', () => {
   it('should create a Slice decorated with matching APIs', async () => {
