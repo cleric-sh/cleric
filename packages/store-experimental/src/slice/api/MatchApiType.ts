@@ -8,4 +8,4 @@ export type MatchApiType<
   K extends ApiKey,
   G extends t.Any,
   T extends t.Any
-  > = t.TypeOf<T> extends t.TypeOf<G> ? ApiTypes<TConfigKey, T>[K] : never;
+> = t.TypeOf<T> extends t.TypeOf<G> ? ApiTypes<TConfigKey, T>[K] : never;

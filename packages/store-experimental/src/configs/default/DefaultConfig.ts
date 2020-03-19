@@ -5,6 +5,7 @@ import { createConfig } from '../../config/createConfig';
 
 export const DefaultConfig = createConfig('Default', {
   apis: [InterfaceApi, UnionApi, IntersectionApi],
+  slice: 'SliceNode'
 });
 
 declare module '../../config' {

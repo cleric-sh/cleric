@@ -24,6 +24,7 @@ describe('createSlice', () => {
 
     expect(await _values).toEqual([initial]);
     expect(node.doFoo()).toBe('Foo');
+    expect(node.doTest()).toBe('Test');
     expect(node.doBar()).toBe('Bar');
     expect(node.$configKey).toBe('Test');
     expect(node.$type).toBe(FooBar);

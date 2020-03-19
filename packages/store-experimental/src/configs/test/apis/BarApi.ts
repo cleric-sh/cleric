@@ -10,7 +10,9 @@ export const BarApi = createApi('BarApi', BarGuard, (configKey, type, slice) => 
   slice['doBar'] = () => 'Bar';
 });
 
-export type BarApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.InterfaceType<infer P>
+export type BarApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.InterfaceType<
+  infer P
+>
   ? { doBar: () => string }
   : never;
 

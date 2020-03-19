@@ -1,19 +1,18 @@
-import * as t from 'io-ts';
 import { ApiTypes } from '.';
 import { checks, check, Pass } from '@cleric/common';
 import { MatchApiTypes } from './MatchApiTypes';
 import { Foo } from '../../configs/test/types/Foo';
 import { FooBar } from '../../configs/test/types/FooBar';
 import { Unknown } from '../../configs/test/types/Unknown';
-
-const type = t.type({
-  foo: t.string,
-});
+import '../../configs/test';
 
 describe('MatchApiTypes', () => {
   it('should return all APIs that type guard matches', () => {
     type actual = MatchApiTypes<'Test', typeof FooBar>;
-    type expected = [ApiTypes<'Test', typeof FooBar>['FooApi'], ApiTypes<'Test', typeof FooBar>['BarApi']];
+    type expected = [
+      ApiTypes<'Test', typeof FooBar>['FooApi'],
+      ApiTypes<'Test', typeof FooBar>['BarApi'],
+    ];
 
     checks([check<actual, expected, Pass>()]);
   });

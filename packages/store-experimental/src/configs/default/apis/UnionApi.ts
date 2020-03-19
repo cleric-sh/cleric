@@ -10,8 +10,8 @@ export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends 
   infer TCS
 >
   ? {
-    $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
-  }
+      $is: <TSubType extends Tuple.UnionOf<TCS>>(type: TSubType) => Slice<TConfigKey, TSubType>;
+    }
   : never;
 
 declare module '../../../slice/api' {

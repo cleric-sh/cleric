@@ -10,7 +10,9 @@ export const FooApi = createApi('FooApi', FooGuard, (configKey, type, slice) => 
   slice['doFoo'] = () => 'Foo';
 });
 
-export type FooApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.InterfaceType<infer P>
+export type FooApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.InterfaceType<
+  infer P
+>
   ? { doFoo: () => string }
   : never;
 
