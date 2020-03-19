@@ -30,9 +30,6 @@ describe('ApiFor', () => {
 
   it('should return merged object when more than one API matches', () => {
 
-    expect(FooGuard(FooBar)).toBe(true);
-    expect(BarGuard(FooBar)).toBe(true);
-
     type actual = ApiFor<'Test', typeof FooBar>;
     type expected = Compute<FooApi<'Test', typeof Foo> & BarApi<'Test', typeof Bar>>;
 

@@ -10,8 +10,8 @@ describe('GetApis', () => {
       ? Union.ListOf<L>
       : never;
 
-    type actual = GetApis<'Default'>;
-    type expected = AsTuple<NonNullable<typeof Configs['Default']>['apis']>;
+    type actual = GetApis<'Test'>;
+    type expected = AsTuple<NonNullable<typeof Configs['Test']>['apis']>;
 
     checks([check<Any.Extends<actual, expected>, 1, Pass>()]);
     checks([check<actual, expected, Pass>()]);
