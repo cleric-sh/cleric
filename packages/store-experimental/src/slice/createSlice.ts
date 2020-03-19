@@ -5,7 +5,7 @@ import { Slice } from './Slice';
 
 // Import the default configuration, so that it's always available.
 import '../configs/default';
-import { getSliceNodeCtor } from './node/getSliceNodeCtor';
+import { getSliceNode } from './node/getSliceNode';
 
 export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 'Default'>(
   type: T,
@@ -14,7 +14,7 @@ export const createSlice = <T extends t.Any, TConfiguration extends ConfigKey = 
 ) => {
   const configKeyOrDefault = configKey ?? 'Default';
   const config = getConfig(configKeyOrDefault);
-  const SliceNodeCtor = getSliceNodeCtor(config.slice, type);
+  const SliceNodeCtor = getSliceNode(config.slice, type);
   const slice = new SliceNodeCtor(type, $, configKeyOrDefault);
   return slice as Slice<TConfiguration, T>;
 };
