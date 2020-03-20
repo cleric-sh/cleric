@@ -3,7 +3,8 @@ import { SliceNodeKey } from './SliceNodeKey';
 import { SliceNodes } from './SliceNodes';
 import { Constructor } from '@cleric/common/src/types';
 import { ConfigKey } from '../../config';
-import { SliceParentProps, SliceParentType } from './SliceNode';
+import { SliceParentProps } from "./SliceParentProps";
+import { SliceParentType } from "./SliceParentType";
 
 export const getSliceNode = <
     TSliceKey extends SliceNodeKey,

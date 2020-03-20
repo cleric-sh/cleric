@@ -2,7 +2,7 @@ import { Tuple } from 'ts-toolbelt';
 import * as t from 'io-ts';
 import { filter } from 'rxjs/operators';
 import { ConfigKey } from '../../../config';
-import { createApi } from '../../../slice/api';
+import { createApi } from '../../../node/api';
 import { SliceNode } from '../../../slice/node/SliceNode';
 import { Slice } from '../../../slice/Slice';
 
@@ -14,7 +14,7 @@ export type UnionApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends 
   }
   : never;
 
-declare module '../../../slice/api' {
+declare module '../../../node/api' {
   export interface ApiTypes<TConfigKey, TType> {
     Union: UnionApi<TConfigKey, TType>;
   }

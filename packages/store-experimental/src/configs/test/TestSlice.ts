@@ -1,4 +1,5 @@
-import { SliceNode, SliceParentProps } from '../../slice/node/SliceNode';
+import { SliceNode } from '../../slice/node/SliceNode';
+import { SliceParentProps } from "../../slice/node/SliceParentProps";
 import * as t from 'io-ts';
 import { setSliceNode } from "../../slice/node/setSliceNode";
 import { ConfigKey } from '../../config';

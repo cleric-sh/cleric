@@ -4,7 +4,9 @@ import { Slice } from './Slice';
 // Import the default configuration, so that it's always available.
 import '../configs/default';
 import { getSliceNode } from './node/getSliceNode';
-import { ApiNode, SliceParentType, SliceParentProps } from './node/SliceNode';
+import { SliceParentProps } from "./node/SliceParentProps";
+import { SliceParentType } from "./node/SliceParentType";
+import { ApiNode } from "../node/ApiNode";
 
 export const createSlice = <P extends SliceParentType, K extends keyof SliceParentProps<P>, TConfigKey extends ConfigKey = 'Default'>(
   $parent: ApiNode<TConfigKey, P>,

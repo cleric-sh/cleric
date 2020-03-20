@@ -1,10 +1,10 @@
 import { Tuple, Union } from 'ts-toolbelt';
 import { Cast } from 'Any/Cast';
-import { ApiFor } from '../../../slice/api';
+import { ApiFor } from '../../../node/api';
 import * as t from 'io-ts';
 import { ConfigKey } from '../../../config';
-import { createApi } from '../../../slice/api';
-import { decorateNode } from '../../../slice/node/decorateNode';
+import { createApi } from '../../../node/api';
+import { decorateNode } from '../../../node/decorateNode';
 
 export type IntersectionApi<
   TConfigKey extends ConfigKey,
@@ -19,7 +19,7 @@ export type IntersectionApi<
   >
   : never;
 
-declare module '../../../slice/api' {
+declare module '../../../node/api' {
   export interface ApiTypes<TConfigKey, TType> {
     Intersection: IntersectionApi<TConfigKey, TType>;
   }

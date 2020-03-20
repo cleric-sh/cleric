@@ -7,7 +7,7 @@ import { FooBar } from '../configs/test/types/FooBar';
 import { Root } from '../configs/test/types/Root';
 import { Slice } from './Slice';
 import '../configs/test';
-import { StoreNode } from './node/SliceNode';
+import { StoreNode } from "../store/StoreNode";
 
 describe('createSlice', () => {
 

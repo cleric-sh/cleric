@@ -1,4 +1,4 @@
-import { createApi } from '../../../slice/api';
+import { createApi } from '../../../node/api';
 import * as t from 'io-ts';
 import { ConfigKey } from '../../../config';
 import { Foo } from '../types/Foo';
@@ -16,7 +16,7 @@ export type FooApi<TConfigKey extends ConfigKey, T extends t.Any> = T extends t.
   ? { doFoo: () => string }
   : never;
 
-declare module '../../../slice/api' {
+declare module '../../../node/api' {
   export interface ApiTypes<TConfigKey, TType> {
     FooApi: FooApi<TConfigKey, TType>;
   }

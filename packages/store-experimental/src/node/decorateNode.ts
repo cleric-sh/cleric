@@ -1,6 +1,6 @@
-import { ApiNode } from './SliceNode';
+import { ApiNode } from "./ApiNode";
 import * as t from 'io-ts';
-import { ConfigKey, getConfig } from '../../config';
+import { ConfigKey, getConfig } from '../config';
 
 export const decorateNode = <
   TConfigKey extends ConfigKey,

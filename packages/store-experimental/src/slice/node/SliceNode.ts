@@ -1,24 +1,9 @@
-import { Observable, from } from 'rxjs';
-import * as t from 'io-ts';
+import { Observable } from 'rxjs';
 import { ConfigKey } from '../../config';
-import { decorateNode } from './decorateNode';
-import { FooBar } from '../../configs/test/types/FooBar';
 import { pluck } from 'rxjs/internal/operators/pluck';
-
-export abstract class ApiNode<TConfigKey extends ConfigKey, T extends t.Any> {
-
-  abstract get $(): Observable<t.TypeOf<T>>;
-
-  constructor(
-    public $configKey: TConfigKey,
-    public $type: T,
-  ) {
-    decorateNode($configKey, $type, this);
-  }
-}
-export type SliceParentType = t.InterfaceType<t.Props>;
-
-export type SliceParentProps<T extends SliceParentType> = T extends t.InterfaceType<infer P> ? P : never;
+import { ApiNode } from '../../node/ApiNode';
+import { SliceParentType } from './SliceParentType';
+import { SliceParentProps } from './SliceParentProps';
 
 export class SliceNode<
   TConfigKey extends ConfigKey,
@@ -44,16 +29,3 @@ export class SliceNode<
   }
 }
 
-export class StoreNode<TConfigKey extends ConfigKey, T extends t.Any> extends ApiNode<TConfigKey, T> {
-
-  constructor(
-    public $configKey: TConfigKey,
-    public $type: T,
-    public $: Observable<t.TypeOf<T>>
-  ) {
-    super($configKey, $type);
-  }
-}
-
-const parent = new StoreNode('Test', FooBar, from([]));
-const slice = new SliceNode(parent, 'foo');
