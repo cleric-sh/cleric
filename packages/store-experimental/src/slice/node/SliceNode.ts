@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import * as t from 'io-ts';
 import { ConfigKey } from '../../config';
-import { decorateSlice } from '../decorateSlice';
+import { decorateSlice } from './decorateSlice';
 
 export class SliceNode<T extends t.Any> {
   constructor(

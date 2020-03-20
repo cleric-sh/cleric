@@ -1,6 +1,6 @@
-import { SliceNode } from './node/SliceNode';
+import { SliceNode } from './SliceNode';
 import * as t from 'io-ts';
-import { ConfigKey, getConfig } from '../config';
+import { ConfigKey, getConfig } from '../../config';
 
 export const decorateSlice = (configKey: ConfigKey, type: t.Any, slice: SliceNode<t.Any>) => {
   const { apis } = getConfig(configKey);
