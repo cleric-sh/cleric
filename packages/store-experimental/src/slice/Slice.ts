@@ -1,7 +1,8 @@
 import { ConfigKey } from '../config';
 import { ApiTypeOf } from './api/ApiTypeOf';
-import * as t from 'io-ts';
 import { SliceNodeTypeOf } from './node/SliceNodeTypeOf';
+import { SliceParentType, SliceParentProps } from './node/SliceNode';
 
-export type Slice<TConfigKey extends ConfigKey, T extends t.Any> = SliceNodeTypeOf<TConfigKey, T> &
-  ApiTypeOf<TConfigKey, T>;
+export type Slice<TConfigKey extends ConfigKey, P extends SliceParentType, K extends keyof SliceParentProps<P>> =
+  SliceNodeTypeOf<TConfigKey, P, K> &
+  ApiTypeOf<TConfigKey, SliceParentProps<P>[K]>;

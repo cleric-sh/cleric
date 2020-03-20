@@ -4,3 +4,4 @@ export const FooBar = t.type({
     foo: t.string,
     bar: t.number,
 });
+

@@ -1,9 +1,11 @@
-import { SliceNode } from './SliceNode';
+import { SliceNode, SliceParentType, SliceParentProps } from './SliceNode';
 import { Constructor } from '@cleric/common/src/types';
 import { SliceNodes } from './SliceNodes';
-import * as t from 'io-ts';
+import { ConfigKey } from '../../config';
 
-export const setSliceNode = <TSliceNode extends Constructor<SliceNode<t.Any>>>(sliceKey: string, nodeCtor: TSliceNode) => {
+export type SliceConstructor = Constructor<SliceNode<ConfigKey, SliceParentType, keyof SliceParentProps<SliceParentType>>>;
+
+export const setSliceNode = <TSliceNode extends SliceConstructor>(sliceKey: string, nodeCtor: TSliceNode) => {
     SliceNodes[sliceKey] = nodeCtor;
     return nodeCtor;
 };

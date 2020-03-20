@@ -4,7 +4,7 @@ import { ApiFor } from '../../../slice/api';
 import * as t from 'io-ts';
 import { ConfigKey } from '../../../config';
 import { createApi } from '../../../slice/api';
-import { decorateSlice } from '../../../slice/node/decorateSlice';
+import { decorateNode } from '../../../slice/node/decorateNode';
 
 export type IntersectionApi<
   TConfigKey extends ConfigKey,
@@ -33,7 +33,7 @@ export const IntersectionApi = createApi(
   isIntersectionType,
   (configKey, type, slice) => {
     for (const subType of type.types) {
-      decorateSlice(configKey, subType, slice);
+      decorateNode(configKey, subType, slice);
     }
   },
 );

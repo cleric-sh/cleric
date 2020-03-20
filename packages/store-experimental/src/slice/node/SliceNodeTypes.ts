@@ -1,7 +1,7 @@
-import { SliceNode } from './SliceNode';
+import { SliceNode, SliceParentProps } from './SliceNode';
 import * as t from 'io-ts';
-import { Constructor } from '@cleric/common/src/types';
+import { ConfigKey } from '../../config';
 
-export interface SliceNodeTypes<T extends t.Any> {
-    'SliceNode': SliceNode<T>;
+export interface SliceNodeTypes<TConfigKey extends ConfigKey, P extends t.InterfaceType<t.Props>, K extends keyof SliceParentProps<P>> {
+    'SliceNode': SliceNode<TConfigKey, P, K>;
 }

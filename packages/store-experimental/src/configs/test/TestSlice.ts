@@ -1,8 +1,9 @@
-import { SliceNode } from '../../slice/node/SliceNode';
+import { SliceNode, SliceParentProps } from '../../slice/node/SliceNode';
 import * as t from 'io-ts';
 import { setSliceNode } from "../../slice/node/setSliceNode";
+import { ConfigKey } from '../../config';
 
-export class TestSlice<T extends t.Any> extends SliceNode<T> {
+export class TestSlice<TConfigKey extends ConfigKey, P extends t.InterfaceType<t.Props>, K extends keyof SliceParentProps<P>> extends SliceNode<TConfigKey, P, K> {
 
     doTest = () => 'Test';
 }
@@ -10,7 +11,7 @@ export class TestSlice<T extends t.Any> extends SliceNode<T> {
 setSliceNode('TestSlice', TestSlice);
 
 declare module '../../slice/node' {
-    interface SliceNodeTypes<T> {
-        'TestSlice': TestSlice<T>
+    interface SliceNodeTypes<TConfigKey extends ConfigKey, P extends t.InterfaceType<t.Props>, K extends keyof SliceParentProps<P>> {
+        'TestSlice': TestSlice<TConfigKey, P, K>
     }
 }
