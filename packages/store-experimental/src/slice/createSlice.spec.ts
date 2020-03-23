@@ -15,17 +15,21 @@ describe('createSlice', () => {
     fooBar: {
       bar: 1,
       foo: 'myString',
+    },
+    fooBar2: {
+      bar: 1,
+      foo: 'myString',
     }
   };
 
   let src: BehaviorSubject<t.TypeOf<typeof Root>>;
   let store: StoreNode<'Test', typeof Root>;
-  let slice: Slice<'Test', typeof Root, 'fooBar'>;
+  let slice: Slice<'Test', typeof Root, 'fooBar2'>;
 
   beforeEach(() => {
     src = new BehaviorSubject(initial);
     store = new StoreNode('Test', Root, src);
-    slice = createSlice(store, 'fooBar');
+    slice = createSlice(store, 'fooBar2');
   })
 
   it('should observe source values through $', async () => {

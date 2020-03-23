@@ -4,13 +4,15 @@ import { ConfigKey } from '../../../config';
 import { createSlice } from '../../../slice/createSlice';
 import { Slice } from '../../../slice/Slice';
 import { pluck } from 'rxjs/operators';
+import { SliceParentType } from '@cleric/store-experimental/src/slice/node/SliceParentType';
+import { SliceParentProps } from '@cleric/store-experimental/src/slice/node/SliceParentProps';
 
 export type InterfaceApi<
   TConfigKey extends ConfigKey,
   T extends t.Any
-  > = T extends t.InterfaceType<infer P>
+  > = T extends SliceParentType
   ? {
-    [K in keyof P]: P[K] extends t.Any ? Slice<TConfigKey, P[K]> : never;
+    [K in keyof SliceParentProps<T>]: SliceParentProps<T>[K] extends t.Any ? Slice<TConfigKey, T, K> : never;
   }
   : never;
 
@@ -29,9 +31,7 @@ export const InterfaceApi = createApi('Interface', isInterfaceType, (configKey, 
       get: () => {
         const _name = '__' + name;
         if (!slice[_name]) {
-          const nextType = type.props[name];
-          const next$ = slice.$.pipe(pluck(name));
-          slice[_name] = createSlice(nextType, next$, configKey);
+          slice[_name] = createSlice(slice, name);
         }
         return slice[_name];
       },
