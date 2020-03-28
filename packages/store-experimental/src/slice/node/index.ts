@@ -1,3 +1,3 @@
-import { SliceNodeTypes } from './SliceNodeTypes';
+import {SliceNodeTypes} from './SliceNodeTypes';
 
-export { SliceNodeTypes }
+export {SliceNodeTypes}

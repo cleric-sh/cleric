@@ -1,4 +1,4 @@
-import { ApiTypes } from './ApiTypes';
+import {ApiTypes} from './ApiTypes';
 
 /**
  * The union of all ApiKeys for all Apis registered in ApiTypes.

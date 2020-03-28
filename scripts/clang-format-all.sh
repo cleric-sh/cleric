@@ -66,4 +66,4 @@ find-dominating-file() {
 }
 include='\.(tsx?)$'
 exclude='\.spec\.(ts)$'
-git ls-files | grep -E $include | grep -vE $exclude | xargs -I {} echo 'foo '{} #"${FMT}" -i {}
+git ls-files | grep -E $include | grep -vE $exclude | xargs -I {} "${FMT}" -i {}

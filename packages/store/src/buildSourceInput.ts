@@ -1,7 +1,8 @@
-import { Source } from './store';
-import { from, Observable } from 'rxjs';
-import { isArrayLike } from 'lodash';
-import { isSlice, isSubscribable, isPromise, isAsyncFunction } from './guards';
+import {isArrayLike} from 'lodash';
+import {from, Observable} from 'rxjs';
+
+import {isAsyncFunction, isPromise, isSlice, isSubscribable} from './guards';
+import {Source} from './store';
 
 export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
   if (isSlice(source)) {
@@ -20,7 +21,8 @@ export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
     const promise = source();
     if (isPromise(promise)) {
       return from(promise) as Observable<T>;
-    } else throw 'Return value from function was not Promise-like.';
+    } else
+      throw 'Return value from function was not Promise-like.';
   }
 
   throw `Param 'source' is not a valid Source type.`;

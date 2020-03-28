@@ -1,12 +1,12 @@
-import { InterfaceApi } from './apis/InterfaceApi';
-import { UnionApi } from './apis/UnionApi';
-import { IntersectionApi } from './apis/IntersectionApi';
-import { createConfig } from '../../config/createConfig';
+import {createConfig} from '../../config/createConfig';
 
-export const DefaultConfig = createConfig('Default', {
-  apis: [InterfaceApi, UnionApi, IntersectionApi],
-  slice: 'SliceNode'
-});
+import {InterfaceApi} from './apis/InterfaceApi';
+import {IntersectionApi} from './apis/IntersectionApi';
+import {UnionApi} from './apis/UnionApi';
+
+export const DefaultConfig = createConfig(
+    'Default',
+    {apis : [ InterfaceApi, UnionApi, IntersectionApi ], slice : 'SliceNode'});
 
 declare module '../../config' {
   export interface ConfigTypes {

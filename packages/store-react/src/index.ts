@@ -1,11 +1,12 @@
-import { connect, inject } from './connect';
-import { useSinks } from './useSinks';
-import { useSources } from './useSources';
-import { StoreNode } from '@cleric/store/src/StoreNode';
-import { SliceNode } from '@cleric/store/src/SliceNode';
-import { ISliceApi } from '@cleric/store/src/store';
+import {SliceNode} from '@cleric/store/src/SliceNode';
+import {ISliceApi} from '@cleric/store/src/store';
+import {StoreNode} from '@cleric/store/src/StoreNode';
 
-export { connect, useSinks, useSources, inject };
+import {connect, inject} from './connect';
+import {useSinks} from './useSinks';
+import {useSources} from './useSources';
+
+export {connect, inject, useSinks, useSources};
 
 declare module '@cleric/store/src/store' {
   export interface ISliceApi<T> {
@@ -27,9 +28,7 @@ declare module '@cleric/store/src/SliceNode' {
   }
 }
 
-export function $use<T>(this: ISliceApi<T>): T {
-  return useSources(this) as T;
-}
+export function $use<T>(this: ISliceApi<T>): T { return useSources(this) as T; }
 
 StoreNode.prototype.$use = $use;
 SliceNode.prototype.$use = $use;

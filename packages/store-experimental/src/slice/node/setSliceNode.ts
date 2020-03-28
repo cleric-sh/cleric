@@ -1,7 +1,8 @@
-import { SliceNodes } from './SliceNodes';
-import { SliceConstructor } from './SliceConstructor';
+import {SliceConstructor} from './SliceConstructor';
+import {SliceNodes} from './SliceNodes';
 
-export const setSliceNode = <TSliceNode extends SliceConstructor>(sliceKey: string, nodeCtor: TSliceNode) => {
-    SliceNodes[sliceKey] = nodeCtor;
-    return nodeCtor;
+export const setSliceNode = <TSliceNode extends SliceConstructor>(
+    sliceKey: string, nodeCtor: TSliceNode) => {
+  SliceNodes[sliceKey] = nodeCtor;
+  return nodeCtor;
 };

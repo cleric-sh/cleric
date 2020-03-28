@@ -1,3 +1,3 @@
-import { ConfigTypes } from './ConfigTypes';
+import {ConfigTypes} from './ConfigTypes';
 
 export type ConfigKey = keyof ConfigTypes;

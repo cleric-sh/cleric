@@ -1,4 +1,5 @@
-import { IsOr } from '../types';
-import { List } from 'ts-toolbelt';
+import {List} from 'ts-toolbelt';
 
-export type AsList<T> = IsOr<T, List.List, [T]>;
+import {IsOr} from '../types';
+
+export type AsList<T> = IsOr<T, List.List, [ T ]>;

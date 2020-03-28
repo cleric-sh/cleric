@@ -1,5 +1,5 @@
-import { SubscribeState } from 'router5';
-import { RouteMap } from './';
+import {SubscribeState} from 'router5';
+import {RouteMap} from './';
 
 export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
   const names = state.route.name.split('.');
@@ -15,7 +15,7 @@ export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
     accName.push(name);
     accPath.push(node.path);
 
-    const params = node.codec?.decode(state.route.params);
+    const params = node.codec ?.decode(state.route.params);
     if (params?._tag == 'Right') {
       accParams = {
         ...accParams,
@@ -24,15 +24,16 @@ export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
     }
 
     next[name] = {
-      name: accName.join('.'),
-      path: accPath.join(''),
-      params: accParams,
+      name : accName.join('.'),
+      path : accPath.join(''),
+      params : accParams,
       state,
     };
 
     next = next[name];
 
-    if (node.children) accMap = node.children;
+    if (node.children)
+      accMap = node.children;
   }
   return top;
 };

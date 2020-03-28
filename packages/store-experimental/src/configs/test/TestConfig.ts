@@ -1,11 +1,13 @@
-import { createConfig } from '../../config';
-import { FooApi } from './apis/FooApi';
-import { BarApi } from './apis/BarApi';
+import {createConfig} from '../../config';
 
-export const TestConfig = createConfig('Test', { apis: [FooApi, BarApi], slice: 'TestSlice' });
+import {BarApi} from './apis/BarApi';
+import {FooApi} from './apis/FooApi';
+
+export const TestConfig =
+    createConfig('Test', {apis : [ FooApi, BarApi ], slice : 'TestSlice'});
 
 declare module '../../config' {
-    export interface ConfigTypes {
-        Test: typeof TestConfig;
-    }
+  export interface ConfigTypes {
+    Test: typeof TestConfig;
+  }
 }

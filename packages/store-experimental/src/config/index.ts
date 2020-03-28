@@ -1,7 +1,7 @@
-import { ConfigTypes } from './ConfigTypes';
-import { ConfigKey } from './ConfigKey';
-import { getConfig } from './getConfig';
-import { GetApis } from './GetApis';
-import { createConfig } from './createConfig';
+import {ConfigKey} from './ConfigKey';
+import {ConfigTypes} from './ConfigTypes';
+import {createConfig} from './createConfig';
+import {GetApis} from './GetApis';
+import {getConfig} from './getConfig';
 
-export { ConfigKey, ConfigTypes, getConfig, GetApis, createConfig };
+export {ConfigKey, ConfigTypes, createConfig, GetApis, getConfig};

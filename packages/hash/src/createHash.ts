@@ -1,9 +1,9 @@
-import { hashNumber } from './hashNumber';
-import { hashString } from './hashString';
-import { hashObject } from './hashObject';
-import { hashUndefined } from './hashUndefined';
-import { HashState } from '.';
-import { hashBoolean } from './hashBoolean';
+import {HashState} from '.';
+import {hashBoolean} from './hashBoolean';
+import {hashNumber} from './hashNumber';
+import {hashObject} from './hashObject';
+import {hashString} from './hashString';
+import {hashUndefined} from './hashUndefined';
 
 export const createHash = <T>(value: T): HashState<T> => {
   if (typeof value === 'boolean') {

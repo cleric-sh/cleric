@@ -1,8 +1,9 @@
-import { Subscription, isObservable, Observable, from } from 'rxjs';
-import { Slice, SourceProps, SourceArgs, Source } from './store';
-import { convertArgsToProps } from './convertArgsToProps';
-import { isSource, isSlice, isSubscribable } from './guards';
-import { isArrayLike } from 'lodash';
+import {isArrayLike} from 'lodash';
+import {from, isObservable, Observable, Subscription} from 'rxjs';
+
+import {convertArgsToProps} from './convertArgsToProps';
+import {isSlice, isSource, isSubscribable} from './guards';
+import {Slice, Source, SourceArgs, SourceProps} from './store';
 
 export type ReducerObject<TState> = {
   [P in keyof TState]?: Reducer<TState[P]>;
@@ -10,34 +11,35 @@ export type ReducerObject<TState> = {
 
 export type ReducerFn<TState> = (state: Observable<TState>) => Source<TState>;
 
-export type Reducer<TState> = ReducerFn<TState> | Source<TState> | ReducerObject<TState>;
+export type Reducer<TState> =
+    ReducerFn<TState>|Source<TState>|ReducerObject<TState>;
 
 export type ReducerBuilder<TState, TSourceArgs extends SourceArgs> = (
-  sources: SourceProps<TSourceArgs>,
-  state: Slice<TState>,
-) => Reducer<TState>;
+    sources: SourceProps<TSourceArgs>,
+    state: Slice<TState>,
+    ) => Reducer<TState>;
 
-export type ReducerObservables<TState> =
-  | Observable<TState>
-  | {
-      [P in keyof TState]: TState[P] extends Source<infer U>
-        ? Observable<U>
-        : ReducerObservables<TState[P]>;
-    };
+export type ReducerObservables<TState> =|Observable<TState>|{
+  [P in keyof TState]: TState[P] extends Source<infer U>
+                                             ? Observable<U>
+                                             : ReducerObservables<TState[P]>;
+};
 
 export const connectReducer = <TState>(
-  slice: Slice<TState>,
-  reducer: ReducerObservables<TState>,
-): Subscription[] => {
+    slice: Slice<TState>,
+    reducer: ReducerObservables<TState>,
+    ): Subscription[] => {
   if (isObservable(reducer)) {
     const subscription = reducer.subscribe(slice.$set);
-    return [subscription];
+    return [ subscription ];
   }
 
-  return Object.getOwnPropertyNames(reducer).reduce<Subscription[]>((subscriptions, name) => {
-    const newSubscriptions = connectReducer(slice[name], reducer[name]);
-    return subscriptions.concat(newSubscriptions);
-  }, []);
+  return Object.getOwnPropertyNames(reducer).reduce<Subscription[]>(
+      (subscriptions, name) => {
+        const newSubscriptions = connectReducer(slice[name], reducer[name]);
+        return subscriptions.concat(newSubscriptions);
+      },
+      []);
 };
 
 export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
@@ -57,12 +59,12 @@ export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
 };
 
 const isReducerFn = <T>(reducer: Reducer<T>): reducer is ReducerFn<T> =>
-  typeof reducer === 'function';
+    typeof reducer === 'function';
 
 export function convertReducerArgsToObservables<TState>(
-  slice: Slice<TState>,
-  reducer: Reducer<TState>,
-): ReducerObservables<TState> {
+    slice: Slice<TState>,
+    reducer: Reducer<TState>,
+    ): ReducerObservables<TState> {
   let _reducer = reducer;
 
   if (isReducerFn(_reducer)) {
@@ -74,14 +76,15 @@ export function convertReducerArgsToObservables<TState>(
   }
 
   return (Object.getOwnPropertyNames(_reducer).reduce((props, name) => {
-    props[name] = convertReducerArgsToObservables(slice[name], _reducer[name]);
-    return props;
-  }, {}) as unknown) as ReducerObservables<TState>;
+           props[name] =
+               convertReducerArgsToObservables(slice[name], _reducer[name]);
+           return props;
+         }, {}) as unknown) as ReducerObservables<TState>;
 }
 
 export const createReducer = <TState, TSourceArgs extends SourceArgs>(
-  reducerBuilder: ReducerBuilder<TState, TSourceArgs>,
-) => {
+    reducerBuilder: ReducerBuilder<TState, TSourceArgs>,
+    ) => {
   return (slice: Slice<TState>, sources: TSourceArgs): Subscription[] => {
     const sourceObservables = convertArgsToProps(sources);
     const reducer = reducerBuilder(sourceObservables, slice);

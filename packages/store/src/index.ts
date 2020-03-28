@@ -1,6 +1,13 @@
-export { createStore } from './createStore';
-export { createModule } from './_createModule';
-export { mapSourcesToProps } from './mapSourcesToProps';
-export { mapSinksToProps } from './mapSinksToProps';
-export { SinkArgs, SinkProps, SourceArgs, SourceProps, SourceArgsFromShape, Shape } from './store';
-export { ShapeFromSourceArgs } from './ShapeFromSourceArgs';
+export {createModule} from './_createModule';
+export {createStore} from './createStore';
+export {mapSinksToProps} from './mapSinksToProps';
+export {mapSourcesToProps} from './mapSourcesToProps';
+export {ShapeFromSourceArgs} from './ShapeFromSourceArgs';
+export {
+  Shape,
+  SinkArgs,
+  SinkProps,
+  SourceArgs,
+  SourceArgsFromShape,
+  SourceProps
+} from './store';

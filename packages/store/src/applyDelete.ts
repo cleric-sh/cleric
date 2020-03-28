@@ -1,18 +1,19 @@
-import { updateHash } from '@cleric/hash';
-import { State } from './store';
-import { createHash } from '@cleric/hash';
-import { set } from 'monolite';
-import { get, omit } from 'lodash';
+import {updateHash} from '@cleric/hash';
+import {createHash} from '@cleric/hash';
+import {get, omit} from 'lodash';
+import {set} from 'monolite';
+
+import {State} from './store';
 
 export const applyDelete = (state: State<any>, path: string[]) => {
-  const { current: last, hash: lastHash } = state;
+  const {current : last, hash : lastHash} = state;
 
   const isRoot = !path || path.length <= 0;
 
   if (isRoot) {
     return {
-      current: undefined,
-      hash: createHash(undefined),
+      current : undefined,
+      hash : createHash(undefined),
     };
   }
 
@@ -21,7 +22,7 @@ export const applyDelete = (state: State<any>, path: string[]) => {
   const parent = get(state.current, parentPath) || state.current;
   const newParent = omit(parent, nameToDelete);
   return {
-    current: set(last, parentPath, newParent),
-    hash: updateHash(lastHash, parentPath, newParent),
+    current : set(last, parentPath, newParent),
+    hash : updateHash(lastHash, parentPath, newParent),
   };
 };

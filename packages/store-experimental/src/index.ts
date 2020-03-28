@@ -1,3 +1,3 @@
-import { createSlice } from './slice';
+import {createSlice} from './slice';
 
-export { createSlice };
+export {createSlice};

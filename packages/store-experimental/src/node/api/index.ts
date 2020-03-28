@@ -1,6 +1,6 @@
-import { createApi } from './createApi';
-import { ApiKey } from './ApiKey';
-import { ApiTypes } from './ApiTypes';
-import { ApiTypeOf } from './ApiTypeOf';
+import {ApiKey} from './ApiKey';
+import {ApiTypeOf} from './ApiTypeOf';
+import {ApiTypes} from './ApiTypes';
+import {createApi} from './createApi';
 
-export { ApiTypes, createApi, ApiKey, ApiTypeOf as ApiFor };
+export {ApiKey, ApiTypeOf as ApiFor, ApiTypes, createApi};
