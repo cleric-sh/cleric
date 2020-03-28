@@ -65,7 +65,7 @@ find-dominating-file() {
     return $?
 }
 
-git ls-files | grep -e '\.ts$' -e '\.tsx$' | xargs -I {} echo 'foo '{} #"${FMT}" -i {}
+git ls-files | grep -E '\.(tsx?)$' | xargs -I {} echo 'foo '{} #"${FMT}" -i {}
 
 # # Run clang-format -i on all of the things
 # for dir in "$@"; do
