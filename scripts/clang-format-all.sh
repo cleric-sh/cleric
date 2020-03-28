@@ -64,25 +64,6 @@ find-dominating-file() {
     find-dominating-file "$(realpath "$1"/..)" "$2"
     return $?
 }
-
-git ls-files | grep -E '\.(tsx?)$' | xargs -I {} echo 'foo '{} #"${FMT}" -i {}
-
-# # Run clang-format -i on all of the things
-# for dir in "$@"; do
-#     ignore=$(git check-ignore ${dir})
-#     if [[ ! -z "$ignore" ]]; then
-#         echo 'Skipping '$ignore' (.gitignore)'
-#         continue
-#     fi
-    
-#     pushd "${dir}" &>/dev/null
-#     if ! find-dominating-file . .clang-format; then
-#         echo "Failed to find dominating .clang-format starting at $PWD"
-#         continue
-#     fi
-#     find . \
-#          \( -name '*.ts' \
-#          -o -name '*.tsx' \) \
-#          -exec "${FMT}" -i '{}' \;
-#     popd &>/dev/null
-# done
+include='\.(tsx?)$'
+exclude='\.spec\.(ts)$'
+git ls-files | grep -E $include | grep -vE $exclude | xargs -I {} echo 'foo '{} #"${FMT}" -i {}
