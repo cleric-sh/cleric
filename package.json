@@ -6,7 +6,8 @@
   "scripts": {
     "ws": "run.env ./scripts/workspace.sh",
     "git:c": "run.env ./scripts/git-commit.sh",
-    "git:cp": "run.env ./scripts/git-commit-and-push.sh"
+    "git:cp": "run.env ./scripts/git-commit-and-push.sh",
+    "lint:fix": "run.env ./scripts/clang-format-all.sh"
   },
   "workspaces": [
     "packages/*"
