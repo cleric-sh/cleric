@@ -34,7 +34,7 @@ export interface Tsconfig {
    * ts-node offers TypeScript execution and REPL for node.js, with source map
    * support.
    */
-  "ts-node"?: TsNode;
+  'ts-node'?: TsNode;
   /**
    * If no 'files' or 'include' property is present in a tsconfig.json, the
    * compiler defaults to including all files in the containing directory and
@@ -462,18 +462,18 @@ export interface TsconfigCompilerOptions {
  * Specify emit/checking behavior for imports that are only used for types
  */
 export enum ImportsNotUsedAsValues {
-  Error = "error",
-  Preserve = "preserve",
-  Remove = "remove",
+  Error = 'error',
+  Preserve = 'preserve',
+  Remove = 'remove',
 }
 
 /**
  * Specify JSX code generation: 'preserve', 'react', or 'react-native'.
  */
 export enum Jsx {
-  Preserve = "preserve",
-  React = "react",
-  ReactNative = "react-native",
+  Preserve = 'preserve',
+  React = 'react',
+  ReactNative = 'react-native',
 }
 
 export interface Plugin {
@@ -983,23 +983,22 @@ export interface TypeAcquisition {
 // and asserts the results of JSON.parse at runtime
 export class Convert {
   public static toTsconfig(json: string): Tsconfig {
-    return cast(JSON.parse(json), r("Tsconfig"));
+    return cast(JSON.parse(json), r('Tsconfig'));
   }
 
   public static tsconfigToJson(value: Tsconfig): string {
-    return JSON.stringify(uncast(value, r("Tsconfig")), null, 2);
+    return JSON.stringify(uncast(value, r('Tsconfig')), null, 2);
   }
 }
 
 function invalidValue(typ: any, val: any): never {
-  throw Error(
-      `Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`);
+  throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`);
 }
 
 function jsonToJSProps(typ: any): any {
   if (typ.jsonToJS === undefined) {
     var map: any = {};
-    typ.props.forEach((p: any) => map[p.json] = {key : p.js, typ : p.typ});
+    typ.props.forEach((p: any) => map[p.json] = {key: p.js, typ: p.typ});
     typ.jsonToJS = map;
   }
   return typ.jsonToJS;
@@ -1008,7 +1007,7 @@ function jsonToJSProps(typ: any): any {
 function jsToJSONProps(typ: any): any {
   if (typ.jsToJSON === undefined) {
     var map: any = {};
-    typ.props.forEach((p: any) => map[p.js] = {key : p.json, typ : p.typ});
+    typ.props.forEach((p: any) => map[p.js] = {key: p.json, typ: p.typ});
     typ.jsToJSON = map;
   }
   return typ.jsToJSON;
@@ -1016,8 +1015,7 @@ function jsToJSONProps(typ: any): any {
 
 function transform(val: any, typ: any, getProps: any): any {
   function transformPrimitive(typ: string, val: any): any {
-    if (typeof typ === typeof val)
-      return val;
+    if (typeof typ === typeof val) return val;
     return invalidValue(typ, val);
   }
 
@@ -1035,15 +1033,13 @@ function transform(val: any, typ: any, getProps: any): any {
   }
 
   function transformEnum(cases: string[], val: any): any {
-    if (cases.indexOf(val) !== -1)
-      return val;
+    if (cases.indexOf(val) !== -1) return val;
     return invalidValue(cases, val);
   }
 
   function transformArray(typ: any, val: any): any {
     // val must be an array with no invalid elements
-    if (!Array.isArray(val))
-      return invalidValue("array", val);
+    if (!Array.isArray(val)) return invalidValue('array', val);
     return val.map(el => transform(el, typ, getProps));
   }
 
@@ -1053,21 +1049,19 @@ function transform(val: any, typ: any, getProps: any): any {
     }
     const d = new Date(val);
     if (isNaN(d.valueOf())) {
-      return invalidValue("Date", val);
+      return invalidValue('Date', val);
     }
     return d;
   }
 
-  function transformObject(props: {[k: string]: any}, additional: any,
-                           val: any): any {
-    if (val === null || typeof val !== "object" || Array.isArray(val)) {
-      return invalidValue("object", val);
+  function transformObject(props: {[k: string]: any}, additional: any, val: any): any {
+    if (val === null || typeof val !== 'object' || Array.isArray(val)) {
+      return invalidValue('object', val);
     }
     var result: any = {};
     Object.getOwnPropertyNames(props).forEach(key => {
       const prop = props[key];
-      const v =
-          Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
+      const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
       result[prop.key] = transform(v, prop.typ, getProps);
     });
     Object.getOwnPropertyNames(val).forEach(key => {
@@ -1078,32 +1072,25 @@ function transform(val: any, typ: any, getProps: any): any {
     return result;
   }
 
-  if (typ === "any")
-    return val;
+  if (typ === 'any') return val;
   if (typ === null) {
-    if (val === null)
-      return val;
+    if (val === null) return val;
     return invalidValue(typ, val);
   }
-  if (typ === false)
-    return invalidValue(typ, val);
-  while (typeof typ === "object" && typ.ref !== undefined) {
+  if (typ === false) return invalidValue(typ, val);
+  while (typeof typ === 'object' && typ.ref !== undefined) {
     typ = typeMap[typ.ref];
   }
-  if (Array.isArray(typ))
-    return transformEnum(typ, val);
-  if (typeof typ === "object") {
-    return typ.hasOwnProperty("unionMembers")
-               ? transformUnion(typ.unionMembers, val)
-               : typ.hasOwnProperty("arrayItems")
-                     ? transformArray(typ.arrayItems, val)
-                     : typ.hasOwnProperty("props")
-                           ? transformObject(getProps(typ), typ.additional, val)
-                           : invalidValue(typ, val);
+  if (Array.isArray(typ)) return transformEnum(typ, val);
+  if (typeof typ === 'object') {
+    return typ.hasOwnProperty('unionMembers') ?
+        transformUnion(typ.unionMembers, val) :
+        typ.hasOwnProperty('arrayItems') ?
+        transformArray(typ.arrayItems, val) :
+        typ.hasOwnProperty('props') ? transformObject(getProps(typ), typ.additional, val) : invalidValue(typ, val);
   }
   // Numbers can be parsed by Date but shouldn't be.
-  if (typ === Date && typeof val !== "number")
-    return transformDate(typ, val);
+  if (typ === Date && typeof val !== 'number') return transformDate(typ, val);
   return transformPrimitive(typ, val);
 }
 
@@ -1115,817 +1102,295 @@ function uncast<T>(val: T, typ: any): any {
   return transform(val, typ, jsToJSONProps);
 }
 
-function a(typ: any) { return {arrayItems : typ}; }
+function a(typ: any) {
+  return {arrayItems: typ};
+}
 
-function u(...typs: any[]) { return {unionMembers : typs}; }
+function u(...typs: any[]) {
+  return {unionMembers: typs};
+}
 
-function o(props: any[], additional: any) { return {props, additional}; }
+function o(props: any[], additional: any) {
+  return {props, additional};
+}
 
-function m(additional: any) { return {props : [], additional}; }
+function m(additional: any) {
+  return {props: [], additional};
+}
 
-function r(name: string) { return {ref : name}; }
+function r(name: string) {
+  return {ref: name};
+}
 
 const typeMap:
     any = {
-      "Tsconfig" : o(
+      'Tsconfig': o(
           [
-            {
-              json : "compilerOptions",
-              js : "compilerOptions",
-              typ : u(undefined, r("TsconfigCompilerOptions"))
-            },
-            {
-              json : "compileOnSave",
-              js : "compileOnSave",
-              typ : u(undefined, true)
-            },
-            {
-              json : "typeAcquisition",
-              js : "typeAcquisition",
-              typ : u(undefined, r("TypeAcquisition"))
-            },
-            {json : "extends", js : "extends", typ : u(undefined, "")},
-            {json : "ts-node", js : "ts-node", typ : u(undefined, r("TsNode"))},
-            {json : "files", js : "files", typ : u(undefined, a(""))},
-            {json : "exclude", js : "exclude", typ : u(undefined, a(""))},
-            {json : "include", js : "include", typ : u(undefined, a(""))},
-            {
-              json : "references",
-              js : "references",
-              typ : u(undefined, a(r("Reference")))
-            },
+            {json: 'compilerOptions', js: 'compilerOptions', typ: u(undefined, r('TsconfigCompilerOptions'))},
+            {json: 'compileOnSave', js: 'compileOnSave', typ: u(undefined, true)},
+            {json: 'typeAcquisition', js: 'typeAcquisition', typ: u(undefined, r('TypeAcquisition'))},
+            {json: 'extends', js: 'extends', typ: u(undefined, '')},
+            {json: 'ts-node', js: 'ts-node', typ: u(undefined, r('TsNode'))},
+            {json: 'files', js: 'files', typ: u(undefined, a(''))},
+            {json: 'exclude', js: 'exclude', typ: u(undefined, a(''))},
+            {json: 'include', js: 'include', typ: u(undefined, a(''))},
+            {json: 'references', js: 'references', typ: u(undefined, a(r('Reference')))},
           ],
-          "any"),
-      "TsconfigCompilerOptions" :
+          'any'),
+      'TsconfigCompilerOptions':
           o(
               [
-                {json : "allowJs", js : "allowJs", typ : u(undefined, true)},
-                {
-                  json : "allowSyntheticDefaultImports",
-                  js : "allowSyntheticDefaultImports",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUmdGlobalAccess",
-                  js : "allowUmdGlobalAccess",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUnreachableCode",
-                  js : "allowUnreachableCode",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUnusedLabels",
-                  js : "allowUnusedLabels",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "alwaysStrict",
-                  js : "alwaysStrict",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "assumeChangesOnlyAffectDirectDependencies",
-                  js : "assumeChangesOnlyAffectDirectDependencies",
-                  typ : u(undefined, true)
-                },
-                {json : "baseUrl", js : "baseUrl", typ : u(undefined, "")},
-                {json : "charset", js : "charset", typ : u(undefined, "")},
-                {json : "checkJs", js : "checkJs", typ : u(undefined, true)},
-                {
-                  json : "composite",
-                  js : "composite",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "declaration",
-                  js : "declaration",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "declarationDir",
-                  js : "declarationDir",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "declarationMap",
-                  js : "declarationMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "diagnostics",
-                  js : "diagnostics",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "disableSizeLimit",
-                  js : "disableSizeLimit",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "downlevelIteration",
-                  js : "downlevelIteration",
-                  typ : u(undefined, true)
-                },
-                {json : "emitBOM", js : "emitBOM", typ : u(undefined, true)},
-                {
-                  json : "emitDeclarationOnly",
-                  js : "emitDeclarationOnly",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "emitDecoratorMetadata",
-                  js : "emitDecoratorMetadata",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "esModuleInterop",
-                  js : "esModuleInterop",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "experimentalDecorators",
-                  js : "experimentalDecorators",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "forceConsistentCasingInFileNames",
-                  js : "forceConsistentCasingInFileNames",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "importHelpers",
-                  js : "importHelpers",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "importsNotUsedAsValues",
-                  js : "importsNotUsedAsValues",
-                  typ : u(undefined, r("ImportsNotUsedAsValues"))
-                },
-                {
-                  json : "incremental",
-                  js : "incremental",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "inlineSourceMap",
-                  js : "inlineSourceMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "inlineSources",
-                  js : "inlineSources",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "isolatedModules",
-                  js : "isolatedModules",
-                  typ : u(undefined, true)
-                },
-                {json : "jsx", js : "jsx", typ : u(undefined, r("Jsx"))},
-                {
-                  json : "jsxFactory",
-                  js : "jsxFactory",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "keyofStringsOnly",
-                  js : "keyofStringsOnly",
-                  typ : u(undefined, true)
-                },
-                {json : "lib", js : "lib", typ : u(undefined, a(""))},
-                {
-                  json : "listEmittedFiles",
-                  js : "listEmittedFiles",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "listFiles",
-                  js : "listFiles",
-                  typ : u(undefined, true)
-                },
-                {json : "mapRoot", js : "mapRoot", typ : u(undefined, "")},
-                {
-                  json : "maxNodeModuleJsDepth",
-                  js : "maxNodeModuleJsDepth",
-                  typ : u(undefined, 3.14)
-                },
-                {json : "module", js : "module", typ : u(undefined, "")},
-                {
-                  json : "moduleResolution",
-                  js : "moduleResolution",
-                  typ : u(undefined, "")
-                },
-                {json : "newLine", js : "newLine", typ : u(undefined, "")},
-                {json : "noEmit", js : "noEmit", typ : u(undefined, true)},
-                {
-                  json : "noEmitHelpers",
-                  js : "noEmitHelpers",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noEmitOnError",
-                  js : "noEmitOnError",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noErrorTruncation",
-                  js : "noErrorTruncation",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noFallthroughCasesInSwitch",
-                  js : "noFallthroughCasesInSwitch",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitAny",
-                  js : "noImplicitAny",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitReturns",
-                  js : "noImplicitReturns",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitThis",
-                  js : "noImplicitThis",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitUseStrict",
-                  js : "noImplicitUseStrict",
-                  typ : u(undefined, true)
-                },
-                {json : "noLib", js : "noLib", typ : u(undefined, true)},
-                {
-                  json : "noResolve",
-                  js : "noResolve",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noStrictGenericChecks",
-                  js : "noStrictGenericChecks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noUnusedLocals",
-                  js : "noUnusedLocals",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noUnusedParameters",
-                  js : "noUnusedParameters",
-                  typ : u(undefined, true)
-                },
-                {json : "outDir", js : "outDir", typ : u(undefined, "")},
-                {json : "outFile", js : "outFile", typ : u(undefined, "")},
-                {json : "paths", js : "paths", typ : u(undefined, m(a("")))},
-                {
-                  json : "plugins",
-                  js : "plugins",
-                  typ : u(undefined, a(r("Plugin")))
-                },
-                {
-                  json : "preserveConstEnums",
-                  js : "preserveConstEnums",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "preserveSymlinks",
-                  js : "preserveSymlinks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "preserveWatchOutput",
-                  js : "preserveWatchOutput",
-                  typ : u(undefined, true)
-                },
-                {json : "pretty", js : "pretty", typ : u(undefined, true)},
-                {
-                  json : "reactNamespace",
-                  js : "reactNamespace",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "removeComments",
-                  js : "removeComments",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "resolveJsonModule",
-                  js : "resolveJsonModule",
-                  typ : u(undefined, true)
-                },
-                {json : "rootDir", js : "rootDir", typ : u(undefined, "")},
-                {json : "rootDirs", js : "rootDirs", typ : u(undefined, a(""))},
-                {
-                  json : "skipDefaultLibCheck",
-                  js : "skipDefaultLibCheck",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "skipLibCheck",
-                  js : "skipLibCheck",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "sourceMap",
-                  js : "sourceMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "sourceRoot",
-                  js : "sourceRoot",
-                  typ : u(undefined, "")
-                },
-                {json : "strict", js : "strict", typ : u(undefined, true)},
-                {
-                  json : "strictBindCallApply",
-                  js : "strictBindCallApply",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictFunctionTypes",
-                  js : "strictFunctionTypes",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictNullChecks",
-                  js : "strictNullChecks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictPropertyInitialization",
-                  js : "strictPropertyInitialization",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "stripInternal",
-                  js : "stripInternal",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "suppressExcessPropertyErrors",
-                  js : "suppressExcessPropertyErrors",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "suppressImplicitAnyIndexErrors",
-                  js : "suppressImplicitAnyIndexErrors",
-                  typ : u(undefined, true)
-                },
-                {json : "target", js : "target", typ : u(undefined, "")},
-                {
-                  json : "traceResolution",
-                  js : "traceResolution",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "tsBuildInfoFile",
-                  js : "tsBuildInfoFile",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "typeRoots",
-                  js : "typeRoots",
-                  typ : u(undefined, a(""))
-                },
-                {json : "types", js : "types", typ : u(undefined, a(""))},
-                {
-                  json : "useDefineForClassFields",
-                  js : "useDefineForClassFields",
-                  typ : u(undefined, true)
-                },
-                {json : "watch", js : "watch", typ : u(undefined, true)},
+                {json: 'allowJs', js: 'allowJs', typ: u(undefined, true)},
+                {json: 'allowSyntheticDefaultImports', js: 'allowSyntheticDefaultImports', typ: u(undefined, true)},
+                {json: 'allowUmdGlobalAccess', js: 'allowUmdGlobalAccess', typ: u(undefined, true)},
+                {json: 'allowUnreachableCode', js: 'allowUnreachableCode', typ: u(undefined, true)},
+                {json: 'allowUnusedLabels', js: 'allowUnusedLabels', typ: u(undefined, true)},
+                {json: 'alwaysStrict', js: 'alwaysStrict', typ: u(undefined, true)},
+                {
+                  json: 'assumeChangesOnlyAffectDirectDependencies',
+                  js: 'assumeChangesOnlyAffectDirectDependencies',
+                  typ: u(undefined, true)
+                },
+                {json: 'baseUrl', js: 'baseUrl', typ: u(undefined, '')},
+                {json: 'charset', js: 'charset', typ: u(undefined, '')},
+                {json: 'checkJs', js: 'checkJs', typ: u(undefined, true)},
+                {json: 'composite', js: 'composite', typ: u(undefined, true)},
+                {json: 'declaration', js: 'declaration', typ: u(undefined, true)},
+                {json: 'declarationDir', js: 'declarationDir', typ: u(undefined, '')},
+                {json: 'declarationMap', js: 'declarationMap', typ: u(undefined, true)},
+                {json: 'diagnostics', js: 'diagnostics', typ: u(undefined, true)},
+                {json: 'disableSizeLimit', js: 'disableSizeLimit', typ: u(undefined, true)},
+                {json: 'downlevelIteration', js: 'downlevelIteration', typ: u(undefined, true)},
+                {json: 'emitBOM', js: 'emitBOM', typ: u(undefined, true)},
+                {json: 'emitDeclarationOnly', js: 'emitDeclarationOnly', typ: u(undefined, true)},
+                {json: 'emitDecoratorMetadata', js: 'emitDecoratorMetadata', typ: u(undefined, true)},
+                {json: 'esModuleInterop', js: 'esModuleInterop', typ: u(undefined, true)},
+                {json: 'experimentalDecorators', js: 'experimentalDecorators', typ: u(undefined, true)},
+                {
+                  json: 'forceConsistentCasingInFileNames',
+                  js: 'forceConsistentCasingInFileNames',
+                  typ: u(undefined, true)
+                },
+                {json: 'importHelpers', js: 'importHelpers', typ: u(undefined, true)},
+                {
+                  json: 'importsNotUsedAsValues',
+                  js: 'importsNotUsedAsValues',
+                  typ: u(undefined, r('ImportsNotUsedAsValues'))
+                },
+                {json: 'incremental', js: 'incremental', typ: u(undefined, true)},
+                {json: 'inlineSourceMap', js: 'inlineSourceMap', typ: u(undefined, true)},
+                {json: 'inlineSources', js: 'inlineSources', typ: u(undefined, true)},
+                {json: 'isolatedModules', js: 'isolatedModules', typ: u(undefined, true)},
+                {json: 'jsx', js: 'jsx', typ: u(undefined, r('Jsx'))},
+                {json: 'jsxFactory', js: 'jsxFactory', typ: u(undefined, '')},
+                {json: 'keyofStringsOnly', js: 'keyofStringsOnly', typ: u(undefined, true)},
+                {json: 'lib', js: 'lib', typ: u(undefined, a(''))},
+                {json: 'listEmittedFiles', js: 'listEmittedFiles', typ: u(undefined, true)},
+                {json: 'listFiles', js: 'listFiles', typ: u(undefined, true)},
+                {json: 'mapRoot', js: 'mapRoot', typ: u(undefined, '')},
+                {json: 'maxNodeModuleJsDepth', js: 'maxNodeModuleJsDepth', typ: u(undefined, 3.14)},
+                {json: 'module', js: 'module', typ: u(undefined, '')},
+                {json: 'moduleResolution', js: 'moduleResolution', typ: u(undefined, '')},
+                {json: 'newLine', js: 'newLine', typ: u(undefined, '')},
+                {json: 'noEmit', js: 'noEmit', typ: u(undefined, true)},
+                {json: 'noEmitHelpers', js: 'noEmitHelpers', typ: u(undefined, true)},
+                {json: 'noEmitOnError', js: 'noEmitOnError', typ: u(undefined, true)},
+                {json: 'noErrorTruncation', js: 'noErrorTruncation', typ: u(undefined, true)},
+                {json: 'noFallthroughCasesInSwitch', js: 'noFallthroughCasesInSwitch', typ: u(undefined, true)},
+                {json: 'noImplicitAny', js: 'noImplicitAny', typ: u(undefined, true)},
+                {json: 'noImplicitReturns', js: 'noImplicitReturns', typ: u(undefined, true)},
+                {json: 'noImplicitThis', js: 'noImplicitThis', typ: u(undefined, true)},
+                {json: 'noImplicitUseStrict', js: 'noImplicitUseStrict', typ: u(undefined, true)},
+                {json: 'noLib', js: 'noLib', typ: u(undefined, true)},
+                {json: 'noResolve', js: 'noResolve', typ: u(undefined, true)},
+                {json: 'noStrictGenericChecks', js: 'noStrictGenericChecks', typ: u(undefined, true)},
+                {json: 'noUnusedLocals', js: 'noUnusedLocals', typ: u(undefined, true)},
+                {json: 'noUnusedParameters', js: 'noUnusedParameters', typ: u(undefined, true)},
+                {json: 'outDir', js: 'outDir', typ: u(undefined, '')},
+                {json: 'outFile', js: 'outFile', typ: u(undefined, '')},
+                {json: 'paths', js: 'paths', typ: u(undefined, m(a('')))},
+                {json: 'plugins', js: 'plugins', typ: u(undefined, a(r('Plugin')))},
+                {json: 'preserveConstEnums', js: 'preserveConstEnums', typ: u(undefined, true)},
+                {json: 'preserveSymlinks', js: 'preserveSymlinks', typ: u(undefined, true)},
+                {json: 'preserveWatchOutput', js: 'preserveWatchOutput', typ: u(undefined, true)},
+                {json: 'pretty', js: 'pretty', typ: u(undefined, true)},
+                {json: 'reactNamespace', js: 'reactNamespace', typ: u(undefined, '')},
+                {json: 'removeComments', js: 'removeComments', typ: u(undefined, true)},
+                {json: 'resolveJsonModule', js: 'resolveJsonModule', typ: u(undefined, true)},
+                {json: 'rootDir', js: 'rootDir', typ: u(undefined, '')},
+                {json: 'rootDirs', js: 'rootDirs', typ: u(undefined, a(''))},
+                {json: 'skipDefaultLibCheck', js: 'skipDefaultLibCheck', typ: u(undefined, true)},
+                {json: 'skipLibCheck', js: 'skipLibCheck', typ: u(undefined, true)},
+                {json: 'sourceMap', js: 'sourceMap', typ: u(undefined, true)},
+                {json: 'sourceRoot', js: 'sourceRoot', typ: u(undefined, '')},
+                {json: 'strict', js: 'strict', typ: u(undefined, true)},
+                {json: 'strictBindCallApply', js: 'strictBindCallApply', typ: u(undefined, true)},
+                {json: 'strictFunctionTypes', js: 'strictFunctionTypes', typ: u(undefined, true)},
+                {json: 'strictNullChecks', js: 'strictNullChecks', typ: u(undefined, true)},
+                {json: 'strictPropertyInitialization', js: 'strictPropertyInitialization', typ: u(undefined, true)},
+                {json: 'stripInternal', js: 'stripInternal', typ: u(undefined, true)},
+                {json: 'suppressExcessPropertyErrors', js: 'suppressExcessPropertyErrors', typ: u(undefined, true)},
+                {json: 'suppressImplicitAnyIndexErrors', js: 'suppressImplicitAnyIndexErrors', typ: u(undefined, true)},
+                {json: 'target', js: 'target', typ: u(undefined, '')},
+                {json: 'traceResolution', js: 'traceResolution', typ: u(undefined, true)},
+                {json: 'tsBuildInfoFile', js: 'tsBuildInfoFile', typ: u(undefined, '')},
+                {json: 'typeRoots', js: 'typeRoots', typ: u(undefined, a(''))},
+                {json: 'types', js: 'types', typ: u(undefined, a(''))},
+                {json: 'useDefineForClassFields', js: 'useDefineForClassFields', typ: u(undefined, true)},
+                {json: 'watch', js: 'watch', typ: u(undefined, true)},
               ],
-              "any"),
-      "Plugin" :
+              'any'),
+      'Plugin':
           o(
               [
-                {json : "name", js : "name", typ : u(undefined, "")},
+                {json: 'name', js: 'name', typ: u(undefined, '')},
               ],
-              "any"),
-      "Reference" :
+              'any'),
+      'Reference':
           o(
               [
-                {json : "path", js : "path", typ : u(undefined, "")},
+                {json: 'path', js: 'path', typ: u(undefined, '')},
               ],
-              "any"),
-      "TsNode" :
+              'any'),
+      'TsNode':
           o(
               [
-                {json : "compiler", js : "compiler", typ : u(undefined, "")},
-                {
-                  json : "compilerHost",
-                  js : "compilerHost",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "compilerOptions",
-                  js : "compilerOptions",
-                  typ : u(undefined, r("TsNodeCompilerOptions"))
-                },
-                {json : "emit", js : "emit", typ : u(undefined, true)},
-                {json : "files", js : "files", typ : u(undefined, true)},
-                {json : "ignore", js : "ignore", typ : u(undefined, a(""))},
-                {
-                  json : "ignoreDiagnostics",
-                  js : "ignoreDiagnostics",
-                  typ : u(undefined, a(u(3.14, "")))
-                },
-                {json : "logError", js : "logError", typ : u(undefined, true)},
-                {
-                  json : "preferTsExts",
-                  js : "preferTsExts",
-                  typ : u(undefined, true)
-                },
-                {json : "pretty", js : "pretty", typ : u(undefined, true)},
-                {json : "scope", js : "scope", typ : u(undefined, true)},
-                {
-                  json : "skipIgnore",
-                  js : "skipIgnore",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "transpileOnly",
-                  js : "transpileOnly",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "typeCheck",
-                  js : "typeCheck",
-                  typ : u(undefined, true)
-                },
+                {json: 'compiler', js: 'compiler', typ: u(undefined, '')},
+                {json: 'compilerHost', js: 'compilerHost', typ: u(undefined, true)},
+                {json: 'compilerOptions', js: 'compilerOptions', typ: u(undefined, r('TsNodeCompilerOptions'))},
+                {json: 'emit', js: 'emit', typ: u(undefined, true)},
+                {json: 'files', js: 'files', typ: u(undefined, true)},
+                {json: 'ignore', js: 'ignore', typ: u(undefined, a(''))},
+                {json: 'ignoreDiagnostics', js: 'ignoreDiagnostics', typ: u(undefined, a(u(3.14, '')))},
+                {json: 'logError', js: 'logError', typ: u(undefined, true)},
+                {json: 'preferTsExts', js: 'preferTsExts', typ: u(undefined, true)},
+                {json: 'pretty', js: 'pretty', typ: u(undefined, true)},
+                {json: 'scope', js: 'scope', typ: u(undefined, true)},
+                {json: 'skipIgnore', js: 'skipIgnore', typ: u(undefined, true)},
+                {json: 'transpileOnly', js: 'transpileOnly', typ: u(undefined, true)},
+                {json: 'typeCheck', js: 'typeCheck', typ: u(undefined, true)},
               ],
-              "any"),
-      "TsNodeCompilerOptions" :
+              'any'),
+      'TsNodeCompilerOptions':
           o(
               [
-                {json : "allowJs", js : "allowJs", typ : u(undefined, true)},
-                {
-                  json : "allowSyntheticDefaultImports",
-                  js : "allowSyntheticDefaultImports",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUmdGlobalAccess",
-                  js : "allowUmdGlobalAccess",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUnreachableCode",
-                  js : "allowUnreachableCode",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "allowUnusedLabels",
-                  js : "allowUnusedLabels",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "alwaysStrict",
-                  js : "alwaysStrict",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "assumeChangesOnlyAffectDirectDependencies",
-                  js : "assumeChangesOnlyAffectDirectDependencies",
-                  typ : u(undefined, true)
-                },
-                {json : "baseUrl", js : "baseUrl", typ : u(undefined, "")},
-                {json : "charset", js : "charset", typ : u(undefined, "")},
-                {json : "checkJs", js : "checkJs", typ : u(undefined, true)},
-                {
-                  json : "composite",
-                  js : "composite",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "declaration",
-                  js : "declaration",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "declarationDir",
-                  js : "declarationDir",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "declarationMap",
-                  js : "declarationMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "diagnostics",
-                  js : "diagnostics",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "disableSizeLimit",
-                  js : "disableSizeLimit",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "downlevelIteration",
-                  js : "downlevelIteration",
-                  typ : u(undefined, true)
-                },
-                {json : "emitBOM", js : "emitBOM", typ : u(undefined, true)},
-                {
-                  json : "emitDeclarationOnly",
-                  js : "emitDeclarationOnly",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "emitDecoratorMetadata",
-                  js : "emitDecoratorMetadata",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "esModuleInterop",
-                  js : "esModuleInterop",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "experimentalDecorators",
-                  js : "experimentalDecorators",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "forceConsistentCasingInFileNames",
-                  js : "forceConsistentCasingInFileNames",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "importHelpers",
-                  js : "importHelpers",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "importsNotUsedAsValues",
-                  js : "importsNotUsedAsValues",
-                  typ : u(undefined, r("ImportsNotUsedAsValues"))
-                },
-                {
-                  json : "incremental",
-                  js : "incremental",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "inlineSourceMap",
-                  js : "inlineSourceMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "inlineSources",
-                  js : "inlineSources",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "isolatedModules",
-                  js : "isolatedModules",
-                  typ : u(undefined, true)
-                },
-                {json : "jsx", js : "jsx", typ : u(undefined, r("Jsx"))},
-                {
-                  json : "jsxFactory",
-                  js : "jsxFactory",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "keyofStringsOnly",
-                  js : "keyofStringsOnly",
-                  typ : u(undefined, true)
-                },
-                {json : "lib", js : "lib", typ : u(undefined, a(""))},
-                {
-                  json : "listEmittedFiles",
-                  js : "listEmittedFiles",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "listFiles",
-                  js : "listFiles",
-                  typ : u(undefined, true)
-                },
-                {json : "mapRoot", js : "mapRoot", typ : u(undefined, "")},
-                {
-                  json : "maxNodeModuleJsDepth",
-                  js : "maxNodeModuleJsDepth",
-                  typ : u(undefined, 3.14)
-                },
-                {json : "module", js : "module", typ : u(undefined, "")},
-                {
-                  json : "moduleResolution",
-                  js : "moduleResolution",
-                  typ : u(undefined, "")
-                },
-                {json : "newLine", js : "newLine", typ : u(undefined, "")},
-                {json : "noEmit", js : "noEmit", typ : u(undefined, true)},
-                {
-                  json : "noEmitHelpers",
-                  js : "noEmitHelpers",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noEmitOnError",
-                  js : "noEmitOnError",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noErrorTruncation",
-                  js : "noErrorTruncation",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noFallthroughCasesInSwitch",
-                  js : "noFallthroughCasesInSwitch",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitAny",
-                  js : "noImplicitAny",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitReturns",
-                  js : "noImplicitReturns",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitThis",
-                  js : "noImplicitThis",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noImplicitUseStrict",
-                  js : "noImplicitUseStrict",
-                  typ : u(undefined, true)
-                },
-                {json : "noLib", js : "noLib", typ : u(undefined, true)},
-                {
-                  json : "noResolve",
-                  js : "noResolve",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noStrictGenericChecks",
-                  js : "noStrictGenericChecks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noUnusedLocals",
-                  js : "noUnusedLocals",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "noUnusedParameters",
-                  js : "noUnusedParameters",
-                  typ : u(undefined, true)
-                },
-                {json : "outDir", js : "outDir", typ : u(undefined, "")},
-                {json : "outFile", js : "outFile", typ : u(undefined, "")},
-                {json : "paths", js : "paths", typ : u(undefined, m(a("")))},
-                {
-                  json : "plugins",
-                  js : "plugins",
-                  typ : u(undefined, a(r("Plugin")))
-                },
-                {
-                  json : "preserveConstEnums",
-                  js : "preserveConstEnums",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "preserveSymlinks",
-                  js : "preserveSymlinks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "preserveWatchOutput",
-                  js : "preserveWatchOutput",
-                  typ : u(undefined, true)
-                },
-                {json : "pretty", js : "pretty", typ : u(undefined, true)},
-                {
-                  json : "reactNamespace",
-                  js : "reactNamespace",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "removeComments",
-                  js : "removeComments",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "resolveJsonModule",
-                  js : "resolveJsonModule",
-                  typ : u(undefined, true)
-                },
-                {json : "rootDir", js : "rootDir", typ : u(undefined, "")},
-                {json : "rootDirs", js : "rootDirs", typ : u(undefined, a(""))},
-                {
-                  json : "skipDefaultLibCheck",
-                  js : "skipDefaultLibCheck",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "skipLibCheck",
-                  js : "skipLibCheck",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "sourceMap",
-                  js : "sourceMap",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "sourceRoot",
-                  js : "sourceRoot",
-                  typ : u(undefined, "")
-                },
-                {json : "strict", js : "strict", typ : u(undefined, true)},
-                {
-                  json : "strictBindCallApply",
-                  js : "strictBindCallApply",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictFunctionTypes",
-                  js : "strictFunctionTypes",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictNullChecks",
-                  js : "strictNullChecks",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "strictPropertyInitialization",
-                  js : "strictPropertyInitialization",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "stripInternal",
-                  js : "stripInternal",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "suppressExcessPropertyErrors",
-                  js : "suppressExcessPropertyErrors",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "suppressImplicitAnyIndexErrors",
-                  js : "suppressImplicitAnyIndexErrors",
-                  typ : u(undefined, true)
-                },
-                {json : "target", js : "target", typ : u(undefined, "")},
-                {
-                  json : "traceResolution",
-                  js : "traceResolution",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "tsBuildInfoFile",
-                  js : "tsBuildInfoFile",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "typeRoots",
-                  js : "typeRoots",
-                  typ : u(undefined, a(""))
-                },
-                {json : "types", js : "types", typ : u(undefined, a(""))},
-                {
-                  json : "useDefineForClassFields",
-                  js : "useDefineForClassFields",
-                  typ : u(undefined, true)
-                },
-                {json : "watch", js : "watch", typ : u(undefined, true)},
+                {json: 'allowJs', js: 'allowJs', typ: u(undefined, true)},
+                {json: 'allowSyntheticDefaultImports', js: 'allowSyntheticDefaultImports', typ: u(undefined, true)},
+                {json: 'allowUmdGlobalAccess', js: 'allowUmdGlobalAccess', typ: u(undefined, true)},
+                {json: 'allowUnreachableCode', js: 'allowUnreachableCode', typ: u(undefined, true)},
+                {json: 'allowUnusedLabels', js: 'allowUnusedLabels', typ: u(undefined, true)},
+                {json: 'alwaysStrict', js: 'alwaysStrict', typ: u(undefined, true)},
+                {
+                  json: 'assumeChangesOnlyAffectDirectDependencies',
+                  js: 'assumeChangesOnlyAffectDirectDependencies',
+                  typ: u(undefined, true)
+                },
+                {json: 'baseUrl', js: 'baseUrl', typ: u(undefined, '')},
+                {json: 'charset', js: 'charset', typ: u(undefined, '')},
+                {json: 'checkJs', js: 'checkJs', typ: u(undefined, true)},
+                {json: 'composite', js: 'composite', typ: u(undefined, true)},
+                {json: 'declaration', js: 'declaration', typ: u(undefined, true)},
+                {json: 'declarationDir', js: 'declarationDir', typ: u(undefined, '')},
+                {json: 'declarationMap', js: 'declarationMap', typ: u(undefined, true)},
+                {json: 'diagnostics', js: 'diagnostics', typ: u(undefined, true)},
+                {json: 'disableSizeLimit', js: 'disableSizeLimit', typ: u(undefined, true)},
+                {json: 'downlevelIteration', js: 'downlevelIteration', typ: u(undefined, true)},
+                {json: 'emitBOM', js: 'emitBOM', typ: u(undefined, true)},
+                {json: 'emitDeclarationOnly', js: 'emitDeclarationOnly', typ: u(undefined, true)},
+                {json: 'emitDecoratorMetadata', js: 'emitDecoratorMetadata', typ: u(undefined, true)},
+                {json: 'esModuleInterop', js: 'esModuleInterop', typ: u(undefined, true)},
+                {json: 'experimentalDecorators', js: 'experimentalDecorators', typ: u(undefined, true)},
+                {
+                  json: 'forceConsistentCasingInFileNames',
+                  js: 'forceConsistentCasingInFileNames',
+                  typ: u(undefined, true)
+                },
+                {json: 'importHelpers', js: 'importHelpers', typ: u(undefined, true)},
+                {
+                  json: 'importsNotUsedAsValues',
+                  js: 'importsNotUsedAsValues',
+                  typ: u(undefined, r('ImportsNotUsedAsValues'))
+                },
+                {json: 'incremental', js: 'incremental', typ: u(undefined, true)},
+                {json: 'inlineSourceMap', js: 'inlineSourceMap', typ: u(undefined, true)},
+                {json: 'inlineSources', js: 'inlineSources', typ: u(undefined, true)},
+                {json: 'isolatedModules', js: 'isolatedModules', typ: u(undefined, true)},
+                {json: 'jsx', js: 'jsx', typ: u(undefined, r('Jsx'))},
+                {json: 'jsxFactory', js: 'jsxFactory', typ: u(undefined, '')},
+                {json: 'keyofStringsOnly', js: 'keyofStringsOnly', typ: u(undefined, true)},
+                {json: 'lib', js: 'lib', typ: u(undefined, a(''))},
+                {json: 'listEmittedFiles', js: 'listEmittedFiles', typ: u(undefined, true)},
+                {json: 'listFiles', js: 'listFiles', typ: u(undefined, true)},
+                {json: 'mapRoot', js: 'mapRoot', typ: u(undefined, '')},
+                {json: 'maxNodeModuleJsDepth', js: 'maxNodeModuleJsDepth', typ: u(undefined, 3.14)},
+                {json: 'module', js: 'module', typ: u(undefined, '')},
+                {json: 'moduleResolution', js: 'moduleResolution', typ: u(undefined, '')},
+                {json: 'newLine', js: 'newLine', typ: u(undefined, '')},
+                {json: 'noEmit', js: 'noEmit', typ: u(undefined, true)},
+                {json: 'noEmitHelpers', js: 'noEmitHelpers', typ: u(undefined, true)},
+                {json: 'noEmitOnError', js: 'noEmitOnError', typ: u(undefined, true)},
+                {json: 'noErrorTruncation', js: 'noErrorTruncation', typ: u(undefined, true)},
+                {json: 'noFallthroughCasesInSwitch', js: 'noFallthroughCasesInSwitch', typ: u(undefined, true)},
+                {json: 'noImplicitAny', js: 'noImplicitAny', typ: u(undefined, true)},
+                {json: 'noImplicitReturns', js: 'noImplicitReturns', typ: u(undefined, true)},
+                {json: 'noImplicitThis', js: 'noImplicitThis', typ: u(undefined, true)},
+                {json: 'noImplicitUseStrict', js: 'noImplicitUseStrict', typ: u(undefined, true)},
+                {json: 'noLib', js: 'noLib', typ: u(undefined, true)},
+                {json: 'noResolve', js: 'noResolve', typ: u(undefined, true)},
+                {json: 'noStrictGenericChecks', js: 'noStrictGenericChecks', typ: u(undefined, true)},
+                {json: 'noUnusedLocals', js: 'noUnusedLocals', typ: u(undefined, true)},
+                {json: 'noUnusedParameters', js: 'noUnusedParameters', typ: u(undefined, true)},
+                {json: 'outDir', js: 'outDir', typ: u(undefined, '')},
+                {json: 'outFile', js: 'outFile', typ: u(undefined, '')},
+                {json: 'paths', js: 'paths', typ: u(undefined, m(a('')))},
+                {json: 'plugins', js: 'plugins', typ: u(undefined, a(r('Plugin')))},
+                {json: 'preserveConstEnums', js: 'preserveConstEnums', typ: u(undefined, true)},
+                {json: 'preserveSymlinks', js: 'preserveSymlinks', typ: u(undefined, true)},
+                {json: 'preserveWatchOutput', js: 'preserveWatchOutput', typ: u(undefined, true)},
+                {json: 'pretty', js: 'pretty', typ: u(undefined, true)},
+                {json: 'reactNamespace', js: 'reactNamespace', typ: u(undefined, '')},
+                {json: 'removeComments', js: 'removeComments', typ: u(undefined, true)},
+                {json: 'resolveJsonModule', js: 'resolveJsonModule', typ: u(undefined, true)},
+                {json: 'rootDir', js: 'rootDir', typ: u(undefined, '')},
+                {json: 'rootDirs', js: 'rootDirs', typ: u(undefined, a(''))},
+                {json: 'skipDefaultLibCheck', js: 'skipDefaultLibCheck', typ: u(undefined, true)},
+                {json: 'skipLibCheck', js: 'skipLibCheck', typ: u(undefined, true)},
+                {json: 'sourceMap', js: 'sourceMap', typ: u(undefined, true)},
+                {json: 'sourceRoot', js: 'sourceRoot', typ: u(undefined, '')},
+                {json: 'strict', js: 'strict', typ: u(undefined, true)},
+                {json: 'strictBindCallApply', js: 'strictBindCallApply', typ: u(undefined, true)},
+                {json: 'strictFunctionTypes', js: 'strictFunctionTypes', typ: u(undefined, true)},
+                {json: 'strictNullChecks', js: 'strictNullChecks', typ: u(undefined, true)},
+                {json: 'strictPropertyInitialization', js: 'strictPropertyInitialization', typ: u(undefined, true)},
+                {json: 'stripInternal', js: 'stripInternal', typ: u(undefined, true)},
+                {json: 'suppressExcessPropertyErrors', js: 'suppressExcessPropertyErrors', typ: u(undefined, true)},
+                {json: 'suppressImplicitAnyIndexErrors', js: 'suppressImplicitAnyIndexErrors', typ: u(undefined, true)},
+                {json: 'target', js: 'target', typ: u(undefined, '')},
+                {json: 'traceResolution', js: 'traceResolution', typ: u(undefined, true)},
+                {json: 'tsBuildInfoFile', js: 'tsBuildInfoFile', typ: u(undefined, '')},
+                {json: 'typeRoots', js: 'typeRoots', typ: u(undefined, a(''))},
+                {json: 'types', js: 'types', typ: u(undefined, a(''))},
+                {json: 'useDefineForClassFields', js: 'useDefineForClassFields', typ: u(undefined, true)},
+                {json: 'watch', js: 'watch', typ: u(undefined, true)},
               ],
-              "any"),
-      "TypeAcquisition" :
+              'any'),
+      'TypeAcquisition':
           o(
               [
-                {json : "enable", js : "enable", typ : u(undefined, true)},
-                {json : "exclude", js : "exclude", typ : u(undefined, a(""))},
-                {json : "include", js : "include", typ : u(undefined, a(""))},
+                {json: 'enable', js: 'enable', typ: u(undefined, true)},
+                {json: 'exclude', js: 'exclude', typ: u(undefined, a(''))},
+                {json: 'include', js: 'include', typ: u(undefined, a(''))},
               ],
-              "any"),
-      "ImportsNotUsedAsValues" : [
-        "error",
-        "preserve",
-        "remove",
+              'any'),
+      'ImportsNotUsedAsValues': [
+        'error',
+        'preserve',
+        'remove',
       ],
-      "Jsx" : [
-        "preserve",
-        "react",
-        "react-native",
+      'Jsx': [
+        'preserve',
+        'react',
+        'react-native',
       ],
     };
 export {tsconfigSchema};

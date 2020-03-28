@@ -7,8 +7,8 @@ import {Test} from 'ts-toolbelt';
  * mix type-level and runtime tests.
  */
 (TT as any).default.Test = {
-  checks : () => 1,
-  check : () => 1 as 1,
+  checks: () => 1,
+  check: () => 1 as 1,
 };
 
 const checks = Test.checks;

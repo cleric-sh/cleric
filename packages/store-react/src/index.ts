@@ -28,7 +28,9 @@ declare module '@cleric/store/src/SliceNode' {
   }
 }
 
-export function $use<T>(this: ISliceApi<T>): T { return useSources(this) as T; }
+export function $use<T>(this: ISliceApi<T>): T {
+  return useSources(this) as T;
+}
 
 StoreNode.prototype.$use = $use;
 SliceNode.prototype.$use = $use;

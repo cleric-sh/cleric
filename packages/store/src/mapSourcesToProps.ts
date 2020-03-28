@@ -23,7 +23,9 @@ export function mapSourcesToProps(input: any) {
             const props = {};
             // The order of values in combineLatest is the same as the order of
             // names, so look them up by index.
-            values.forEach((value, index) => { props[names[index]] = value; });
+            values.forEach((value, index) => {
+              props[names[index]] = value;
+            });
             return props;
           }),
       );

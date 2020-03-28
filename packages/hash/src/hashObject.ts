@@ -5,7 +5,7 @@ import {createHash} from './createHash';
 export const hashObject = <T>(value: T): HashState<T> => {
   // Iterates each property and build hash object.
   if (value === null) {
-    return {__hash : 0} as HashState<T>;
+    return {__hash: 0} as HashState<T>;
   }
 
   return Object.getOwnPropertyNames(value).reduce(
@@ -19,6 +19,6 @@ export const hashObject = <T>(value: T): HashState<T> => {
                // Return object hash node so far
                return node;
              },
-             {__hash : 0},
+             {__hash: 0},
              ) as HashState<T>;
 };

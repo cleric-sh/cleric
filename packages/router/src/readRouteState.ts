@@ -24,16 +24,15 @@ export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
     }
 
     next[name] = {
-      name : accName.join('.'),
-      path : accPath.join(''),
-      params : accParams,
+      name: accName.join('.'),
+      path: accPath.join(''),
+      params: accParams,
       state,
     };
 
     next = next[name];
 
-    if (node.children)
-      accMap = node.children;
+    if (node.children) accMap = node.children;
   }
   return top;
 };

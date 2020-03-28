@@ -13,11 +13,10 @@ export function inject<TProps>(defaultProps ?: TProps)
   return defaultProps;
 }
 
-export function
-connect<TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs = {},
-        TProps = {}>(sources
-                     : TSourceArgs, sinks ?: TSinkArgs,
-                       inject ?: Inject<TProps>) {
+export function connect<TSourceArgs extends SourceArgs,
+                        TSinkArgs extends SinkArgs = {}, TProps = {}>(
+    sources
+    : TSourceArgs, sinks ?: TSinkArgs, inject ?: Inject<TProps>) {
   type InjectedProps = ShapeFromSourceArgs<TSourceArgs> & SinkProps<TSinkArgs>;
 
   const sourceProps = mapSourcesToProps(sources);
@@ -37,7 +36,7 @@ connect<TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs = {},
       // reference to original wrapped component
       static readonly WrappedComponent = BaseComponent;
 
-    private
+     private
     subscription:
       Subscription | undefined = undefined;
 

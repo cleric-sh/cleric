@@ -1,8 +1,7 @@
 import * as t from 'io-ts';
 import {Route} from 'router5';
 
-type Router5RestParams = Omit<Route, 'name'|'encodeParams'|'decodeParams'|
-                              'children'|'defaultParams'>;
+type Router5RestParams = Omit<Route, 'name'|'encodeParams'|'decodeParams'|'children'|'defaultParams'>;
 
 export type RouteArgs<TProps extends t.Props> = Router5RestParams&{
   path: string;

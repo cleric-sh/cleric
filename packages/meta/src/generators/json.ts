@@ -2,8 +2,7 @@ import {validate} from 'jsonschema';
 import {isArray, isObject, isString} from 'util';
 
 export type Json<T extends object> = {
-  (value: string): string; (value: T) : string;
-  (value: TemplateStringsArray, ...placeholders: string[]) : string;
+  (value: string): string; (value: T): string; (value: TemplateStringsArray, ...placeholders: string[]): string;
 };
 
 export const json = <T extends object>(schema: object|undefined): Json<T> =>
@@ -30,8 +29,7 @@ export const json = <T extends object>(schema: object|undefined): Json<T> =>
 
       if (schema) {
         const validationResult = validate(input, schema);
-        if (validationResult.errors.length > 0)
-          console.log(validationResult.errors);
+        if (validationResult.errors.length > 0) console.log(validationResult.errors);
       }
       return JSON.stringify(input, null, 2);
     };

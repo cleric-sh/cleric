@@ -433,23 +433,22 @@ export interface Scripts {
 // and asserts the results of JSON.parse at runtime
 export class Convert {
   public static toPackage(json: string): Package {
-    return cast(JSON.parse(json), r("Package"));
+    return cast(JSON.parse(json), r('Package'));
   }
 
   public static packageToJson(value: Package): string {
-    return JSON.stringify(uncast(value, r("Package")), null, 2);
+    return JSON.stringify(uncast(value, r('Package')), null, 2);
   }
 }
 
 function invalidValue(typ: any, val: any): never {
-  throw Error(
-      `Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`);
+  throw Error(`Invalid value ${JSON.stringify(val)} for type ${JSON.stringify(typ)}`);
 }
 
 function jsonToJSProps(typ: any): any {
   if (typ.jsonToJS === undefined) {
     var map: any = {};
-    typ.props.forEach((p: any) => map[p.json] = {key : p.js, typ : p.typ});
+    typ.props.forEach((p: any) => map[p.json] = {key: p.js, typ: p.typ});
     typ.jsonToJS = map;
   }
   return typ.jsonToJS;
@@ -458,7 +457,7 @@ function jsonToJSProps(typ: any): any {
 function jsToJSONProps(typ: any): any {
   if (typ.jsToJSON === undefined) {
     var map: any = {};
-    typ.props.forEach((p: any) => map[p.js] = {key : p.json, typ : p.typ});
+    typ.props.forEach((p: any) => map[p.js] = {key: p.json, typ: p.typ});
     typ.jsToJSON = map;
   }
   return typ.jsToJSON;
@@ -466,8 +465,7 @@ function jsToJSONProps(typ: any): any {
 
 function transform(val: any, typ: any, getProps: any): any {
   function transformPrimitive(typ: string, val: any): any {
-    if (typeof typ === typeof val)
-      return val;
+    if (typeof typ === typeof val) return val;
     return invalidValue(typ, val);
   }
 
@@ -485,15 +483,13 @@ function transform(val: any, typ: any, getProps: any): any {
   }
 
   function transformEnum(cases: string[], val: any): any {
-    if (cases.indexOf(val) !== -1)
-      return val;
+    if (cases.indexOf(val) !== -1) return val;
     return invalidValue(cases, val);
   }
 
   function transformArray(typ: any, val: any): any {
     // val must be an array with no invalid elements
-    if (!Array.isArray(val))
-      return invalidValue("array", val);
+    if (!Array.isArray(val)) return invalidValue('array', val);
     return val.map(el => transform(el, typ, getProps));
   }
 
@@ -503,21 +499,19 @@ function transform(val: any, typ: any, getProps: any): any {
     }
     const d = new Date(val);
     if (isNaN(d.valueOf())) {
-      return invalidValue("Date", val);
+      return invalidValue('Date', val);
     }
     return d;
   }
 
-  function transformObject(props: {[k: string]: any}, additional: any,
-                           val: any): any {
-    if (val === null || typeof val !== "object" || Array.isArray(val)) {
-      return invalidValue("object", val);
+  function transformObject(props: {[k: string]: any}, additional: any, val: any): any {
+    if (val === null || typeof val !== 'object' || Array.isArray(val)) {
+      return invalidValue('object', val);
     }
     var result: any = {};
     Object.getOwnPropertyNames(props).forEach(key => {
       const prop = props[key];
-      const v =
-          Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
+      const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
       result[prop.key] = transform(v, prop.typ, getProps);
     });
     Object.getOwnPropertyNames(val).forEach(key => {
@@ -528,32 +522,25 @@ function transform(val: any, typ: any, getProps: any): any {
     return result;
   }
 
-  if (typ === "any")
-    return val;
+  if (typ === 'any') return val;
   if (typ === null) {
-    if (val === null)
-      return val;
+    if (val === null) return val;
     return invalidValue(typ, val);
   }
-  if (typ === false)
-    return invalidValue(typ, val);
-  while (typeof typ === "object" && typ.ref !== undefined) {
+  if (typ === false) return invalidValue(typ, val);
+  while (typeof typ === 'object' && typ.ref !== undefined) {
     typ = typeMap[typ.ref];
   }
-  if (Array.isArray(typ))
-    return transformEnum(typ, val);
-  if (typeof typ === "object") {
-    return typ.hasOwnProperty("unionMembers")
-               ? transformUnion(typ.unionMembers, val)
-               : typ.hasOwnProperty("arrayItems")
-                     ? transformArray(typ.arrayItems, val)
-                     : typ.hasOwnProperty("props")
-                           ? transformObject(getProps(typ), typ.additional, val)
-                           : invalidValue(typ, val);
+  if (Array.isArray(typ)) return transformEnum(typ, val);
+  if (typeof typ === 'object') {
+    return typ.hasOwnProperty('unionMembers') ?
+        transformUnion(typ.unionMembers, val) :
+        typ.hasOwnProperty('arrayItems') ?
+        transformArray(typ.arrayItems, val) :
+        typ.hasOwnProperty('props') ? transformObject(getProps(typ), typ.additional, val) : invalidValue(typ, val);
   }
   // Numbers can be parsed by Date but shouldn't be.
-  if (typ === Date && typeof val !== "number")
-    return transformDate(typ, val);
+  if (typ === Date && typeof val !== 'number') return transformDate(typ, val);
   return transformPrimitive(typ, val);
 }
 
@@ -565,404 +552,206 @@ function uncast<T>(val: T, typ: any): any {
   return transform(val, typ, jsToJSONProps);
 }
 
-function a(typ: any) { return {arrayItems : typ}; }
+function a(typ: any) {
+  return {arrayItems: typ};
+}
 
-function u(...typs: any[]) { return {unionMembers : typs}; }
+function u(...typs: any[]) {
+  return {unionMembers: typs};
+}
 
-function o(props: any[], additional: any) { return {props, additional}; }
+function o(props: any[], additional: any) {
+  return {props, additional};
+}
 
-function m(additional: any) { return {props : [], additional}; }
+function m(additional: any) {
+  return {props: [], additional};
+}
 
-function r(name: string) { return {ref : name}; }
+function r(name: string) {
+  return {ref: name};
+}
 
 const typeMap:
     any = {
-      "Package" :
+      'Package':
           o(
               [
-                {
-                  json : "author",
-                  js : "author",
-                  typ : u(undefined, u(r("PersonObject"), ""))
-                },
-                {json : "bin", js : "bin", typ : u(undefined, u(m(""), ""))},
-                {
-                  json : "bugs",
-                  js : "bugs",
-                  typ : u(undefined, u(r("BugsObject"), ""))
-                },
-                {json : "config", js : "config", typ : u(undefined, m("any"))},
-                {
-                  json : "contributors",
-                  js : "contributors",
-                  typ : u(undefined, a(u(r("PersonObject"), "")))
-                },
-                {json : "cpu", js : "cpu", typ : u(undefined, a(""))},
-                {
-                  json : "dependencies",
-                  js : "dependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "description",
-                  js : "description",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "devDependencies",
-                  js : "devDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "directories",
-                  js : "directories",
-                  typ : u(undefined, r("Directories"))
-                },
-                {json : "dist", js : "dist", typ : u(undefined, r("Dist"))},
-                {json : "engines", js : "engines", typ : u(undefined, m(""))},
-                {
-                  json : "engineStrict",
-                  js : "engineStrict",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "esnext",
-                  js : "esnext",
-                  typ : u(undefined, u(r("EsnextObject"), ""))
-                },
-                {json : "files", js : "files", typ : u(undefined, a(""))},
-                {json : "homepage", js : "homepage", typ : u(undefined, "")},
-                {json : "keywords", js : "keywords", typ : u(undefined, a(""))},
-                {json : "license", js : "license", typ : u(undefined, "")},
-                {
-                  json : "licenses",
-                  js : "licenses",
-                  typ : u(undefined, a(r("License")))
-                },
-                {json : "main", js : "main", typ : u(undefined, "")},
-                {
-                  json : "maintainers",
-                  js : "maintainers",
-                  typ : u(undefined, a(u(r("PersonObject"), "")))
-                },
-                {json : "man", js : "man", typ : u(undefined, u(a(""), ""))},
-                {json : "module", js : "module", typ : u(undefined, "")},
-                {json : "name", js : "name", typ : u(undefined, "")},
-                {
-                  json : "optionalDependencies",
-                  js : "optionalDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {json : "os", js : "os", typ : u(undefined, a(""))},
-                {
-                  json : "peerDependencies",
-                  js : "peerDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "preferGlobal",
-                  js : "preferGlobal",
-                  typ : u(undefined, true)
-                },
-                {json : "private", js : "private", typ : u(undefined, true)},
-                {
-                  json : "publishConfig",
-                  js : "publishConfig",
-                  typ : u(undefined, m("any"))
-                },
-                {json : "readme", js : "readme", typ : u(undefined, "")},
-                {
-                  json : "repository",
-                  js : "repository",
-                  typ : u(undefined, u(r("RepositoryObject"), ""))
-                },
-                {
-                  json : "resolutions",
-                  js : "resolutions",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "scripts",
-                  js : "scripts",
-                  typ : u(undefined, r("Scripts"))
-                },
-                {json : "type", js : "type", typ : u(undefined, "")},
-                {json : "types", js : "types", typ : u(undefined, "")},
-                {json : "typings", js : "typings", typ : u(undefined, "")},
-                {json : "version", js : "version", typ : u(undefined, "")},
-                {
-                  json : "workspaces",
-                  js : "workspaces",
-                  typ : u(undefined, "any")
-                },
-                {
-                  json : "jspm",
-                  js : "jspm",
-                  typ : u(undefined, r("CoreProperties"))
-                },
-                {
-                  json : "bundleDependencies",
-                  js : "bundleDependencies",
-                  typ : u(undefined, a(""))
-                },
-                {
-                  json : "bundledDependencies",
-                  js : "bundledDependencies",
-                  typ : u(undefined, a(""))
-                },
+                {json: 'author', js: 'author', typ: u(undefined, u(r('PersonObject'), ''))},
+                {json: 'bin', js: 'bin', typ: u(undefined, u(m(''), ''))},
+                {json: 'bugs', js: 'bugs', typ: u(undefined, u(r('BugsObject'), ''))},
+                {json: 'config', js: 'config', typ: u(undefined, m('any'))},
+                {json: 'contributors', js: 'contributors', typ: u(undefined, a(u(r('PersonObject'), '')))},
+                {json: 'cpu', js: 'cpu', typ: u(undefined, a(''))},
+                {json: 'dependencies', js: 'dependencies', typ: u(undefined, m(''))},
+                {json: 'description', js: 'description', typ: u(undefined, '')},
+                {json: 'devDependencies', js: 'devDependencies', typ: u(undefined, m(''))},
+                {json: 'directories', js: 'directories', typ: u(undefined, r('Directories'))},
+                {json: 'dist', js: 'dist', typ: u(undefined, r('Dist'))},
+                {json: 'engines', js: 'engines', typ: u(undefined, m(''))},
+                {json: 'engineStrict', js: 'engineStrict', typ: u(undefined, true)},
+                {json: 'esnext', js: 'esnext', typ: u(undefined, u(r('EsnextObject'), ''))},
+                {json: 'files', js: 'files', typ: u(undefined, a(''))},
+                {json: 'homepage', js: 'homepage', typ: u(undefined, '')},
+                {json: 'keywords', js: 'keywords', typ: u(undefined, a(''))},
+                {json: 'license', js: 'license', typ: u(undefined, '')},
+                {json: 'licenses', js: 'licenses', typ: u(undefined, a(r('License')))},
+                {json: 'main', js: 'main', typ: u(undefined, '')},
+                {json: 'maintainers', js: 'maintainers', typ: u(undefined, a(u(r('PersonObject'), '')))},
+                {json: 'man', js: 'man', typ: u(undefined, u(a(''), ''))},
+                {json: 'module', js: 'module', typ: u(undefined, '')},
+                {json: 'name', js: 'name', typ: u(undefined, '')},
+                {json: 'optionalDependencies', js: 'optionalDependencies', typ: u(undefined, m(''))},
+                {json: 'os', js: 'os', typ: u(undefined, a(''))},
+                {json: 'peerDependencies', js: 'peerDependencies', typ: u(undefined, m(''))},
+                {json: 'preferGlobal', js: 'preferGlobal', typ: u(undefined, true)},
+                {json: 'private', js: 'private', typ: u(undefined, true)},
+                {json: 'publishConfig', js: 'publishConfig', typ: u(undefined, m('any'))},
+                {json: 'readme', js: 'readme', typ: u(undefined, '')},
+                {json: 'repository', js: 'repository', typ: u(undefined, u(r('RepositoryObject'), ''))},
+                {json: 'resolutions', js: 'resolutions', typ: u(undefined, m(''))},
+                {json: 'scripts', js: 'scripts', typ: u(undefined, r('Scripts'))},
+                {json: 'type', js: 'type', typ: u(undefined, '')},
+                {json: 'types', js: 'types', typ: u(undefined, '')},
+                {json: 'typings', js: 'typings', typ: u(undefined, '')},
+                {json: 'version', js: 'version', typ: u(undefined, '')},
+                {json: 'workspaces', js: 'workspaces', typ: u(undefined, 'any')},
+                {json: 'jspm', js: 'jspm', typ: u(undefined, r('CoreProperties'))},
+                {json: 'bundleDependencies', js: 'bundleDependencies', typ: u(undefined, a(''))},
+                {json: 'bundledDependencies', js: 'bundledDependencies', typ: u(undefined, a(''))},
               ],
-              "any"),
-      "PersonObject" :
+              'any'),
+      'PersonObject':
           o(
               [
-                {json : "email", js : "email", typ : u(undefined, "")},
-                {json : "name", js : "name", typ : ""},
-                {json : "url", js : "url", typ : u(undefined, "")},
+                {json: 'email', js: 'email', typ: u(undefined, '')},
+                {json: 'name', js: 'name', typ: ''},
+                {json: 'url', js: 'url', typ: u(undefined, '')},
               ],
-              "any"),
-      "BugsObject" :
+              'any'),
+      'BugsObject':
           o(
               [
-                {json : "email", js : "email", typ : u(undefined, "")},
-                {json : "url", js : "url", typ : u(undefined, "")},
+                {json: 'email', js: 'email', typ: u(undefined, '')},
+                {json: 'url', js: 'url', typ: u(undefined, '')},
               ],
-              "any"),
-      "Directories" :
+              'any'),
+      'Directories':
           o(
               [
-                {json : "bin", js : "bin", typ : u(undefined, "")},
-                {json : "doc", js : "doc", typ : u(undefined, "")},
-                {json : "example", js : "example", typ : u(undefined, "")},
-                {json : "lib", js : "lib", typ : u(undefined, "")},
-                {json : "man", js : "man", typ : u(undefined, "")},
-                {json : "test", js : "test", typ : u(undefined, "")},
+                {json: 'bin', js: 'bin', typ: u(undefined, '')},
+                {json: 'doc', js: 'doc', typ: u(undefined, '')},
+                {json: 'example', js: 'example', typ: u(undefined, '')},
+                {json: 'lib', js: 'lib', typ: u(undefined, '')},
+                {json: 'man', js: 'man', typ: u(undefined, '')},
+                {json: 'test', js: 'test', typ: u(undefined, '')},
               ],
-              "any"),
-      "Dist" :
+              'any'),
+      'Dist':
           o(
               [
-                {json : "shasum", js : "shasum", typ : u(undefined, "")},
-                {json : "tarball", js : "tarball", typ : u(undefined, "")},
+                {json: 'shasum', js: 'shasum', typ: u(undefined, '')},
+                {json: 'tarball', js: 'tarball', typ: u(undefined, '')},
               ],
-              "any"),
-      "EsnextObject" :
+              'any'),
+      'EsnextObject':
           o(
               [
-                {json : "browser", js : "browser", typ : u(undefined, "")},
-                {json : "main", js : "main", typ : u(undefined, "")},
+                {json: 'browser', js: 'browser', typ: u(undefined, '')},
+                {json: 'main', js: 'main', typ: u(undefined, '')},
               ],
-              ""),
-      "CoreProperties" :
+              ''),
+      'CoreProperties':
           o(
               [
-                {
-                  json : "author",
-                  js : "author",
-                  typ : u(undefined, u(r("PersonObject"), ""))
-                },
-                {json : "bin", js : "bin", typ : u(undefined, u(m(""), ""))},
-                {
-                  json : "bugs",
-                  js : "bugs",
-                  typ : u(undefined, u(r("BugsObject"), ""))
-                },
-                {json : "config", js : "config", typ : u(undefined, m("any"))},
-                {
-                  json : "contributors",
-                  js : "contributors",
-                  typ : u(undefined, a(u(r("PersonObject"), "")))
-                },
-                {json : "cpu", js : "cpu", typ : u(undefined, a(""))},
-                {
-                  json : "dependencies",
-                  js : "dependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "description",
-                  js : "description",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "devDependencies",
-                  js : "devDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "directories",
-                  js : "directories",
-                  typ : u(undefined, r("Directories"))
-                },
-                {json : "dist", js : "dist", typ : u(undefined, r("Dist"))},
-                {json : "engines", js : "engines", typ : u(undefined, m(""))},
-                {
-                  json : "engineStrict",
-                  js : "engineStrict",
-                  typ : u(undefined, true)
-                },
-                {
-                  json : "esnext",
-                  js : "esnext",
-                  typ : u(undefined, u(r("EsnextObject"), ""))
-                },
-                {json : "files", js : "files", typ : u(undefined, a(""))},
-                {json : "homepage", js : "homepage", typ : u(undefined, "")},
-                {json : "keywords", js : "keywords", typ : u(undefined, a(""))},
-                {json : "license", js : "license", typ : u(undefined, "")},
-                {
-                  json : "licenses",
-                  js : "licenses",
-                  typ : u(undefined, a(r("License")))
-                },
-                {json : "main", js : "main", typ : u(undefined, "")},
-                {
-                  json : "maintainers",
-                  js : "maintainers",
-                  typ : u(undefined, a(u(r("PersonObject"), "")))
-                },
-                {json : "man", js : "man", typ : u(undefined, u(a(""), ""))},
-                {json : "module", js : "module", typ : u(undefined, "")},
-                {json : "name", js : "name", typ : u(undefined, "")},
-                {
-                  json : "optionalDependencies",
-                  js : "optionalDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {json : "os", js : "os", typ : u(undefined, a(""))},
-                {
-                  json : "peerDependencies",
-                  js : "peerDependencies",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "preferGlobal",
-                  js : "preferGlobal",
-                  typ : u(undefined, true)
-                },
-                {json : "private", js : "private", typ : u(undefined, true)},
-                {
-                  json : "publishConfig",
-                  js : "publishConfig",
-                  typ : u(undefined, m("any"))
-                },
-                {json : "readme", js : "readme", typ : u(undefined, "")},
-                {
-                  json : "repository",
-                  js : "repository",
-                  typ : u(undefined, u(r("RepositoryObject"), ""))
-                },
-                {
-                  json : "resolutions",
-                  js : "resolutions",
-                  typ : u(undefined, m(""))
-                },
-                {
-                  json : "scripts",
-                  js : "scripts",
-                  typ : u(undefined, r("Scripts"))
-                },
-                {json : "type", js : "type", typ : u(undefined, "")},
-                {json : "types", js : "types", typ : u(undefined, "")},
-                {json : "typings", js : "typings", typ : u(undefined, "")},
-                {json : "version", js : "version", typ : u(undefined, "")},
-                {
-                  json : "workspaces",
-                  js : "workspaces",
-                  typ : u(undefined, "any")
-                },
+                {json: 'author', js: 'author', typ: u(undefined, u(r('PersonObject'), ''))},
+                {json: 'bin', js: 'bin', typ: u(undefined, u(m(''), ''))},
+                {json: 'bugs', js: 'bugs', typ: u(undefined, u(r('BugsObject'), ''))},
+                {json: 'config', js: 'config', typ: u(undefined, m('any'))},
+                {json: 'contributors', js: 'contributors', typ: u(undefined, a(u(r('PersonObject'), '')))},
+                {json: 'cpu', js: 'cpu', typ: u(undefined, a(''))},
+                {json: 'dependencies', js: 'dependencies', typ: u(undefined, m(''))},
+                {json: 'description', js: 'description', typ: u(undefined, '')},
+                {json: 'devDependencies', js: 'devDependencies', typ: u(undefined, m(''))},
+                {json: 'directories', js: 'directories', typ: u(undefined, r('Directories'))},
+                {json: 'dist', js: 'dist', typ: u(undefined, r('Dist'))},
+                {json: 'engines', js: 'engines', typ: u(undefined, m(''))},
+                {json: 'engineStrict', js: 'engineStrict', typ: u(undefined, true)},
+                {json: 'esnext', js: 'esnext', typ: u(undefined, u(r('EsnextObject'), ''))},
+                {json: 'files', js: 'files', typ: u(undefined, a(''))},
+                {json: 'homepage', js: 'homepage', typ: u(undefined, '')},
+                {json: 'keywords', js: 'keywords', typ: u(undefined, a(''))},
+                {json: 'license', js: 'license', typ: u(undefined, '')},
+                {json: 'licenses', js: 'licenses', typ: u(undefined, a(r('License')))},
+                {json: 'main', js: 'main', typ: u(undefined, '')},
+                {json: 'maintainers', js: 'maintainers', typ: u(undefined, a(u(r('PersonObject'), '')))},
+                {json: 'man', js: 'man', typ: u(undefined, u(a(''), ''))},
+                {json: 'module', js: 'module', typ: u(undefined, '')},
+                {json: 'name', js: 'name', typ: u(undefined, '')},
+                {json: 'optionalDependencies', js: 'optionalDependencies', typ: u(undefined, m(''))},
+                {json: 'os', js: 'os', typ: u(undefined, a(''))},
+                {json: 'peerDependencies', js: 'peerDependencies', typ: u(undefined, m(''))},
+                {json: 'preferGlobal', js: 'preferGlobal', typ: u(undefined, true)},
+                {json: 'private', js: 'private', typ: u(undefined, true)},
+                {json: 'publishConfig', js: 'publishConfig', typ: u(undefined, m('any'))},
+                {json: 'readme', js: 'readme', typ: u(undefined, '')},
+                {json: 'repository', js: 'repository', typ: u(undefined, u(r('RepositoryObject'), ''))},
+                {json: 'resolutions', js: 'resolutions', typ: u(undefined, m(''))},
+                {json: 'scripts', js: 'scripts', typ: u(undefined, r('Scripts'))},
+                {json: 'type', js: 'type', typ: u(undefined, '')},
+                {json: 'types', js: 'types', typ: u(undefined, '')},
+                {json: 'typings', js: 'typings', typ: u(undefined, '')},
+                {json: 'version', js: 'version', typ: u(undefined, '')},
+                {json: 'workspaces', js: 'workspaces', typ: u(undefined, 'any')},
               ],
-              "any"),
-      "License" :
+              'any'),
+      'License':
           o(
               [
-                {json : "type", js : "type", typ : u(undefined, "")},
-                {json : "url", js : "url", typ : u(undefined, "")},
+                {json: 'type', js: 'type', typ: u(undefined, '')},
+                {json: 'url', js: 'url', typ: u(undefined, '')},
               ],
-              "any"),
-      "RepositoryObject" :
+              'any'),
+      'RepositoryObject':
           o(
               [
-                {json : "directory", js : "directory", typ : u(undefined, "")},
-                {json : "type", js : "type", typ : u(undefined, "")},
-                {json : "url", js : "url", typ : u(undefined, "")},
+                {json: 'directory', js: 'directory', typ: u(undefined, '')},
+                {json: 'type', js: 'type', typ: u(undefined, '')},
+                {json: 'url', js: 'url', typ: u(undefined, '')},
               ],
-              "any"),
-      "Scripts" :
+              'any'),
+      'Scripts':
           o(
               [
-                {json : "install", js : "install", typ : u(undefined, "")},
-                {
-                  json : "postinstall",
-                  js : "postinstall",
-                  typ : u(undefined, "")
-                },
-                {json : "postpack", js : "postpack", typ : u(undefined, "")},
-                {
-                  json : "postpublish",
-                  js : "postpublish",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "postrestart",
-                  js : "postrestart",
-                  typ : u(undefined, "")
-                },
-                {json : "poststart", js : "poststart", typ : u(undefined, "")},
-                {json : "poststop", js : "poststop", typ : u(undefined, "")},
-                {json : "posttest", js : "posttest", typ : u(undefined, "")},
-                {
-                  json : "postuninstall",
-                  js : "postuninstall",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "postversion",
-                  js : "postversion",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "preinstall",
-                  js : "preinstall",
-                  typ : u(undefined, "")
-                },
-                {json : "prepack", js : "prepack", typ : u(undefined, "")},
-                {json : "prepare", js : "prepare", typ : u(undefined, "")},
-                {
-                  json : "prepublish",
-                  js : "prepublish",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "prepublishOnly",
-                  js : "prepublishOnly",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "prerestart",
-                  js : "prerestart",
-                  typ : u(undefined, "")
-                },
-                {json : "prestart", js : "prestart", typ : u(undefined, "")},
-                {json : "prestop", js : "prestop", typ : u(undefined, "")},
-                {json : "pretest", js : "pretest", typ : u(undefined, "")},
-                {
-                  json : "preuninstall",
-                  js : "preuninstall",
-                  typ : u(undefined, "")
-                },
-                {
-                  json : "preversion",
-                  js : "preversion",
-                  typ : u(undefined, "")
-                },
-                {json : "publish", js : "publish", typ : u(undefined, "")},
-                {json : "restart", js : "restart", typ : u(undefined, "")},
-                {json : "start", js : "start", typ : u(undefined, "")},
-                {json : "stop", js : "stop", typ : u(undefined, "")},
-                {json : "test", js : "test", typ : u(undefined, "")},
-                {json : "uninstall", js : "uninstall", typ : u(undefined, "")},
-                {json : "version", js : "version", typ : u(undefined, "")},
+                {json: 'install', js: 'install', typ: u(undefined, '')},
+                {json: 'postinstall', js: 'postinstall', typ: u(undefined, '')},
+                {json: 'postpack', js: 'postpack', typ: u(undefined, '')},
+                {json: 'postpublish', js: 'postpublish', typ: u(undefined, '')},
+                {json: 'postrestart', js: 'postrestart', typ: u(undefined, '')},
+                {json: 'poststart', js: 'poststart', typ: u(undefined, '')},
+                {json: 'poststop', js: 'poststop', typ: u(undefined, '')},
+                {json: 'posttest', js: 'posttest', typ: u(undefined, '')},
+                {json: 'postuninstall', js: 'postuninstall', typ: u(undefined, '')},
+                {json: 'postversion', js: 'postversion', typ: u(undefined, '')},
+                {json: 'preinstall', js: 'preinstall', typ: u(undefined, '')},
+                {json: 'prepack', js: 'prepack', typ: u(undefined, '')},
+                {json: 'prepare', js: 'prepare', typ: u(undefined, '')},
+                {json: 'prepublish', js: 'prepublish', typ: u(undefined, '')},
+                {json: 'prepublishOnly', js: 'prepublishOnly', typ: u(undefined, '')},
+                {json: 'prerestart', js: 'prerestart', typ: u(undefined, '')},
+                {json: 'prestart', js: 'prestart', typ: u(undefined, '')},
+                {json: 'prestop', js: 'prestop', typ: u(undefined, '')},
+                {json: 'pretest', js: 'pretest', typ: u(undefined, '')},
+                {json: 'preuninstall', js: 'preuninstall', typ: u(undefined, '')},
+                {json: 'preversion', js: 'preversion', typ: u(undefined, '')},
+                {json: 'publish', js: 'publish', typ: u(undefined, '')},
+                {json: 'restart', js: 'restart', typ: u(undefined, '')},
+                {json: 'start', js: 'start', typ: u(undefined, '')},
+                {json: 'stop', js: 'stop', typ: u(undefined, '')},
+                {json: 'test', js: 'test', typ: u(undefined, '')},
+                {json: 'uninstall', js: 'uninstall', typ: u(undefined, '')},
+                {json: 'version', js: 'version', typ: u(undefined, '')},
               ],
-              ""),
+              ''),
     };
 export {packageSchema};

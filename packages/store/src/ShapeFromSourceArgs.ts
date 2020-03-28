@@ -20,9 +20,8 @@ import {Source, SourceArgs} from './store';
  *  }
  * }
  */
-export type ShapeFromSourceArgs<TSources extends SourceArgs|undefined> =
-    TSources extends Source<infer U>? U : {
-  [P in keyof TSources] :
-      TSources[P] extends Source<infer V>? V : TSources[P] extends
-          SourceArgs | undefined ? ShapeFromSourceArgs<TSources[P]>: never;
+export type ShapeFromSourceArgs<TSources extends SourceArgs|undefined> = TSources extends Source<infer U>? U : {
+  [P in keyof TSources]: TSources[P] extends Source<infer V>? V : TSources[P] extends SourceArgs | undefined ?
+      ShapeFromSourceArgs<TSources[P]>:
+      never;
 };

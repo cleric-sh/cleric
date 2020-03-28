@@ -8,7 +8,7 @@ export const convertRouteMapToRoutes = (routeMap: RouteMap): Route[] => {
     return {
       name,
       ...rest,
-      children : children ? convertRouteMapToRoutes(children) : undefined,
+      children: children ? convertRouteMapToRoutes(children) : undefined,
     };
   });
 };
