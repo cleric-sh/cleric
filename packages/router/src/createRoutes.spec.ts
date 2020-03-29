@@ -1,6 +1,6 @@
 import {createRoutes} from './createRoutes';
 
-import {route, routes, RoutesArgs, RouteArgs} from './route';
+import {route, routes} from './route';
 import * as t from 'io-ts';
 import {RoutesState} from '.';
 

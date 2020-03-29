@@ -6,7 +6,7 @@
         {
             "label": "Watch TS Errors",
             "type": "shell",
-            "command": "tsc",
+            "command": "./node_modules/typescript/bin/tsc",
             "args": [
                 "-w",
                 "-p",
