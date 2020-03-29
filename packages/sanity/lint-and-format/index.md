@@ -1,5 +1,7 @@
 # Linting and formatting
 
+Accurate as of 2020-03-29.
+
 ## Linting
 
 It's pretty much eslint vs tslint.
@@ -42,4 +44,12 @@ ESLint:
 
 ## Recommendation: GTS v2, eslint, prettier
 
-Extend GTS v2, which is build on top of eslint and prettier.
+Extend GTS v2, which is build on top of eslint and prettier. Don't use clang-format, it looks like it's being left to the C world.
+
+## Configuration notes
+
+In a monorepo, node_modules folders in child packages won't be ignored by default.
+To avoid eslint and prettier running on all your node_modules and dist files, create 
+.prettierignore and .eslintignore files that exclude **/node_modules and **/dist paths.
+
+Also, ´gts fix´ out of the box doesn't run on tsx/jsx files. You can use eslint --fix instead.
