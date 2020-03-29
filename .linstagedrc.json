@@ -1,0 +1,11 @@
+{
+    "linters": {
+        "**/*.{ts,tsx,js,jsx,json,html}": [
+            "eslint --fix",
+            "sortier"
+        ]
+    },
+    "ignore": [
+        "**/yarn.lock"
+    ]
+}

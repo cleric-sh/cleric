@@ -7,7 +7,7 @@
     "ws": "run.env ./scripts/workspace.sh",
     "git:c": "run.env ./scripts/git-commit.sh",
     "git:cp": "run.env ./scripts/git-commit-and-push.sh",
-    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx ."
+    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx . && sortier ."
   },
   "workspaces": {
     "packages": [
@@ -19,6 +19,7 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
+    "@snowcoders/sortier": "^3.0.2",
     "@types/jest": "^25.1.3",
     "@types/node": "^10.0.3",
     "husky": "^4.2.3",
@@ -27,15 +28,5 @@
     "lint-staged": "^10.0.9",
     "ts-jest": "^25.2.0",
     "typescript": "~3.8.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix"
-    ]
   }
 }
