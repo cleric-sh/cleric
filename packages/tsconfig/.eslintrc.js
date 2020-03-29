@@ -21,10 +21,12 @@ module.exports = {
       }
     },
     {
-      // Rules specifically for typescript files.
+      // Rules specifically for typescript test & spec files.
       files: [
         "*.spec.ts",
-        "*.spec.tsx"
+        "*.test.ts",
+        "*.spec.tsx",
+        "*.test.tsx"
       ],
       rules: {
         // In typescript, the no-undef rule returns false positives when working with types and interfaces.
