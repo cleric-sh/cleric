@@ -3,12 +3,12 @@ import fnva1 from '@sindresorhus/fnv1a';
 import {HashState} from '.';
 import {createHash} from './createHash';
 
-export const updateHash = (
-  hashState: HashState<any>,
+export const updateHash = <T>(
+  hashState: HashState<T>,
   path: string[],
-  value: any,
+  value: unknown,
   depth = 0
-) => {
+): HashState<T> => {
   if (depth < path.length) {
     const targetName = path[depth];
     const targetNode = hashState[targetName];
@@ -28,6 +28,6 @@ export const updateHash = (
 
     return hashState;
   } else {
-    return createHash(value);
+    return createHash(value) as HashState<T>;
   }
 };

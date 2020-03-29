@@ -1,8 +1,11 @@
-import {from} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {createStore} from './createStore';
 import {convertArgsToProps} from './convertArgsToProps';
 import {isSubscribable} from './guards';
-import {Source, SourceArgs} from './store';
+import {checks, check, Pass} from '@cleric/common';
+import {Extends} from 'Any/_api';
+import {SourceProps} from '.';
+import {Source, SourceArgs, Store, SliceApiI} from './store';
 
 describe('buildSourceObservables', () => {
   it('converts all props into observables', () => {
@@ -15,7 +18,27 @@ describe('buildSourceObservables', () => {
         blah: [1],
       },
     };
+
+    checks([
+      check<
+        Extends<
+          typeof props,
+          {
+            one: Source<number>;
+            two: Source<number>;
+            three: Source<{}>;
+            four: {blah: Source<number>};
+          }
+        >,
+        1,
+        Pass
+      >(),
+    ]);
+    checks([check<Extends<Store<{}>, SliceApiI<{}>>, 1, Pass>()]);
+    checks([check<Extends<typeof props, SourceArgs>, 1, Pass>()]);
+
     const sourceObservables = convertArgsToProps(props);
+
     expect(isSubscribable(sourceObservables.one)).toBe(true);
     expect(isSubscribable(sourceObservables.two)).toBe(true);
     expect(isSubscribable(sourceObservables.three)).toBe(true);

@@ -1,9 +1,10 @@
 import {isArrayLike} from 'lodash';
 import {from, isObservable, Observable, Subscription} from 'rxjs';
 
-import {convertArgsToProps} from './convertArgsToProps';
-import {isSlice, isSource, isSubscribable} from './guards';
-import {Slice, Source, SourceArgs, SourceProps} from './store';
+import {convertArgsToProps} from '../convertArgsToProps';
+import {isSlice, isSource, isSubscribable} from '../guards';
+import {Slice, Source, SourceArgs, SourceProps} from '../store';
+import {ReducerObservables} from './ReducerObservables';
 
 export type ReducerObject<TState> = {
   [P in keyof TState]?: Reducer<TState[P]>;
@@ -20,14 +21,6 @@ export type ReducerBuilder<TState, TSourceArgs extends SourceArgs> = (
   sources: SourceProps<TSourceArgs>,
   state: Slice<TState>
 ) => Reducer<TState>;
-
-export type ReducerObservables<TState> =
-  | Observable<TState>
-  | {
-      [P in keyof TState]: TState[P] extends Source<infer U>
-        ? Observable<U>
-        : ReducerObservables<TState[P]>;
-    };
 
 export const connectReducer = <TState>(
   slice: Slice<TState>,

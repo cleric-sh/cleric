@@ -12,7 +12,8 @@
     "@types/node": "^13.9.5"
   },
   "dependencies": {
+    "@cleric/common": "0.0.9",
     "@sindresorhus/fnv1a": "^2.0.0",
-    "@cleric/common": "0.0.9"
+    "ts-toolbelt": "^6.3.6"
   }
 }

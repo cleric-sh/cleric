@@ -3,7 +3,8 @@ import {HashState} from '@cleric/hash';
 import {Observable, ObservableInput, Subject, Subscribable} from 'rxjs';
 import {DeepPartial} from 'utility-types';
 
-import {ReducerBuilder} from './createReducer';
+import {ReducerBuilder} from './reducer/createReducer';
+import {Compute} from 'Any/_api';
 
 /**
  * The (serializable) type of the underlying state that also tracks the state's
@@ -38,12 +39,14 @@ type Valid<T> = Types.FilterExclude<T, Function>;
  * Provides the API for interacting with a Store based on a specified state's
  * Type.
  */
-export type Store<T> = StoreApiI<T> &
-  {
-    [P in keyof Valid<T>]-?: Valid<T>[P] extends object
-      ? Slice<Valid<T>[P]>
-      : SliceApiI<Valid<T>[P]>;
-  };
+export type Store<T> = Compute<
+  StoreApiI<T> &
+    {
+      [P in keyof Valid<T>]-?: Valid<T>[P] extends object
+        ? Slice<Valid<T>[P]>
+        : SliceApiI<Valid<T>[P]>;
+    }
+>;
 
 /**
  * Public functionality exposed by the root Store node.

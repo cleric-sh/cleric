@@ -43,7 +43,7 @@ const isValidProperty = (key: string | number | symbol) => {
  * invoked from Store.
  * @param node
  */
-const createProxy = (store: StoreI<any>, node: SliceI<any>) => {
+const createProxy = (store: StoreI<unknown>, node: SliceI<unknown>) => {
   return new Proxy(node, {
     get: (target, key, receiver) => {
       if (!Reflect.has(target, key) && isValidProperty(key)) {

@@ -20,16 +20,16 @@ import {
  * modify it. It applies set and merge operations, re-calculating hash values as
  * required, ensuring only value-based changes are emitted.
  */
-export class SliceNode implements SliceApiI<any> {
-  private _state$: Observable<State<any>>;
+export class SliceNode implements SliceApiI<unknown> {
+  private _state$: Observable<State<unknown>>;
   public readonly path: string[];
 
   constructor(
-    private store: StoreI<any>,
-    private parent: SliceI<any>,
+    private store: StoreI<unknown>,
+    private parent: SliceI<unknown>,
     name: string
   ) {
-    this._state$ = (undefined as any) as Observable<State<any>>;
+    this._state$ = (undefined as unknown) as Observable<State<unknown>>;
     this.path = [...parent.path, name];
   }
 
@@ -37,9 +37,9 @@ export class SliceNode implements SliceApiI<any> {
     if (!this._state$) {
       this._state$ = this.parent.state$.pipe(
         map(
-          (state): State<any> => {
+          (state): State<unknown> => {
             if (!state || !state.current)
-              return (undefined as any) as State<any>;
+              return (undefined as unknown) as State<unknown>;
             return {
               current: get(state.current, this.path[this.path.length - 1]),
               hash: get(state.hash, this.path[this.path.length - 1]),
@@ -62,11 +62,11 @@ export class SliceNode implements SliceApiI<any> {
     return this.state$.pipe(map(s => (s ? s.current : undefined)));
   }
 
-  $set = (state: any) => {
+  $set = (state: unknown) => {
     this.store.mutate([{path: this.path, state, type: 'SET'}]);
   };
 
-  $merge = (state: any) => {
+  $merge = (state: unknown) => {
     this.store.mutate([{path: this.path, state, type: 'MERGE'}]);
   };
 
@@ -74,7 +74,7 @@ export class SliceNode implements SliceApiI<any> {
     this.store.mutate([{path: this.path, state: undefined, type: 'DELETE'}]);
   };
 
-  $batch = (mutationFn: (mutator: Mutator<any>) => void) => {
+  $batch = (mutationFn: (mutator: Mutator<unknown>) => void) => {
     const [mutations, mutator] = createMutator();
     mutationFn(mutator);
     this.store.mutate(mutations);

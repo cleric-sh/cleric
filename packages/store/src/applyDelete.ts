@@ -5,7 +5,7 @@ import {set} from 'monolite';
 
 import {State} from './store';
 
-export const applyDelete = (state: State<any>, path: string[]) => {
+export const applyDelete = (state: State<unknown>, path: string[]) => {
   const {current: last, hash: lastHash} = state;
 
   const isRoot = !path || path.length <= 0;

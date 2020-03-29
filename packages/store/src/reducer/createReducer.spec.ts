@@ -1,8 +1,8 @@
 import {createReducer} from './createReducer';
 import {scan, map, withLatestFrom, tap, combineLatest} from 'rxjs/operators';
 import {Subject, BehaviorSubject} from 'rxjs';
-import {Source} from './store';
-import {createStore} from './createStore';
+import {Source} from '../store';
+import {createStore} from '../createStore';
 
 type State = {
   isLayoutExpanded: boolean;

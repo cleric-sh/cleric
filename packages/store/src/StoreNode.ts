@@ -29,7 +29,10 @@ import {
   State,
 } from './store';
 
-const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
+const applyMutation = (
+  state: State<unknown>,
+  mutation: Mutation
+): State<unknown> => {
   const {path, state: next} = mutation;
   if (mutation.type === 'SET') return applySet(state, path, next);
   if (mutation.type === 'MERGE') return applyMerge(state, path, next);
@@ -38,15 +41,15 @@ const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
 };
 
 const applyMutations = (
-  state: State<any>,
+  state: State<unknown>,
   mutations: Mutation[]
-): State<any> => {
+): State<unknown> => {
   return mutations.reduce(applyMutation, state);
 };
 
 const scanMutate: (
-  initial?: any
-) => OperatorFunction<Mutation[], State<any>> = initial => $ =>
+  initial?: unknown
+) => OperatorFunction<Mutation[], State<unknown>> = initial => $ =>
   initial
     ? $.pipe(startWith(createState(initial) as any), scan(applyMutations))
     : $.pipe(scan(applyMutations));
@@ -57,13 +60,13 @@ const scanMutate: (
  * operations, re-calculating hash values as required, ensuring only value-based
  * changes are emitted.
  */
-export class StoreNode implements StoreI<any> {
+export class StoreNode implements StoreI<unknown> {
   private mutations = new Subject<Mutation[]>();
-  public state$: Observable<State<any>>;
+  public state$: Observable<State<unknown>>;
   private subscription: Subscription;
   public readonly path: string[] = [];
 
-  constructor(initial?: any) {
+  constructor(initial?: unknown) {
     const mutation$ = this.mutations.pipe(
       scanMutate(initial),
       distinctUntilChanged(
@@ -93,7 +96,7 @@ export class StoreNode implements StoreI<any> {
     this.mutate([{path: this.path, state: undefined, type: 'DELETE'}]);
   };
 
-  $batch = (mutationFn: (mutator: Mutator<any>) => void) => {
+  $batch = (mutationFn: (mutator: Mutator<unknown>) => void) => {
     const [mutations, mutator] = createMutator();
     mutationFn(mutator);
     this.mutate(mutations);
