@@ -1,8 +1,7 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { checks, check, Pass } from '@cleric/common';
-import { GetApis } from '.';
-import { Any, List, Union } from 'ts-toolbelt';
-import { Configs } from './Configs';
+import {checks, check, Pass} from '@cleric/common';
+import {GetApis} from '.';
+import {Any, List, Union} from 'ts-toolbelt';
+import {Configs} from './Configs';
 
 describe('GetApis', () => {
   it('Returns APIs corresponding to key.', () => {

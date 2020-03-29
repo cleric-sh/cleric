@@ -1,9 +1,8 @@
 describe('marius-method', () => {
   it('should do stuff', () => {
-
     /**
- * Based on Marius Schulz's pattern: https://mariusschulz.com/blog/mixin-classes-in-typescript
- */
+     * Based on Marius Schulz's pattern: https://mariusschulz.com/blog/mixin-classes-in-typescript
+     */
     type Constructor<T = {}> = new (...args: any[]) => T;
 
     // Simple class
@@ -78,6 +77,5 @@ describe('marius-method', () => {
     const timestampedActivatableUserExample = new TimestampedActivatableUser();
     console.log(timestampedActivatableUserExample.timestamp);
     console.log(timestampedActivatableUserExample.isActivated);
-
   });
 });

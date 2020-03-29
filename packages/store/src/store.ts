@@ -10,13 +10,16 @@ import {ReducerBuilder} from './createReducer';
  * corresponding hash tree.
  */
 export type State<T> = {
-  current: T; hash: HashState<T>;
+  current: T;
+  hash: HashState<T>;
 };
 
-export type MutationType = 'DELETE'|'MERGE'|'SET';
+export type MutationType = 'DELETE' | 'MERGE' | 'SET';
 
 export type Mutation = {
-  path: string[]; state: any; type: MutationType;
+  path: string[];
+  state: any;
+  type: MutationType;
 };
 
 /**
@@ -24,7 +27,7 @@ export type Mutation = {
  * eachother. These implementations are used to communicate between nodes and
  * interact as necessary.
  */
-export interface INode {
+export interface NodeI {
   state$: Observable<State<any>>;
   path: string[];
 }
@@ -35,14 +38,17 @@ type Valid<T> = Types.FilterExclude<T, Function>;
  * Provides the API for interacting with a Store based on a specified state's
  * Type.
  */
-export type Store<T> = IStoreApi<T>&{
-  [P in keyof Valid<T>] -?: Valid<T>[P] extends object ? Slice<Valid<T>[P]>: ISliceApi<Valid<T>[P]>;
-};
+export type Store<T> = StoreApiI<T> &
+  {
+    [P in keyof Valid<T>]-?: Valid<T>[P] extends object
+      ? Slice<Valid<T>[P]>
+      : SliceApiI<Valid<T>[P]>;
+  };
 
 /**
  * Public functionality exposed by the root Store node.
  */
-export interface IStoreApi<T> extends ISliceApi<T> {
+export interface StoreApiI<T> extends SliceApiI<T> {
   /**
    * Disposes the Store, completing all observers and closing all dependent
    * subscriptions.
@@ -50,7 +56,7 @@ export interface IStoreApi<T> extends ISliceApi<T> {
   $dispose(): void;
 }
 
-export interface IStore<T> extends IStoreApi<T>, INode {
+export interface StoreI<T> extends StoreApiI<T>, NodeI {
   mutate(mutations: Mutation[]): void;
 }
 
@@ -58,17 +64,22 @@ export interface IStore<T> extends IStoreApi<T>, INode {
  * Provides the API for interacting with a Store based on a specified state's
  * Type at a particular slice of the store.
  */
-export type Slice<T> = ISliceApi<T>&{
-  [P in keyof Types.FilterExclude<T, Function>] -?: Types.FilterExclude<T, Function>[P] extends object ?
-      Slice<Types.FilterExclude<T, Function>[P]>:
-      ISliceApi<Types.FilterExclude<T, Function>[P]>;
-};
+export type Slice<T> = SliceApiI<T> &
+  {
+    [P in keyof Types.FilterExclude<T, Function>]-?: Types.FilterExclude<
+      T,
+      Function
+    >[P] extends object
+      ? Slice<Types.FilterExclude<T, Function>[P]>
+      : SliceApiI<Types.FilterExclude<T, Function>[P]>;
+  };
 
-export type Mutator<T> = IMutationApi<T>&{
-  [P in keyof T]: Mutator<T[P]>;
-};
+export type Mutator<T> = MutationApiI<T> &
+  {
+    [P in keyof T]: Mutator<T[P]>;
+  };
 
-export interface IMutationApi<T> {
+export interface MutationApiI<T> {
   /**
    * Sets the value of this Slice node's state.
    */
@@ -90,7 +101,7 @@ export interface IMutationApi<T> {
  * Public functionality exposed by each slice node (including the root Store
  * node)
  */
-export interface ISliceApi<T> extends IMutationApi<T> {
+export interface SliceApiI<T> extends MutationApiI<T> {
   //   $current: T;
 
   //   $hash: HashState<T>;
@@ -106,13 +117,13 @@ export interface ISliceApi<T> extends IMutationApi<T> {
    * Mounts the specified module to this Slice node.
    */
   $mount: <TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
-      module: Module<T, TSourceArgs, TSinkArgs>,
-      sources: TSourceArgs,
-      ) => MountedModule<TSinkArgs>;
+    module: Module<T, TSourceArgs, TSinkArgs>,
+    sources: TSourceArgs
+  ) => MountedModule<TSinkArgs>;
 }
 
 export type AsyncFunction<T> = {
-  (): PromiseLike<T>
+  (): PromiseLike<T>;
 };
 
 /**
@@ -125,7 +136,10 @@ export type AsyncFunction<T> = {
  * prevents Typescript from emitting errors when the source's values don't
  * match.
  */
-export type Source<T> =|ISliceApi<T>|Exclude<ObservableInput<T>, Subscribable<never>>|AsyncFunction<T>;
+export type Source<T> =
+  | SliceApiI<T>
+  | Exclude<ObservableInput<T>, Subscribable<never>>
+  | AsyncFunction<T>;
 
 /**
  * An object that is used to specify the shape of related objects.
@@ -136,7 +150,7 @@ export type Source<T> =|ISliceApi<T>|Exclude<ObservableInput<T>, Subscribable<ne
  * values properly in other types that use Shape.
  */
 export type Shape = {
-  [key: string]: unknown
+  [key: string]: unknown;
 };
 
 /**
@@ -162,64 +176,82 @@ export type Shape = {
  * }
  */
 export type SourceArgsFromShape<TSpec extends Shape> = {
-  [P in keyof TSpec]:|Source<TSpec[P]>|SourceArgsFromShape<TSpec[P] extends Shape ? TSpec[P] : never>;
+  [P in keyof TSpec]:
+    | Source<TSpec[P]>
+    | SourceArgsFromShape<TSpec[P] extends Shape ? TSpec[P] : never>;
 };
 
 /**
  * An object whose properties are Sources.
  */
-export type SourceArgs =|Source<any>|{
-  [key: string]: Source<any>|SourceArgs|undefined;
-};
+export type SourceArgs =
+  | Source<any>
+  | {
+      [key: string]: Source<any> | SourceArgs | undefined;
+    };
 
 export type SourceProps<TSources extends SourceArgs> = {
-  [P in keyof TSources]: TSources[P] extends Source<infer U>?
-      Observable<U>:
-      SourceProps<TSources[P] extends SourceArgs ? TSources[P] : never>;
+  [P in keyof TSources]: TSources[P] extends Source<infer U>
+    ? Observable<U>
+    : SourceProps<TSources[P] extends SourceArgs ? TSources[P] : never>;
 };
 
 export type SinkArgs = {
-  [key: string]: Subject<any>|Function
+  [key: string]: Subject<any> | Function;
 };
 
 export type SinkProps<TSinkMap extends SinkArgs> = {
-  [P in keyof TSinkMap]: TSinkMap[P] extends Subject<infer E>?
-      (payload: E) => void :
-      TSinkMap[P] extends(payload: infer E) => any ? (payload: E) => void : never;
+  [P in keyof TSinkMap]: TSinkMap[P] extends Subject<infer E>
+    ? (payload: E) => void
+    : TSinkMap[P] extends (payload: infer E) => any
+    ? (payload: E) => void
+    : never;
 };
 
-export interface ISlice<T> extends ISliceApi<T>, INode {}
+export interface SliceI<T> extends SliceApiI<T>, NodeI {}
 
 type EffectArgs = {
-  [key: string]: Subscribable<any>
+  [key: string]: Subscribable<any>;
 };
 
-type EffectBuilder<TState, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs> = (
-    props: SourceProps<TSourceArgs>&SinkProps<TSinkArgs>,
-    state: Slice<TState>,
-    ) => EffectArgs;
+type EffectBuilder<
+  TState,
+  TSourceArgs extends SourceArgs,
+  TSinkArgs extends SinkArgs
+> = (
+  props: SourceProps<TSourceArgs> & SinkProps<TSinkArgs>,
+  state: Slice<TState>
+) => EffectArgs;
 
 export type MountableModule<TState, TSinkMap extends SinkArgs> = (
-    slice: Slice<TState>,
-    ) => MountedModule<TSinkMap>;
+  slice: Slice<TState>
+) => MountedModule<TSinkMap>;
 
 type SinkExports<TSinkMap extends SinkArgs> = {
-  [P in keyof TSinkMap]: TSinkMap[P] extends Observable<infer E>? Observable<E>: never;
+  [P in keyof TSinkMap]: TSinkMap[P] extends Observable<infer E>
+    ? Observable<E>
+    : never;
 };
 
 export type MountedModule<TSinkMap extends SinkArgs> = {
   dispose: () => void;
-}&SinkExports<TSinkMap>;
+} & SinkExports<TSinkMap>;
 
-export type ModuleSpec<TState, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs> = {
+export type ModuleSpec<
+  TState,
+  TSourceArgs extends SourceArgs,
+  TSinkArgs extends SinkArgs
+> = {
   sinks?: () => TSinkArgs;
   effects?: EffectBuilder<TState, TSourceArgs, TSinkArgs>;
   reducer?: ReducerBuilder<TState, TSourceArgs>;
 };
 
-export type Module<TState, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs> = (
-    sources: TSourceArgs,
-    ) => MountableModule<TState, TSinkArgs>;
+export type Module<
+  TState,
+  TSourceArgs extends SourceArgs,
+  TSinkArgs extends SinkArgs
+> = (sources: TSourceArgs) => MountableModule<TState, TSinkArgs>;
 
 /**
  * Args = as input, arguments of a function, as seen from outside the function.

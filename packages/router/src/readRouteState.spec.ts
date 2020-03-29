@@ -1,27 +1,27 @@
-import { route } from './route';
-import { readRouteState } from './readRouteState';
-import { SubscribeState } from 'router5';
+import {route} from './route';
+import {readRouteState} from './readRouteState';
+import {SubscribeState} from 'router5';
 import * as t from 'io-ts';
-import { RouteMap } from '.';
+import {RouteMap} from '.';
 
 describe('readRouteState', () => {
   it('should', () => {
     const routeMap = {
       TEST: {
         path: '/test',
-        codec: t.exact(t.type({ anotherValue: t.string })),
+        codec: t.exact(t.type({anotherValue: t.string})),
         children: {
-          NESTED: { path: '/nested', codec: t.exact(t.type({ id: t.number })) },
+          NESTED: {path: '/nested', codec: t.exact(t.type({id: t.number}))},
         },
       },
-      SECOND: { path: '/second', type: t.exact(t.type({ tag: t.string })) },
+      SECOND: {path: '/second', type: t.exact(t.type({tag: t.string}))},
     };
 
     const state: SubscribeState = {
       previousRoute: {
         name: 'SECOND',
         path: '/second',
-        params: { tag: 'foo' },
+        params: {tag: 'foo'},
       },
       route: {
         name: 'TEST.NESTED',
@@ -42,12 +42,12 @@ describe('readRouteState', () => {
       TEST: {
         NESTED: {
           name: 'TEST.NESTED',
-          params: { anotherValue: 'blah', id: 4 },
+          params: {anotherValue: 'blah', id: 4},
           path: '/test/nested',
           state,
         },
         name: 'TEST',
-        params: { anotherValue: 'blah' },
+        params: {anotherValue: 'blah'},
         path: '/test',
         state,
       },

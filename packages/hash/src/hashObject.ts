@@ -9,16 +9,16 @@ export const hashObject = <T>(value: T): HashState<T> => {
   }
 
   return Object.getOwnPropertyNames(value).reduce(
-             (node, propName) => {
-               // Add property hash under property name
-               node[propName] = createHash(value[propName]);
+    (node, propName) => {
+      // Add property hash under property name
+      node[propName] = createHash(value[propName]);
 
-               // Accumulate node's hash
-               node.__hash ^= fnva1(propName + node[propName].__hash);
+      // Accumulate node's hash
+      node.__hash ^= fnva1(propName + node[propName].__hash);
 
-               // Return object hash node so far
-               return node;
-             },
-             {__hash: 0},
-             ) as HashState<T>;
+      // Return object hash node so far
+      return node;
+    },
+    {__hash: 0}
+  ) as HashState<T>;
 };

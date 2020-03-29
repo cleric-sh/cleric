@@ -15,8 +15,8 @@ export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
     accName.push(name);
     accPath.push(node.path);
 
-    const params = node.codec ?.decode(state.route.params);
-    if (params?._tag == 'Right') {
+    const params = node.codec?.decode(state.route.params);
+    if (params?._tag === 'Right') {
       accParams = {
         ...accParams,
         ...params.right,

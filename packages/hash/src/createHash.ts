@@ -26,5 +26,5 @@ export const createHash = <T>(value: T): HashState<T> => {
     return hashUndefined<T>(value);
   }
 
-  throw new Error('Can\'t hash values of type: ' + typeof value);
+  throw new Error("Can't hash values of type: " + typeof value);
 };

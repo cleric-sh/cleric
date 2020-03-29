@@ -1,7 +1,6 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { TError, TryCatch } from './TError';
-import { checks, check, Pass } from '@cleric/common';
-import { Any } from 'ts-toolbelt';
+import {TError} from './TError';
+import {checks, check, Pass} from '../ts-toolbelt/Test';
+import {Any} from 'ts-toolbelt';
 
 describe('TError', () => {
   it('Can use an abstract class as a Type error.', () => {
@@ -11,13 +10,18 @@ describe('TError', () => {
   });
 
   it('All TError messages are assignable to TError<string>', () => {
-    checks([check<Any.Extends<TError<'Some message'>, TError<string>>, 1, Pass>()]);
+    checks([
+      check<Any.Extends<TError<'Some message'>, TError<string>>, 1, Pass>(),
+    ]);
   });
 
   it('A TError message is assignable to TError of a union including it', () => {
     checks([
       check<
-        Any.Extends<TError<'Some message'>, TError<'Some message' | 'Some other message'>>,
+        Any.Extends<
+          TError<'Some message'>,
+          TError<'Some message' | 'Some other message'>
+        >,
         1,
         Pass
       >(),

@@ -1,20 +1,22 @@
 import {fusebox, sparky} from 'fuse-box';
+
 import path = require('path');
 
 class Context {
   runServer = false;
-  getConfig = () => fusebox({
-    entry: './src/index.ts',
-    target: 'server',
-    cache: true,
-    watch: {
-      paths: [path.join(__dirname, '/src')],
-    },
-    hmr: true,
-    logging: {
-      level: 'verbose',
-    },
-  });
+  getConfig = () =>
+    fusebox({
+      entry: './src/index.ts',
+      target: 'server',
+      cache: true,
+      watch: {
+        paths: [path.join(__dirname, '/src')],
+      },
+      hmr: true,
+      logging: {
+        level: 'verbose',
+      },
+    });
 }
 
 const {task} = sparky<Context>(Context);

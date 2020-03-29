@@ -1,5 +1,5 @@
-import { applyDelete } from './applyDelete';
-import { createState } from './createState';
+import {applyDelete} from './applyDelete';
+import {createState} from './createState';
 
 describe('applyDelete', () => {
   it('should set root state to undefined', () => {

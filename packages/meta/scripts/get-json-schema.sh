@@ -17,5 +17,5 @@ curl $url >> $SCHEMA_PATH
 yarn run quicktype -s schema $SCHEMA_PATH -o $INDEX_PATH
 
 # echo "import $*Schema from './$SCHEMA_FILENAME';" >> $INDEX_PATH
-echo -e "import $*Schema from './$SCHEMA_FILENAME';\n$(cat $INDEX_PATH)" > $INDEX_PATH
+echo -e "/* eslint-disable */\nimport $*Schema from './$SCHEMA_FILENAME';\n$(cat $INDEX_PATH)" > $INDEX_PATH
 echo "export { $*Schema };" >> $INDEX_PATH

@@ -1,35 +1,39 @@
 import {validate} from 'jsonschema';
-import {isArray, isObject, isString} from 'util';
 
 export type Json<T extends object> = {
-  (value: string): string; (value: T): string; (value: TemplateStringsArray, ...placeholders: string[]): string;
+  (value: string): string;
+  (value: T): string;
+  (value: TemplateStringsArray, ...placeholders: string[]): string;
 };
 
-export const json = <T extends object>(schema: object|undefined): Json<T> =>
-    (value: unknown, ...placeholders: string[]) => {
-      let input: object|undefined = undefined;
+export const json = <T extends object>(schema: object | undefined): Json<T> => (
+  value: unknown,
+  ...placeholders: string[]
+) => {
+  let input: object | undefined = undefined;
 
-      if (isString(value)) {
-        input = JSON.parse(value);
-      } else if (isArray(value)) {
-        let result = '';
+  if (typeof value === 'string') {
+    input = JSON.parse(value);
+  } else if (Array.isArray(value)) {
+    let result = '';
 
-        // interleave the literals with the placeholders
-        for (let i = 0; i < placeholders.length; i++) {
-          result += value[i];
-          result += placeholders[i];
-        }
+    // interleave the literals with the placeholders
+    for (let i = 0; i < placeholders.length; i++) {
+      result += value[i];
+      result += placeholders[i];
+    }
 
-        // add the last literal
-        result += value[value.length - 1];
-        input = JSON.parse(result);
-      } else if (isObject(value)) {
-        input = value as object;
-      }
+    // add the last literal
+    result += value[value.length - 1];
+    input = JSON.parse(result);
+  } else if (value !== null && typeof value === 'object') {
+    input = value as object;
+  }
 
-      if (schema) {
-        const validationResult = validate(input, schema);
-        if (validationResult.errors.length > 0) console.log(validationResult.errors);
-      }
-      return JSON.stringify(input, null, 2);
-    };
+  if (schema) {
+    const validationResult = validate(input, schema);
+    if (validationResult.errors.length > 0)
+      console.log(validationResult.errors);
+  }
+  return JSON.stringify(input, null, 2);
+};

@@ -15,6 +15,7 @@
     "dependencies": {
         "@cleric/common": "^0.0.9",
         "@sindresorhus/fnv1a": "^2.0.0",
+        "io-ts": "^2.1.2",
         "lodash": "^4.17.5",
         "monolite": "0.8.0",
         "rxjs": "^6.3.2",

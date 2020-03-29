@@ -1,6 +1,6 @@
-import { convertRouteMapToRoutes } from './convertRouteMapToRoutes';
-import { route, RoutesArgs } from './route';
-import { Route } from 'router5';
+import {convertRouteMapToRoutes} from './convertRouteMapToRoutes';
+import {route, RoutesArgs} from './route';
+import {Route} from 'router5';
 
 describe('convertRouteMapToRoutes', () => {
   it('should create a Route node for each property', () => {
@@ -13,7 +13,7 @@ describe('convertRouteMapToRoutes', () => {
           }),
         },
       }),
-      SECOND: route({ path: '/second' }),
+      SECOND: route({path: '/second'}),
     };
     const actual = convertRouteMapToRoutes(routeMap);
     const expected: Route[] = [

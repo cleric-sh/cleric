@@ -1,6 +1,6 @@
-import { buildSourceInput } from './buildSourceInput';
-import { isObservable, from } from 'rxjs';
-import { createStore } from './createStore';
+import {buildSourceInput} from './buildSourceInput';
+import {isObservable, from} from 'rxjs';
+import {createStore} from './createStore';
 
 describe('buildSourceInput', () => {
   it('returns observable from array', () => {

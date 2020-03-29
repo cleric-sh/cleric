@@ -1,8 +1,8 @@
-import { from } from 'rxjs';
-import { createStore } from './createStore';
-import { convertArgsToProps } from './convertArgsToProps';
-import { isSubscribable } from './guards';
-import { Source, SourceArgs } from './store';
+import {from} from 'rxjs';
+import {createStore} from './createStore';
+import {convertArgsToProps} from './convertArgsToProps';
+import {isSubscribable} from './guards';
+import {Source, SourceArgs} from './store';
 
 describe('buildSourceObservables', () => {
   it('converts all props into observables', () => {

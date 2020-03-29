@@ -21,8 +21,7 @@ export const buildSourceInput = <T>(source: Source<T>): Observable<T> => {
     const promise = source();
     if (isPromise(promise)) {
       return from(promise) as Observable<T>;
-    } else
-      throw 'Return value from function was not Promise-like.';
+    } else throw 'Return value from function was not Promise-like.';
   }
 
   throw `Param 'source' is not a valid Source type.`;

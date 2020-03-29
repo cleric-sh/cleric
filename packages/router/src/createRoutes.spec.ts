@@ -1,8 +1,8 @@
-import { createRoutes } from './createRoutes';
+import {createRoutes} from './createRoutes';
 
-import { route, routes, RoutesArgs, RouteArgs } from './route';
+import {route, routes, RoutesArgs, RouteArgs} from './route';
 import * as t from 'io-ts';
-import { RoutesState } from '.';
+import {RoutesState} from '.';
 
 describe('createRoutes', () => {
   it('should', () => {
@@ -13,9 +13,9 @@ describe('createRoutes', () => {
     const children = routes({
       SUBMITTED: route({
         path: '/submitted',
-        type: { id: t.number },
+        type: {id: t.number},
       }),
-      CANCELLED: route({ path: '/cancelled' }),
+      CANCELLED: route({path: '/cancelled'}),
     });
 
     const spec = routes({
@@ -25,7 +25,7 @@ describe('createRoutes', () => {
         children: routes({
           REGISTER: route({
             path: '/register',
-            type: { ask: t.string },
+            type: {ask: t.string},
             children,
           }),
         }),
@@ -34,7 +34,7 @@ describe('createRoutes', () => {
         path: '/second',
         // type: { foo: t.number },
         children: {
-          OW: route({ path: '/foo', type: { grr: t.string } }),
+          OW: route({path: '/foo', type: {grr: t.string}}),
         },
       }),
     });

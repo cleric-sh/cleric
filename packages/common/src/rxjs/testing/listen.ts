@@ -9,4 +9,5 @@ import {toArray} from 'rxjs/internal/operators/toArray';
  *
  * @param $: An input that is interpretable as an observable stream.
  */
-export const listen = <T>($: ObservableInput<T>) => from($).pipe(toArray()).toPromise();
+export const listen = <T>($: ObservableInput<T>) =>
+  from($).pipe(toArray()).toPromise();

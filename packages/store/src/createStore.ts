@@ -1,5 +1,5 @@
 import {SliceNode} from './SliceNode';
-import {ISlice, IStore, Store} from './store';
+import {SliceI, StoreI, Store} from './store';
 import {StoreNode} from './StoreNode';
 
 // Todo: Refactor this to take an io-ts schema instead.
@@ -9,12 +9,29 @@ import {StoreNode} from './StoreNode';
 // properties that don't exist and returning proxies.
 
 const reserved = [
-  'Array',         'Date',     'eval',      'function', 'hasOwnProperty', 'Infinity', 'isFinite', 'isNaN',
-  'isPrototypeOf', 'length',   'Math',      'NaN',      'name',           'Number',   'Object',   'prototype',
-  'String',        'toString', 'undefined', 'valueOf',
+  'Array',
+  'Date',
+  'eval',
+  'function',
+  'hasOwnProperty',
+  'Infinity',
+  'isFinite',
+  'isNaN',
+  'isPrototypeOf',
+  'length',
+  'Math',
+  'NaN',
+  'name',
+  'Number',
+  'Object',
+  'prototype',
+  'String',
+  'toString',
+  'undefined',
+  'valueOf',
 ];
 
-const isValidProperty = (key: string|number|symbol) => {
+const isValidProperty = (key: string | number | symbol) => {
   if (typeof key === 'symbol') return false;
   if (typeof key === 'number') return true;
   const isReserved = reserved.includes(key);
@@ -26,7 +43,7 @@ const isValidProperty = (key: string|number|symbol) => {
  * invoked from Store.
  * @param node
  */
-const createProxy = (store: IStore<any>, node: ISlice<any>) => {
+const createProxy = (store: StoreI<any>, node: SliceI<any>) => {
   return new Proxy(node, {
     get: (target, key, receiver) => {
       if (!Reflect.has(target, key) && isValidProperty(key)) {

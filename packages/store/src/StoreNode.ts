@@ -1,12 +1,33 @@
-import {ConnectableObservable, Observable, OperatorFunction, Subject, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, publishReplay, scan, startWith} from 'rxjs/operators';
+import {
+  ConnectableObservable,
+  Observable,
+  OperatorFunction,
+  Subject,
+  Subscription,
+} from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  publishReplay,
+  scan,
+  startWith,
+} from 'rxjs/operators';
 
 import {applyDelete} from './applyDelete';
 import {applyMerge} from './applyMerge';
 import {applySet} from './applySet';
 import {createMutator} from './createMutator';
 import {createState} from './createState';
-import {IStore, Module, MountedModule, Mutation, Mutator, SinkArgs, SourceArgs, State,} from './store';
+import {
+  StoreI,
+  Module,
+  MountedModule,
+  Mutation,
+  Mutator,
+  SinkArgs,
+  SourceArgs,
+  State,
+} from './store';
 
 const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
   const {path, state: next} = mutation;
@@ -16,12 +37,19 @@ const applyMutation = (state: State<any>, mutation: Mutation): State<any> => {
   return state;
 };
 
-const applyMutations = (state: State<any>, mutations: Mutation[]): State<any> => {
+const applyMutations = (
+  state: State<any>,
+  mutations: Mutation[]
+): State<any> => {
   return mutations.reduce(applyMutation, state);
 };
 
-const scanMutate: (initial?: any) => OperatorFunction<Mutation[], State<any>> = initial => $ =>
-    initial ? $.pipe(startWith(createState(initial) as any), scan(applyMutations)) : $.pipe(scan(applyMutations));
+const scanMutate: (
+  initial?: any
+) => OperatorFunction<Mutation[], State<any>> = initial => $ =>
+  initial
+    ? $.pipe(startWith(createState(initial) as any), scan(applyMutations))
+    : $.pipe(scan(applyMutations));
 
 /**
  * A StoreNode is the root wrapper for the current state, allowing slices to be
@@ -29,7 +57,7 @@ const scanMutate: (initial?: any) => OperatorFunction<Mutation[], State<any>> = 
  * operations, re-calculating hash values as required, ensuring only value-based
  * changes are emitted.
  */
-export class StoreNode implements IStore<any> {
+export class StoreNode implements StoreI<any> {
   private mutations = new Subject<Mutation[]>();
   public state$: Observable<State<any>>;
   private subscription: Subscription;
@@ -37,13 +65,13 @@ export class StoreNode implements IStore<any> {
 
   constructor(initial?: any) {
     const mutation$ = this.mutations.pipe(
-                          scanMutate(initial),
-                          distinctUntilChanged(
-                              (x, y) => x === y,
-                              state => state.hash.__hash,
-                              ),
-                          publishReplay(1),
-                          ) as ConnectableObservable<any>;
+      scanMutate(initial),
+      distinctUntilChanged(
+        (x, y) => x === y,
+        state => state.hash.__hash
+      ),
+      publishReplay(1)
+    ) as ConnectableObservable<any>;
 
     this.subscription = mutation$.connect();
     this.state$ = mutation$;
@@ -83,9 +111,9 @@ export class StoreNode implements IStore<any> {
   };
 
   $mount<T, TSourceArgs extends SourceArgs, TSinkArgs extends SinkArgs>(
-      module: Module<T, TSourceArgs, TSinkArgs>,
-      sources: TSourceArgs,
-      ): MountedModule<TSinkArgs> {
+    module: Module<T, TSourceArgs, TSinkArgs>,
+    sources: TSourceArgs
+  ): MountedModule<TSinkArgs> {
     const mountableModule = module(sources);
     return mountableModule(this as any) as MountedModule<TSinkArgs>;
   }

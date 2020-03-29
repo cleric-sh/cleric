@@ -1,4 +1,4 @@
-import { checks, check, Pass, Fail } from './Test';
+import {checks, check, Pass, Fail} from './Test';
 
 describe('Test', () => {
   it('should allow us to import and actually execute checks, check functions', () => {

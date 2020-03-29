@@ -1,15 +1,22 @@
-import { mapSourcesToProps } from './mapSourcesToProps';
-import { Subject, BehaviorSubject, Observable, from, ObservableInput, isObservable } from 'rxjs';
-import { toArray } from 'rxjs/operators';
-import { SourceArgs, Shape, SourceArgsFromShape } from './store';
-import { ShapeFromSourceArgs } from './ShapeFromSourceArgs';
+import {mapSourcesToProps} from './mapSourcesToProps';
+import {
+  Subject,
+  BehaviorSubject,
+  Observable,
+  from,
+  ObservableInput,
+  isObservable,
+} from 'rxjs';
+import {toArray} from 'rxjs/operators';
+import {SourceArgs, Shape, SourceArgsFromShape} from './store';
+import {ShapeFromSourceArgs} from './ShapeFromSourceArgs';
 
 describe('mapSourcesToProps', () => {
   it('should return an observable with all observables combined in shape', () => {
     const actual: Observable<{
       arr: number;
       obs: string;
-      obj: { narf: number };
+      obj: {narf: number};
       // asy: string;
     }> = mapSourcesToProps({
       arr: [1],
@@ -30,7 +37,7 @@ describe('mapSourcesToProps', () => {
       //   return 'foo';
       // },
     });
-    actual.subscribe(({ arr, obs, obj }) => console.log(arr, obs, obj));
+    actual.subscribe(({arr, obs, obj}) => console.log(arr, obs, obj));
     expect(isObservable(actual)).toBe(true);
   });
 
@@ -57,13 +64,13 @@ const sources: SourceArgs = {
 };
 
 function sourceToSpec<TSources extends SourceArgs>(
-  sources: TSources,
+  sources: TSources
 ): ShapeFromSourceArgs<TSources> {
   return null as any;
 }
 
 function specToSources<TSpec extends Shape>(
-  sources: SourceArgsFromShape<TSpec>,
+  sources: SourceArgsFromShape<TSpec>
 ): SourceArgsFromShape<TSpec> {
   return null as any;
 }

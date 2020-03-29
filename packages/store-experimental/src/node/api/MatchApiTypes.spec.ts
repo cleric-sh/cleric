@@ -1,9 +1,9 @@
-import { ApiTypes } from '.';
-import { checks, check, Pass } from '@cleric/common';
-import { MatchApiTypes } from './MatchApiTypes';
-import { Foo } from '../../configs/test/types/Foo';
-import { FooBar } from '../../configs/test/types/FooBar';
-import { Unknown } from '../../configs/test/types/Unknown';
+import {ApiTypes} from '.';
+import {checks, check, Pass} from '@cleric/common';
+import {MatchApiTypes} from './MatchApiTypes';
+import {Foo} from '../../configs/test/types/Foo';
+import {FooBar} from '../../configs/test/types/FooBar';
+import {Unknown} from '../../configs/test/types/Unknown';
 import '../../configs/test';
 
 describe('MatchApiTypes', () => {
@@ -11,7 +11,7 @@ describe('MatchApiTypes', () => {
     type actual = MatchApiTypes<'Test', typeof FooBar>;
     type expected = [
       ApiTypes<'Test', typeof FooBar>['FooApi'],
-      ApiTypes<'Test', typeof FooBar>['BarApi'],
+      ApiTypes<'Test', typeof FooBar>['BarApi']
     ];
 
     checks([check<actual, expected, Pass>()]);

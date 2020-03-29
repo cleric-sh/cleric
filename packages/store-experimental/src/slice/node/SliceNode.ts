@@ -7,8 +7,11 @@ import {ApiNode} from '../../node/ApiNode';
 import {SliceParentProps} from './SliceParentProps';
 import {SliceParentType} from './SliceParentType';
 
-export class SliceNode < TConfigKey extends ConfigKey, P extends SliceParentType, K extends keyof
-SliceParentProps<P>> extends ApiNode<TConfigKey, SliceParentProps<P>[K]> {
+export class SliceNode<
+  TConfigKey extends ConfigKey,
+  P extends SliceParentType,
+  K extends keyof SliceParentProps<P>
+> extends ApiNode<TConfigKey, SliceParentProps<P>[K]> {
   private _$?: Observable<SliceParentProps<P>[K]>;
 
   get $() {
@@ -19,6 +22,9 @@ SliceParentProps<P>> extends ApiNode<TConfigKey, SliceParentProps<P>[K]> {
   }
 
   constructor(public $parent: ApiNode<TConfigKey, P>, public $name: K) {
-    super($parent.$configKey, ($parent.$type.props as SliceParentProps<P>)[$name]);
+    super(
+      $parent.$configKey,
+      ($parent.$type.props as SliceParentProps<P>)[$name]
+    );
   }
 }

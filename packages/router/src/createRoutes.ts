@@ -13,7 +13,11 @@ import {readRouteState} from './readRouteState';
 import {RouteArgs, RoutesArgs} from './route';
 
 const convertRoutesArgsToRouteMap = (args: RoutesArgs): RouteMap => {
-  const convertRouteArgsToRouteNode = ({type, children, ...rest}: RouteArgs<{}>): RouteNode<{}> => ({
+  const convertRouteArgsToRouteNode = ({
+    type,
+    children,
+    ...rest
+  }: RouteArgs<{}>): RouteNode<{}> => ({
     codec: type ? t.exact(t.type(type)) : undefined,
     children: children ? convertRoutesArgsToRouteMap(children) : undefined,
     ...rest,
@@ -26,22 +30,25 @@ const convertRoutesArgsToRouteMap = (args: RoutesArgs): RouteMap => {
 };
 
 export const createRoutes = <TRoutesArgs extends RoutesArgs>(
-    routesArgs: TRoutesArgs,
-    ): Store<RoutesState<TRoutesArgs>> => {
+  routesArgs: TRoutesArgs
+): Store<RoutesState<TRoutesArgs>> => {
   const routeMap = convertRoutesArgsToRouteMap(routesArgs);
   const routes: Route[] = convertRouteMapToRoutes(routeMap);
   const router = createRouter(routes);
   const router$ = from((router as any) as Subscribable<SubscribeState>);
   const store = createStore<RoutesState<TRoutesArgs>>({} as any);
 
-  const RouterModule = createModule<any, {router: Source<SubscribeState>}>('Router')({
-    reducer: ({router}) => router.pipe(map(state => readRouteState(routeMap, state))),
+  const RouterModule = createModule<any, {router: Source<SubscribeState>}>(
+    'Router'
+  )({
+    reducer: ({router}) =>
+      router.pipe(map(state => readRouteState(routeMap, state))),
   });
   store.$mount(RouterModule, {router: router$});
   router.usePlugin(
-      browserPlugin({
-        useHash: false,
-      }),
+    browserPlugin({
+      useHash: false,
+    })
   );
   router.start();
   return store;

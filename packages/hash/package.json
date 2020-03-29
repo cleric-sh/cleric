@@ -4,5 +4,15 @@
   "description": "Fast in-memory object hashing, that can be incrementally updated.",
   "main": "src/index.ts",
   "author": "Sebastian Nemeth",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">8.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.5"
+  },
+  "dependencies": {
+    "@sindresorhus/fnv1a": "^2.0.0",
+    "@cleric/common": "0.0.9"
+  }
 }

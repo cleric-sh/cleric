@@ -1,11 +1,19 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { marbles } from 'rxjs-marbles';
-import { map, reduce, elementAt, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { Subject, BehaviorSubject, from, of } from 'rxjs';
-import { createStore } from './createStore';
-import { createModule } from './_createModule';
-import { Store, Source } from './store';
-import { listen } from '@cleric/common';
+import {marbles} from 'rxjs-marbles';
+import {
+  map,
+  reduce,
+  elementAt,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import {Subject, BehaviorSubject, from, of} from 'rxjs';
+import {createStore} from './createStore';
+import {createModule} from './_createModule';
+import {Store, Source} from './store';
+import {listen} from '@cleric/common';
+import {performance} from 'perf_hooks';
 
 interface SecondValState {
   nestedVal: number;
@@ -120,7 +128,9 @@ describe('StoreNode', () => {
     expect(await _storeValues).toMatchObject([INITIAL_STATE, SECOND_STATE]);
 
     // At the nestedVal level, we don't get any new values, so we should only have the initial value, once.
-    expect(await _nestedValValues).toMatchObject([INITIAL_STATE.secondVal.nestedVal]);
+    expect(await _nestedValValues).toMatchObject([
+      INITIAL_STATE.secondVal.nestedVal,
+    ]);
   });
 
   it('should only propogate changes when merging different values', async () => {
@@ -158,7 +168,9 @@ describe('StoreNode', () => {
     ]);
 
     // At the nestedVal level, we don't get any new values, so we should only have the initial value, once.
-    expect(await _nestedValValues).toMatchObject([INITIAL_STATE.secondVal.nestedVal]);
+    expect(await _nestedValValues).toMatchObject([
+      INITIAL_STATE.secondVal.nestedVal,
+    ]);
   });
 
   it('should only propogate changes when deleting existing values', async () => {
@@ -226,7 +238,7 @@ describe('StoreNode', () => {
     const store = createStore(initial);
     const _store = listen(store.$);
 
-    store.$merge({ myValue: { nested: 2 } });
+    store.$merge({myValue: {nested: 2}});
 
     store.$dispose();
 
@@ -280,7 +292,7 @@ describe('StoreNode', () => {
     const store = createStore(initial);
     const _store = listen(store.$);
 
-    store.myValue.$merge({ nested: { deeperNested: 2 } });
+    store.myValue.$merge({nested: {deeperNested: 2}});
 
     store.$dispose();
 
@@ -332,7 +344,10 @@ describe('StoreNode', () => {
 
     expect(await _firstVal).toMatchObject([INITIAL_STATE.firstVal]);
 
-    expect(await _nestedVal).toMatchObject([INITIAL_STATE.secondVal.nestedVal, 42]);
+    expect(await _nestedVal).toMatchObject([
+      INITIAL_STATE.secondVal.nestedVal,
+      42,
+    ]);
   });
 
   it('should allow no initial state', async () => {
@@ -360,7 +375,7 @@ describe('StoreNode', () => {
 
     type MyExampleSources = {
       onOff: Source<boolean>;
-      something: { moreCh: Source<string> };
+      something: {moreCh: Source<string>};
       myExtraSource: Source<number>;
     };
 
@@ -374,38 +389,42 @@ describe('StoreNode', () => {
     //   return null;
     // }
 
-    const MyExampleModule = createModule<MyExampleState, MyExampleSources>('MY_EXAMPLE_MODULE')({
+    const MyExampleModule = createModule<MyExampleState, MyExampleSources>(
+      'MY_EXAMPLE_MODULE'
+    )({
       sinks: () => ({
         didSomething: new Subject<number>(),
       }),
-      reducer: ({ myExtraSource }) => ({
+      reducer: ({myExtraSource}) => ({
         someNestedValue: {
           somethingElse: $ =>
             $.pipe(
               withLatestFrom(myExtraSource),
-              map(([_, x]) => _ + x),
+              map(([_, x]) => _ + x)
             ),
         },
       }),
-      effects: ({ didSomething, onOff }, { someNestedValue: { $set: setSnv } }) => {
+      effects: ({didSomething, onOff}, {someNestedValue: {$set: setSnv}}) => {
         return {
           DO_SOMETHING: onOff.pipe(
             tap(isOn => {
               if (isOn) {
-                setSnv({ somethingElse: 42 });
+                setSnv({somethingElse: 42});
                 didSomething(42);
               } else {
-                setSnv({ somethingElse: 0 });
+                setSnv({somethingElse: 0});
                 didSomething(0);
               }
-            }),
+            })
           ),
-          DO_SOMETHING_ELSE: onOff.pipe(tap(onOrOff => console.log('turned: ' + onOrOff))),
+          DO_SOMETHING_ELSE: onOff.pipe(
+            tap(onOrOff => console.log('turned: ' + onOrOff))
+          ),
         };
       },
     });
 
-    const store = createStore<{ foo: MyExampleState; bar: MyExampleState }>({
+    const store = createStore<{foo: MyExampleState; bar: MyExampleState}>({
       foo: {
         blah: 'blah',
         someNestedValue: {
@@ -489,11 +508,11 @@ describe('StoreNode', () => {
 
       // These operations are all incremental, and should trigger minimal changes to the object graph.
       store.secondVal.nestedVal.$set(4);
-      store.secondVal.$merge({ nestedVal: 7 });
-      store.secondVal.$merge({ secondNestedValue: 1117 });
+      store.secondVal.$merge({nestedVal: 7});
+      store.secondVal.$merge({secondNestedValue: 1117});
       store.secondVal.nestedVal.$set(3);
-      store.secondVal.$merge({ nestedVal: 2 });
-      store.secondVal.$merge({ secondNestedValue: 1116 });
+      store.secondVal.$merge({nestedVal: 2});
+      store.secondVal.$merge({secondNestedValue: 1116});
     }
     store.$dispose();
     await _store;
@@ -522,7 +541,7 @@ describe('StoreNode', () => {
 
       m.arr.$delete();
       m.arr.$set(['darp']);
-      m.secondVal.$merge({ secondNestedValue: 111 });
+      m.secondVal.$merge({secondNestedValue: 111});
     });
 
     store.$dispose();
@@ -550,12 +569,12 @@ describe('StoreNode', () => {
     const subscription = store.$.subscribe(
       () => {},
       () => {},
-      () => (completed = true),
+      () => (completed = true)
     );
     const subscription2 = store.secondVal.$.subscribe(
       () => {},
       () => {},
-      () => (completed2 = true),
+      () => (completed2 = true)
     );
     expect(subscription.closed).toBe(false);
     expect(subscription2.closed).toBe(false);
@@ -573,7 +592,7 @@ describe('StoreNode', () => {
 test(
   'it should support marble tests',
   marbles(m => {
-    const values = { a: 1, b: 2, c: 3, d: 4 };
+    const values = {a: 1, b: 2, c: 3, d: 4};
 
     const source = m.hot('--^-a-b-c-|', values);
     const subs = '^-------!';
@@ -582,7 +601,7 @@ test(
     const destination = source.pipe(map(value => value + 1));
     m.expect(destination).toBeObservable(expected);
     m.expect(source).toHaveSubscriptions(subs);
-  }),
+  })
 );
 
 /**
@@ -591,9 +610,9 @@ test(
 test(
   'it should be able to replay a selected sequence of mutations',
   marbles(m => {
-    const payloads = { a: 10, b: 20, c: 30, d: 40, e: 50 };
+    const payloads = {a: 10, b: 20, c: 30, d: 40, e: 50};
     const actions = m.cold('---a-b-c-d-e---|', payloads);
-    const actionsToReplay = { a: [0, 1, 2, 3, 4], b: [0, 1, 2] };
+    const actionsToReplay = {a: [0, 1, 2, 3, 4], b: [0, 1, 2]};
     const initialState = 0;
     const reducer = (acc: any, val: any) => acc + val;
 
@@ -603,13 +622,13 @@ test(
       switchMap(arr =>
         of(...arr).pipe(
           mergeMap(index => actions.pipe(elementAt(index))),
-          reduce(reducer, initialState),
-        ),
-      ),
+          reduce(reducer, initialState)
+        )
+      )
     );
 
     currentState$.subscribe(v => {
       console.log(v);
     });
-  }),
+  })
 );

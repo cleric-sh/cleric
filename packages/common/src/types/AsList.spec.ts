@@ -1,5 +1,5 @@
-import { checks, check, Pass } from '@cleric/common';
-import { AsList } from './AsList';
+import {checks, check, Pass} from '../ts-toolbelt/Test';
+import {AsList} from './AsList';
 
 describe('List', () => {
   it('can ensure a list from single value or list', () => {

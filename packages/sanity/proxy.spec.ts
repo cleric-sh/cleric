@@ -1,10 +1,10 @@
 describe('proxy', () => {
   it('blah', () => {
-    interface IState<T extends IState<T>> {
+    interface State<T extends IState<T>> {
       thing: boolean;
     }
 
-    interface IBlah extends IState<IBlah> {}
+    type IBlah = State<IBlah>;
   });
 
   it('proxies internal member calls also', () => {

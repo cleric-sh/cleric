@@ -5,7 +5,7 @@ describe('io-ts', () => {
     const ExactType = t.exact(
       t.type({
         bar: t.number,
-      }),
+      })
     );
 
     const MyType = t.type({

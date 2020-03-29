@@ -1,5 +1,5 @@
-import { ShapeFromSourceArgs } from './ShapeFromSourceArgs';
-import { Source } from './store';
+import {ShapeFromSourceArgs} from './ShapeFromSourceArgs';
+import {Source} from './store';
 
 describe('ShapeFromSourceArgs', () => {
   it('returns the correct object inner type from SourceArgs', () => {

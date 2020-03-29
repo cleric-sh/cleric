@@ -8,7 +8,10 @@ import {AsList} from './AsList';
  *
  * This class should never be instantiated.
  */
-export abstract class TError<TMsg extends string|string[], TType extends string = 'TypeError'> {
+export abstract class TError<
+  TMsg extends string | string[],
+  TType extends string = 'TypeError'
+> {
   readonly __tag = '@cleric/common/TypeError';
   readonly __ErrorType?: TType;
   readonly __ErrorMsg?: TMsg;
@@ -22,6 +25,12 @@ export abstract class TError<TMsg extends string|string[], TType extends string 
  * The idea is to allow type errors to be augmented with additional messages
  * along the stack.
  */
-export type TryCatch<T, TMessage extends string = never> = T extends TError<infer M>?
-    TError<TMessage extends never ? M : List.Concat<AsList<Cast<M, string>>, [TMessage]>>:
-    Union.Exclude<T, TError<any>>;
+export type TryCatch<T, TMessage extends string = never> = T extends TError<
+  infer M
+>
+  ? TError<
+      TMessage extends never
+        ? M
+        : List.Concat<AsList<Cast<M, string>>, [TMessage]>
+    >
+  : Union.Exclude<T, TError<any>>;

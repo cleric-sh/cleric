@@ -1,7 +1,6 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { checks, check, Pass } from '@cleric/common';
+import {checks, check, Pass} from '@cleric/common';
 import * as t from 'io-ts';
-import { Extends } from 'Any/Extends';
+import {Extends} from 'Any/Extends';
 
 describe('t.InterfaceType', () => {
   it('is assignable to Any', () => {

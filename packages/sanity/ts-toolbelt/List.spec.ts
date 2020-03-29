@@ -1,6 +1,6 @@
-import { checks, check, Pass } from '@cleric/common';
-import { IsOr } from '@cleric/common/src/types';
-import { List } from 'ts-toolbelt';
+import {checks, check, Pass} from '@cleric/common';
+import {IsOr} from '@cleric/common/src/types';
+import {List} from 'ts-toolbelt';
 
 describe('List', () => {
   it('can ensure a list from single value or list', () => {

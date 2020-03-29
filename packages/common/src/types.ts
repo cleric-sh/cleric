@@ -17,7 +17,7 @@ export type KeysNotOfType<T, Type> = {
  * Defines the union of all keys of T that are an Array.
  */
 export type KeysOfArrays<T> = {
-  [Ref in keyof T]: T[Ref] extends Array<infer _>? Ref : never;
+  [Ref in keyof T]: T[Ref] extends Array<infer _> ? Ref : never;
 }[keyof T];
 
 export type FilterInclude<T, Type> = Pick<T, KeysOfType<T, Type>>;
@@ -25,7 +25,9 @@ export type FilterExclude<T, Type> = Pick<T, KeysNotOfType<T, Type>>;
 
 export type KnownKeys<T> = {
   [K in keyof T]: string extends K ? never : number extends K ? never : K;
-} extends {[_ in keyof T]: infer U} ? U : never;
+} extends {[_ in keyof T]: infer U}
+  ? U
+  : never;
 
 export type OnlyKnown<T extends Record<any, any>> = Pick<T, KnownKeys<T>>;
 

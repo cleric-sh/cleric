@@ -1,5 +1,5 @@
-import { Subject } from 'rxjs/internal/Subject';
-import { listen } from './listen';
+import {Subject} from 'rxjs/internal/Subject';
+import {listen} from './listen';
 
 describe('listen', () => {
   it('listens for all values and returns them async', async () => {

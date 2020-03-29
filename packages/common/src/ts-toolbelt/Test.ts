@@ -6,6 +6,7 @@ import {Test} from 'ts-toolbelt';
  * 'ts-toolbelt' only declares the ambient function definitions. This lets us
  * mix type-level and runtime tests.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (TT as any).default.Test = {
   checks: () => 1,
   check: () => 1 as 1,

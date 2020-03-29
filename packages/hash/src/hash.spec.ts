@@ -1,6 +1,6 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { updateHash } from './updateHash';
-import { createHash } from './createHash';
+import {updateHash} from './updateHash';
+import {createHash} from './createHash';
+import {performance} from 'perf_hooks';
 
 describe('hash', () => {
   it('should support arrays', () => {
@@ -94,6 +94,7 @@ describe('hash', () => {
       nested: string;
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const first = createHash<MyState>((undefined as any) as MyState);
     expect(first.__hash).toBe(0);
     console.log(first);
@@ -192,7 +193,7 @@ describe('hash', () => {
   const tree = createHash(state);
 
   const before = tree.__hash;
-  updateHash(tree, ['testing', 'something'], { deeper: 'TESTING' });
+  updateHash(tree, ['testing', 'something'], {deeper: 'TESTING'});
   const after = tree.__hash;
   expect(after).not.toBe(before);
 
@@ -211,8 +212,8 @@ describe('hash', () => {
   // Updating the hash should also be reasonably performant.
   start = performance.now();
   for (let i = 0; i < 100; i++) {
-    updateHash(tree, ['testing', 'something'], { deeper: 'TESTING' });
-    updateHash(tree, ['testing', 'something'], { deeper: 'hello world' });
+    updateHash(tree, ['testing', 'something'], {deeper: 'TESTING'});
+    updateHash(tree, ['testing', 'something'], {deeper: 'hello world'});
   }
   end = performance.now();
   console.log(`Took ${end - start} milliseconds`);

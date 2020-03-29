@@ -1,8 +1,8 @@
-import { createReducer } from './createReducer';
-import { scan, map, withLatestFrom, tap, combineLatest } from 'rxjs/operators';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { Source } from './store';
-import { createStore } from './createStore';
+import {createReducer} from './createReducer';
+import {scan, map, withLatestFrom, tap, combineLatest} from 'rxjs/operators';
+import {Subject, BehaviorSubject} from 'rxjs';
+import {Source} from './store';
+import {createStore} from './createStore';
 
 type State = {
   isLayoutExpanded: boolean;
@@ -32,28 +32,30 @@ describe('createReducer', () => {
   });
 
   it('does stuff', () => {
-    const Reducer = createReducer<State, Sources>(({ isMouseOver, toggleExpand }) => ({
-      // isLayoutExpanded: toggleExpand.pipe(scan(last => !last, false)),
-      // isSidebarExpanded: state.isLayoutExpanded.$.pipe(
-      //   withLatestFrom(isMouseOver),
-      //   map(([isExpanded, isMouseOver]) => isExpanded || isMouseOver),
-      // ),
-      // test: $ => $,
-      test: {
-        someNum: $ =>
-          $.pipe(
-            // tap(v => console.log(v)),
-            combineLatest(isMouseOver),
-            // tap(v => console.log(v)),
-            map(([_, isMouseOver]) => (isMouseOver ? 10 : 0)),
-            // tap(v => console.log(v)),
-          ),
-      },
-      // test: {
-      //   someNum: toggleExpand.pipe(scan(last => last + 1, 0)),
-      //   someProp: ['Foo'],
-      // },
-    }));
+    const Reducer = createReducer<State, Sources>(
+      ({isMouseOver, toggleExpand}) => ({
+        // isLayoutExpanded: toggleExpand.pipe(scan(last => !last, false)),
+        // isSidebarExpanded: state.isLayoutExpanded.$.pipe(
+        //   withLatestFrom(isMouseOver),
+        //   map(([isExpanded, isMouseOver]) => isExpanded || isMouseOver),
+        // ),
+        // test: $ => $,
+        test: {
+          someNum: $ =>
+            $.pipe(
+              // tap(v => console.log(v)),
+              combineLatest(isMouseOver),
+              // tap(v => console.log(v)),
+              map(([_, isMouseOver]) => (isMouseOver ? 10 : 0))
+              // tap(v => console.log(v)),
+            ),
+        },
+        // test: {
+        //   someNum: toggleExpand.pipe(scan(last => last + 1, 0)),
+        //   someProp: ['Foo'],
+        // },
+      })
+    );
 
     store.$.subscribe(m => console.log(m));
 

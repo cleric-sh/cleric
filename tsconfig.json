@@ -1,0 +1,11 @@
+{
+  "extends": "@cleric/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@cleric/*": [
+        "./packages/*"
+      ]
+    },
+  }
+}

@@ -1,8 +1,8 @@
-import { json } from './json';
+import {json} from './json';
 
 describe('jsonFile', () => {
   const jsonStr = '{ "test": "value" }';
-  const jsonObj = { test: 'value' };
+  const jsonObj = {test: 'value'};
   const formatted = `{
   "test": "value"
 }`;

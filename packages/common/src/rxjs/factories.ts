@@ -7,5 +7,7 @@ import {mapTo} from 'rxjs/operators';
  * @param on
  * @param off
  */
-export const onOff = (on: Observable<any>, off: Observable<any>): Observable<boolean> =>
-    merge(on.pipe(mapTo(true)), off.pipe(mapTo(false)));
+export const onOff = (
+  on: Observable<any>,
+  off: Observable<any>
+): Observable<boolean> => merge(on.pipe(mapTo(true)), off.pipe(mapTo(false)));
