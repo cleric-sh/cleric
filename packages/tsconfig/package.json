@@ -11,6 +11,7 @@
         ".prettierrc.js"
     ],
     "dependencies": {
-        "gts": "^2.0.0-alpha.8"
+        "gts": "^2.0.0-alpha.8",
+        "eslint-plugin-jest": "^23.8.2"
     }
 }
