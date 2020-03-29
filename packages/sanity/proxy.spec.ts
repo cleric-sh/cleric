@@ -1,6 +1,6 @@
 describe('proxy', () => {
   it('blah', () => {
-    interface State<T extends IState<T>> {
+    interface State<T extends State<T>> {
       thing: boolean;
     }
 
