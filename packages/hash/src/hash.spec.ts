@@ -68,7 +68,7 @@ describe('hash', () => {
     console.log(first);
     expect(firstHash).not.toBe(0);
 
-    const second = updateHash(first, ['nested'], false);
+    const second = updateHash(first, ['value'], false);
     const secondHash = second.__hash;
     console.log(second);
     expect(firstHash).not.toBe(secondHash);
