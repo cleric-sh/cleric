@@ -1,5 +1,5 @@
-import {SliceParentProps} from '@cleric/store-experimental/src/slice/node/SliceParentProps';
-import {SliceParentType} from '@cleric/store-experimental/src/slice/node/SliceParentType';
+import {SliceParentProps} from './SliceParentProps';
+import {SliceParentType} from './SliceParentType';
 import * as t from 'io-ts';
 import {pluck} from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ export type InterfaceApi<
 > = T extends SliceParentType
   ? {
       [K in keyof SliceParentProps<T>]: SliceParentProps<T>[K] extends t.Any
-        ? Slice<TConfigKey, T, K>
+        ? Slice<TConfigKey, T, SliceParentProps<T>[K]>
         : never;
     }
   : never;
@@ -38,7 +38,9 @@ export const InterfaceApi = createApi(
         get: () => {
           const _name = '__' + name;
           if (!slice[_name]) {
-            slice[_name] = createSlice(slice, name);
+            slice[_name] = createSlice(slice, type.props[name], parent$ =>
+              parent$.pipe(pluck(name))
+            );
           }
           return slice[_name];
         },

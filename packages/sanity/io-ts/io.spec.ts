@@ -1,4 +1,5 @@
 import * as t from 'io-ts';
+import {checks, check, Pass} from '@cleric/common';
 
 describe('io-ts', () => {
   it('can navigate through type graph', () => {
@@ -21,8 +22,9 @@ describe('io-ts', () => {
         bar: 2,
       },
     };
+    const subType = MyType.props.foo;
 
-    // MyType.props.;
+    checks([check<typeof subType, t.NumberC, Pass>()]);
 
     const d = MyType.decode({
       foo: 1,
