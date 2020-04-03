@@ -29,9 +29,10 @@ export const isIntersectionType = (
 export const IntersectionApi = createApi(
   'Intersection',
   isIntersectionType,
-  (configKey, type, slice) => {
+  (node, type) => {
     for (const subType of type.types) {
-      decorateNode(configKey, subType, slice);
+      // This might be a bad idea. Probably more intuitive to run the decorators on the merged type as one.
+      decorateNode(node, subType);
     }
   }
 );

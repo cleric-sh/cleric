@@ -4,13 +4,16 @@ import {ConfigKey, getConfig} from '../config';
 
 import {ApiNode} from './ApiNode';
 
-export const decorateNode = <TConfigKey extends ConfigKey, T extends t.Any>(
-  configKey: TConfigKey,
-  type: T,
-  node: ApiNode<TConfigKey, T>
+export const decorateNode = <
+  TConfigKey extends ConfigKey,
+  TNode extends t.Any,
+  T extends t.Any = TNode
+>(
+  node: ApiNode<TConfigKey, TNode>,
+  type: T
 ) => {
-  const {apis} = getConfig(configKey);
+  const {apis} = getConfig(node.$configKey);
   for (const api of apis) {
-    if (api.guard(type)) api.decorate(configKey, type as any, node as any);
+    if (api.guard(node.$type)) api.decorate(node as any, type as any);
   }
 };

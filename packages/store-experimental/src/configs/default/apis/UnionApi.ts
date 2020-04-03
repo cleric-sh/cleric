@@ -27,11 +27,10 @@ declare module '../../../node/api' {
 export const isUnionType = (type: t.Any): type is t.UnionType<t.Any[]> =>
   type instanceof t.UnionType;
 
-export const UnionApi = createApi('Union', isUnionType, (_, type, slice) => {
-  const configKey = slice.$configKey;
-  const subSlices: Slice<typeof configKey, t.Any, t.Any>[] = [];
+export const UnionApi = createApi('Union', isUnionType, (node, type) => {
+  const subSlices: Slice<ConfigKey, t.Any, t.Any>[] = [];
 
-  slice['$is'] = (guard: t.Any) => {
+  node['$is'] = (guard: t.Any) => {
     const index = type.types.findIndex(t => t === guard);
 
     if (index < 0) throw `Don't recognise this type...`;
@@ -39,7 +38,7 @@ export const UnionApi = createApi('Union', isUnionType, (_, type, slice) => {
     const subType = type.types[index];
 
     if (!subSlices[index]) {
-      subSlices[index] = new SliceNode(slice, subType, parent$ =>
+      subSlices[index] = new SliceNode(node, subType, parent$ =>
         parent$.pipe(filter(subType.is))
       ) as any;
     }

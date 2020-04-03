@@ -7,13 +7,9 @@ import {Bar} from '../types/Bar';
 export const BarGuard = (type: t.Any): type is typeof Bar =>
   type instanceof t.InterfaceType && !!type.props['bar'];
 
-export const BarApi = createApi(
-  'BarApi',
-  BarGuard,
-  (configKey, type, slice) => {
-    slice['doBar'] = () => 'Bar';
-  }
-);
+export const BarApi = createApi('BarApi', BarGuard, slice => {
+  slice['doBar'] = () => 'Bar';
+});
 
 export type BarApi<
   TConfigKey extends ConfigKey,

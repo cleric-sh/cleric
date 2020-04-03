@@ -1,5 +1,5 @@
-import {SliceParentProps} from './SliceParentProps';
-import {SliceParentType} from './SliceParentType';
+import {ParentProps} from './ParentProps';
+import {ParentType} from './ParentType';
 import * as t from 'io-ts';
 import {pluck} from 'rxjs/operators';
 
@@ -11,10 +11,10 @@ import {createSlice} from '../../../slice/createSlice';
 export type InterfaceApi<
   TConfigKey extends ConfigKey,
   T extends t.Any
-> = T extends SliceParentType
+> = T extends ParentType
   ? {
-      [K in keyof SliceParentProps<T>]: SliceParentProps<T>[K] extends t.Any
-        ? Slice<TConfigKey, T, SliceParentProps<T>[K]>
+      [K in keyof ParentProps<T>]: ParentProps<T>[K] extends t.Any
+        ? Slice<TConfigKey, T, ParentProps<T>[K]>
         : never;
     }
   : never;
@@ -32,17 +32,18 @@ export const isInterfaceType = (
 export const InterfaceApi = createApi(
   'Interface',
   isInterfaceType,
-  (configKey, type, slice) => {
+  (node, type) => {
+    const subSlices = {};
     for (const name in type.props) {
-      Object.defineProperty(slice, name, {
+      Object.defineProperty(node, name, {
         get: () => {
           const _name = '__' + name;
-          if (!slice[_name]) {
-            slice[_name] = createSlice(slice, type.props[name], parent$ =>
+          if (!subSlices[_name]) {
+            subSlices[_name] = createSlice(node, type.props[name], parent$ =>
               parent$.pipe(pluck(name))
             );
           }
-          return slice[_name];
+          return subSlices[_name];
         },
       });
     }
