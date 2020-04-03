@@ -1,22 +1,22 @@
-import {from, Observable} from 'rxjs';
-import {createStore} from './createStore';
-import {convertArgsToProps} from './convertArgsToProps';
-import {isSubscribable} from './guards';
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 import {Extends} from 'Any/_api';
+import {Observable, from} from 'rxjs';
 import {SourceProps} from '.';
-import {Source, SourceArgs, Store, SliceApiI} from './store';
+import {convertArgsToProps} from './convertArgsToProps';
+import {createStore} from './createStore';
+import {isSubscribable} from './guards';
+import {SliceApiI, Source, SourceArgs, Store} from './store';
 
 describe('buildSourceObservables', () => {
   it('converts all props into observables', () => {
     const store = createStore({});
     const props = {
-      one: [1, 2, 3],
-      two: from([4, 5, 6]),
-      three: store,
       four: {
         blah: [1],
       },
+      one: [1, 2, 3],
+      three: store,
+      two: from([4, 5, 6]),
     };
 
     checks([

@@ -1,6 +1,6 @@
 import {SliceNode} from '@cleric/store/src/SliceNode';
-import {SliceApiI} from '@cleric/store/src/store';
 import {StoreNode} from '@cleric/store/src/StoreNode';
+import {SliceApiI} from '@cleric/store/src/store';
 
 import {connect, inject} from './connect';
 import {useSinks} from './useSinks';

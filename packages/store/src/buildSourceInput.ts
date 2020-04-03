@@ -1,5 +1,5 @@
 import {isArrayLike} from 'lodash';
-import {from, Observable} from 'rxjs';
+import {Observable, from} from 'rxjs';
 
 import {isAsyncFunction, isPromise, isSlice, isSubscribable} from './guards';
 import {Source} from './store';

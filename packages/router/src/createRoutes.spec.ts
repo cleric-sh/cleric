@@ -1,8 +1,8 @@
 import {createRoutes} from './createRoutes';
 
-import {route, routes} from './route';
 import * as t from 'io-ts';
 import {RoutesState} from '.';
+import {route, routes} from './route';
 
 describe('createRoutes', () => {
   it('should', () => {
@@ -11,77 +11,77 @@ describe('createRoutes', () => {
     };
 
     const children = routes({
+      CANCELLED: route({path: '/cancelled'}),
       SUBMITTED: route({
         path: '/submitted',
         type: {id: t.number},
       }),
-      CANCELLED: route({path: '/cancelled'}),
     });
 
     const spec = routes({
       LOGIN: route({
-        path: '/login',
-        type: MyParams,
         children: routes({
           REGISTER: route({
+            children,
             path: '/register',
             type: {ask: t.string},
-            children,
           }),
         }),
+        path: '/login',
+        type: MyParams,
       }),
       SECOND: route({
-        path: '/second',
         // type: { foo: t.number },
         children: {
           OW: route({path: '/foo', type: {grr: t.string}}),
         },
+        path: '/second',
       }),
     });
 
     const s: RoutesState<typeof spec> = {
       LOGIN: {
-        name: 'LOGIN',
-        path: '/login',
-        params: {
-          blah: 'blah',
-        },
         REGISTER: {
-          name: 'LOGIN.REGISTER',
-          path: '/login/register',
-          params: {
-            blah: 'blah',
-            ask: 'ask',
+          CANCELLED: {
+            name: 'LOGIN.REGISTER.CANCELLED',
+            params: {
+              ask: 'ask',
+              blah: 'blah',
+            },
+            path: '/login/register/cancelled',
           },
           SUBMITTED: {
             name: 'LOGIN.REGISTER.SUBMITTED',
-            path: '/login/register/submitted',
             params: {
-              blah: 'blah',
               ask: 'ask',
+              blah: 'blah',
               id: 1,
             },
+            path: '/login/register/submitted',
           },
-          CANCELLED: {
-            name: 'LOGIN.REGISTER.CANCELLED',
-            path: '/login/register/cancelled',
-            params: {
-              ask: 'ask',
-              blah: 'blah',
-            },
+          name: 'LOGIN.REGISTER',
+          params: {
+            ask: 'ask',
+            blah: 'blah',
           },
+          path: '/login/register',
         },
+        name: 'LOGIN',
+        params: {
+          blah: 'blah',
+        },
+        path: '/login',
       },
       SECOND: {
-        name: 'SECOND',
-        path: '/second',
         OW: {
           name: 'SECOND.OW',
-          path: '/second/ow',
           params: {
             grr: 'grr',
           },
+          path: '/second/ow',
         },
+        name: 'SECOND',
+        path: '/second',
       },
     };
 

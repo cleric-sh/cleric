@@ -1,10 +1,10 @@
 import {createModule, createStore} from '@cleric/store';
 import {Source, Store} from '@cleric/store/src/store';
 import * as t from 'io-ts';
-import {createRouter, Route, SubscribeState} from 'router5';
+import {Route, SubscribeState, createRouter} from 'router5';
 // import { RouteState } from '.';
 import browserPlugin from 'router5-plugin-browser';
-import {from, Subscribable} from 'rxjs';
+import {Subscribable, from} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {RouteMap, RouteNode, RoutesState} from '.';
@@ -14,12 +14,12 @@ import {RouteArgs, RoutesArgs} from './route';
 
 const convertRoutesArgsToRouteMap = (args: RoutesArgs): RouteMap => {
   const convertRouteArgsToRouteNode = ({
-    type,
     children,
+    type,
     ...rest
   }: RouteArgs<{}>): RouteNode<{}> => ({
-    codec: type ? t.exact(t.type(type)) : undefined,
     children: children ? convertRoutesArgsToRouteMap(children) : undefined,
+    codec: type ? t.exact(t.type(type)) : undefined,
     ...rest,
   });
 

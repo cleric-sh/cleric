@@ -1,4 +1,4 @@
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 import {IsOr} from '@cleric/common/src/types';
 import {List} from 'ts-toolbelt';
 

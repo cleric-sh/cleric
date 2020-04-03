@@ -1,6 +1,6 @@
-import {checks, check, Pass} from '@cleric/common';
-import {GetApis} from '.';
+import {Pass, check, checks} from '@cleric/common';
 import {Any, List, Union} from 'ts-toolbelt';
+import {GetApis} from '.';
 import {Configs} from './Configs';
 
 describe('GetApis', () => {

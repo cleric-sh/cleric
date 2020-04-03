@@ -1,6 +1,6 @@
 import {SliceNode} from './SliceNode';
-import {SliceI, StoreI, Store} from './store';
 import {StoreNode} from './StoreNode';
+import {SliceI, Store, StoreI} from './store';
 
 // Todo: Refactor this to take an io-ts schema instead.
 // Remove the use of proxies (ES5, yaye!).
@@ -31,7 +31,7 @@ const reserved = [
   'valueOf',
 ];
 
-const isValidProperty = (key: string | number | symbol) => {
+const isValidProperty = (key: number | string | symbol) => {
   if (typeof key === 'symbol') return false;
   if (typeof key === 'number') return true;
   const isReserved = reserved.includes(key);

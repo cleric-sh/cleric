@@ -1,7 +1,7 @@
-import {ReducerObservables} from './ReducerObservables';
-import {checks, check, Pass} from '@cleric/common';
-import {Observable} from 'rxjs';
+import {Pass, check, checks} from '@cleric/common';
 import {Extends} from 'Any/_api';
+import {Observable} from 'rxjs';
+import {ReducerObservables} from './ReducerObservables';
 
 describe('ReducerObservables', () => {
   it('should create type with same shape as base type', () => {

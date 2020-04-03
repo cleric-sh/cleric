@@ -1,6 +1,6 @@
-import {checks, check, Pass} from '@cleric/common';
-import * as t from 'io-ts';
+import {Pass, check, checks} from '@cleric/common';
 import {Extends} from 'Any/Extends';
+import * as t from 'io-ts';
 
 describe('t.InterfaceType', () => {
   it('is assignable to Any', () => {

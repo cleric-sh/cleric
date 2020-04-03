@@ -4,10 +4,10 @@ import '../configs/default';
 import {ConfigKey, getConfig} from '../config';
 import {ApiNode} from '../node/ApiNode';
 
-import {getSliceNode} from './node/getSliceNode';
+import {Slice} from './Slice';
 import {SliceParentProps} from './node/SliceParentProps';
 import {SliceParentType} from './node/SliceParentType';
-import {Slice} from './Slice';
+import {getSliceNode} from './node/getSliceNode';
 
 export const createSlice = <
   P extends SliceParentType,

@@ -1,5 +1,5 @@
-import * as React from 'react';
 import {createStore} from '@cleric/store';
+import * as React from 'react';
 import {connect, inject} from './connect';
 
 describe('connect', () => {
@@ -13,11 +13,11 @@ describe('connect', () => {
 
   it('passes nested component extra props up to connected component.', () => {
     interface Props {
-      myProps: string;
       extra: number;
+      myProps: string;
       blah: () => void;
     }
-    const Nested: React.FC<Props> = ({myProps, extra}) => (
+    const Nested: React.FC<Props> = ({extra, myProps}) => (
       <div>
         {myProps} {extra}
       </div>
@@ -31,7 +31,7 @@ describe('connect', () => {
       {myProps: store.myProp},
       {},
       inject<{extra: number}>()
-    )(({myProps, extra}) => (
+    )(({extra, myProps}) => (
       <div>
         {myProps} {extra}
       </div>

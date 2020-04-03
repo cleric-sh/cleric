@@ -1,15 +1,15 @@
-import {mapSourcesToProps} from './mapSourcesToProps';
 import {
-  Subject,
   BehaviorSubject,
   Observable,
-  from,
   ObservableInput,
+  Subject,
+  from,
   isObservable,
 } from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {SourceArgs, Shape, SourceArgsFromShape} from './store';
 import {ShapeFromSourceArgs} from './ShapeFromSourceArgs';
+import {mapSourcesToProps} from './mapSourcesToProps';
+import {Shape, SourceArgs, SourceArgsFromShape} from './store';
 
 describe('mapSourcesToProps', () => {
   it('should return an observable with all observables combined in shape', () => {
@@ -20,10 +20,10 @@ describe('mapSourcesToProps', () => {
       // asy: string;
     }> = mapSourcesToProps({
       arr: [1],
-      obs: from(['bar', 'dee', 'foo']),
       obj: {
         narf: [1],
       },
+      obs: from(['bar', 'dee', 'foo']),
       // asy: async () => {
       //   console.log('running');
       //   await new Promise((resolve, reject) => () => {
@@ -37,7 +37,7 @@ describe('mapSourcesToProps', () => {
       //   return 'foo';
       // },
     });
-    actual.subscribe(({arr, obs, obj}) => console.log(arr, obs, obj));
+    actual.subscribe(({arr, obj, obs}) => console.log(arr, obs, obj));
     expect(isObservable(actual)).toBe(true);
   });
 
@@ -85,18 +85,18 @@ const specFromSources = sourceToSpec({
 
 type MySpec = {
   arr: number;
+  obs: number;
   obj: {
     narf: string;
   };
-  obs: number;
 };
 
 const sourcesFromSpec = specToSources<typeof specFromSources>({
   // const sourcesFromSpec = specToSources<MySpec>({
   arr: [1],
-  obs: from([1]),
   // obj: from([{ narf: [''] }]),
   obj: {
     narf: [''],
   },
+  obs: from([1]),
 });

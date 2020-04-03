@@ -9,4 +9,4 @@ export const createApi = <TKey extends ApiKey, T extends t.Any>(
   key: TKey,
   guard: ApiGuard<T>,
   decorate: ApiDecorator<T>
-): ApiDefinition<TKey, T> => ({key, guard, decorate});
+): ApiDefinition<TKey, T> => ({decorate, guard, key});

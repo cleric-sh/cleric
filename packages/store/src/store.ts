@@ -3,8 +3,8 @@ import {HashState} from '@cleric/hash';
 import {Observable, ObservableInput, Subject, Subscribable} from 'rxjs';
 import {DeepPartial} from 'utility-types';
 
-import {ReducerBuilder} from './reducer/createReducer';
 import {Compute} from 'Any/_api';
+import {ReducerBuilder} from './reducer/createReducer';
 
 /**
  * The (serializable) type of the underlying state that also tracks the state's
@@ -29,8 +29,8 @@ export type Mutation = {
  * interact as necessary.
  */
 export interface NodeI {
-  state$: Observable<State<any>>;
   path: string[];
+  state$: Observable<State<any>>;
 }
 
 type Valid<T> = Types.FilterExclude<T, Function>;
@@ -140,9 +140,9 @@ export type AsyncFunction<T> = {
  * match.
  */
 export type Source<T> =
-  | SliceApiI<T>
+  | AsyncFunction<T>
   | Exclude<ObservableInput<T>, Subscribable<never>>
-  | AsyncFunction<T>;
+  | SliceApiI<T>;
 
 /**
  * An object that is used to specify the shape of related objects.
@@ -222,7 +222,7 @@ type EffectBuilder<
   TSourceArgs extends SourceArgs,
   TSinkArgs extends SinkArgs
 > = (
-  props: SourceProps<TSourceArgs> & SinkProps<TSinkArgs>,
+  props: SinkProps<TSinkArgs> & SourceProps<TSourceArgs>,
   state: Slice<TState>
 ) => EffectArgs;
 
@@ -236,18 +236,18 @@ type SinkExports<TSinkMap extends SinkArgs> = {
     : never;
 };
 
-export type MountedModule<TSinkMap extends SinkArgs> = {
+export type MountedModule<TSinkMap extends SinkArgs> = SinkExports<TSinkMap> & {
   dispose: () => void;
-} & SinkExports<TSinkMap>;
+};
 
 export type ModuleSpec<
   TState,
   TSourceArgs extends SourceArgs,
   TSinkArgs extends SinkArgs
 > = {
-  sinks?: () => TSinkArgs;
   effects?: EffectBuilder<TState, TSourceArgs, TSinkArgs>;
   reducer?: ReducerBuilder<TState, TSourceArgs>;
+  sinks?: () => TSinkArgs;
 };
 
 export type Module<

@@ -4,15 +4,15 @@ import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 
 import {createMutator} from './createMutator';
 import {
-  SliceI,
-  SliceApiI,
-  StoreI,
   Module,
   MountedModule,
   Mutator,
   SinkArgs,
+  SliceApiI,
+  SliceI,
   SourceArgs,
   State,
+  StoreI,
 } from './store';
 
 /**

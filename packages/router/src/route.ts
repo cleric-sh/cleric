@@ -7,10 +7,10 @@ type Router5RestParams = Omit<
 >;
 
 export type RouteArgs<TProps extends t.Props> = Router5RestParams & {
+  children?: RoutesArgs;
+  defaultParams?: t.TypeOf<t.ExactC<t.TypeC<TProps>>>;
   path: string;
   type?: TProps;
-  defaultParams?: t.TypeOf<t.ExactC<t.TypeC<TProps>>>;
-  children?: RoutesArgs;
 };
 
 export type RoutesArgs = {

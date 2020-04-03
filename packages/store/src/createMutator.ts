@@ -1,6 +1,6 @@
 import {DeepPartial} from 'utility-types';
 
-import {MutationApiI, Mutation, Mutator} from './store';
+import {Mutation, MutationApiI, Mutator} from './store';
 
 class MutatorNode<T> implements MutationApiI<T> {
   path: string[];

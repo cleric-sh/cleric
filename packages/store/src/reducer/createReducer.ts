@@ -1,5 +1,5 @@
 import {isArrayLike} from 'lodash';
-import {from, isObservable, Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, from, isObservable} from 'rxjs';
 
 import {convertArgsToProps} from '../convertArgsToProps';
 import {isSlice, isSource, isSubscribable} from '../guards';
@@ -14,8 +14,8 @@ export type ReducerFn<TState> = (state: Observable<TState>) => Source<TState>;
 
 export type Reducer<TState> =
   | ReducerFn<TState>
-  | Source<TState>
-  | ReducerObject<TState>;
+  | ReducerObject<TState>
+  | Source<TState>;
 
 export type ReducerBuilder<TState, TSourceArgs extends SourceArgs> = (
   sources: SourceProps<TSourceArgs>,

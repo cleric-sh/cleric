@@ -1,6 +1,6 @@
-import {updateHash} from './updateHash';
-import {createHash} from './createHash';
 import {performance} from 'perf_hooks';
+import {createHash} from './createHash';
+import {updateHash} from './updateHash';
 
 describe('hash', () => {
   it('should support arrays', () => {
@@ -58,11 +58,11 @@ describe('hash', () => {
     };
 
     const first = createHash<MyState>({
-      value: true,
       nested: {
         anotherValue: 'TEST',
         thirdValue: false,
       },
+      value: true,
     });
     const firstHash = first.__hash;
     console.log(first);
@@ -105,14 +105,6 @@ describe('hash', () => {
   });
 
   const state = {
-    value: 'string',
-    value2: 'string',
-    value3: 'string',
-    value4: 'string',
-    value5: 'string',
-    value6: 'string',
-    value7: 'string',
-    value8: 'string',
     testing: {
       blah: 1232,
       blah2: 1244,
@@ -188,6 +180,14 @@ describe('hash', () => {
         value8: 'string',
       },
     },
+    value: 'string',
+    value2: 'string',
+    value3: 'string',
+    value4: 'string',
+    value5: 'string',
+    value6: 'string',
+    value7: 'string',
+    value8: 'string',
   };
 
   const tree = createHash(state);

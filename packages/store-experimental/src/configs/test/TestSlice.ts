@@ -1,9 +1,9 @@
 import * as t from 'io-ts';
 
 import {ConfigKey} from '../../config';
-import {setSliceNode} from '../../slice/node/setSliceNode';
 import {SliceNode} from '../../slice/node/SliceNode';
 import {SliceParentProps} from '../../slice/node/SliceParentProps';
+import {setSliceNode} from '../../slice/node/setSliceNode';
 
 export class TestSlice<
   TConfigKey extends ConfigKey,

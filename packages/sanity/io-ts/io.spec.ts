@@ -9,8 +9,8 @@ describe('io-ts', () => {
     );
 
     const MyType = t.type({
-      test: t.string,
       foo: t.number,
+      test: t.string,
       x: ExactType,
     });
 

@@ -8,8 +8,8 @@ import {Test} from 'ts-toolbelt';
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (TT as any).default.Test = {
-  checks: () => 1,
   check: () => 1 as 1,
+  checks: () => 1,
 };
 
 const checks = Test.checks;
@@ -17,4 +17,4 @@ const check = Test.check;
 type Pass = Test.Pass;
 type Fail = Test.Fail;
 
-export {checks, check, Pass, Fail};
+export {Fail, Pass, check, checks};

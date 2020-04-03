@@ -1,6 +1,6 @@
-import {TError} from './TError';
-import {checks, check, Pass} from '../ts-toolbelt/Test';
 import {Any} from 'ts-toolbelt';
+import {Pass, check, checks} from '../ts-toolbelt/Test';
+import {TError} from './TError';
 
 describe('TError', () => {
   it('Can use an abstract class as a Type error.', () => {

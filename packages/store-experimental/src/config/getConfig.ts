@@ -1,6 +1,6 @@
 import {ConfigKey} from './ConfigKey';
-import {Configs} from './Configs';
 import {ConfigTypes} from './ConfigTypes';
+import {Configs} from './Configs';
 
 export const getConfig = <TConfigKey extends ConfigKey>(
   configKey: TConfigKey

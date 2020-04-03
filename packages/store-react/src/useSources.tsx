@@ -1,9 +1,9 @@
-import {useState, useEffect} from 'react';
 import {
-  SourceArgs,
   ShapeFromSourceArgs,
+  SourceArgs,
   mapSourcesToProps,
 } from '@cleric/store';
+import {useEffect, useState} from 'react';
 
 export function useSources<TSources extends SourceArgs>(sources: TSources) {
   const props$ = mapSourcesToProps(sources);

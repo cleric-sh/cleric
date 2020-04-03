@@ -1,6 +1,6 @@
-import {mapSinksToProps} from './mapSinksToProps';
-import {Subject, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
+import {mapSinksToProps} from './mapSinksToProps';
 
 describe('mapSinksToProps', () => {
   it('should return an object with next functions mapped', () => {

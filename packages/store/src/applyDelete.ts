@@ -1,5 +1,5 @@
-import {updateHash} from '@cleric/hash';
 import {createHash} from '@cleric/hash';
+import {updateHash} from '@cleric/hash';
 import {get, omit} from 'lodash';
 import {set} from 'monolite';
 

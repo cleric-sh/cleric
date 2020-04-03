@@ -5,8 +5,8 @@ import {pluck} from 'rxjs/operators';
 
 import {ConfigKey} from '../../../config';
 import {createApi} from '../../../node/api';
-import {createSlice} from '../../../slice/createSlice';
 import {Slice} from '../../../slice/Slice';
+import {createSlice} from '../../../slice/createSlice';
 
 export type InterfaceApi<
   TConfigKey extends ConfigKey,

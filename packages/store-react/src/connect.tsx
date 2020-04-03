@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
 import {
-  SourceArgs,
+  ShapeFromSourceArgs,
   SinkArgs,
   SinkProps,
-  ShapeFromSourceArgs,
+  SourceArgs,
 } from '@cleric/store';
-import {Subtract} from 'utility-types';
 import {mapSinksToProps, mapSourcesToProps} from '@cleric/store';
+import * as React from 'react';
 import {Subscription} from 'rxjs';
+import {Subtract} from 'utility-types';
 
 type Inject<T> = {};
 
 export function inject<TProps>(
   defaultProps?: TProps
-): Inject<TProps> | undefined {
+): undefined | Inject<TProps> {
   return defaultProps;
 }
 
@@ -42,15 +42,15 @@ export function connect<
       // reference to original wrapped component
       static readonly WrappedComponent = BaseComponent;
 
-      private subscription: Subscription | undefined = undefined;
+      _subscription: undefined | Subscription = undefined;
 
       componentDidMount = () => {
-        this.subscription = sourceProps.subscribe(this.onNext);
+        this._subscription = sourceProps.subscribe(this.onNext);
       };
 
       componentWillUnmount = () => {
-        if (this.subscription) {
-          this.subscription.unsubscribe();
+        if (this._subscription) {
+          this._subscription.unsubscribe();
         }
       };
 

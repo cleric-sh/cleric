@@ -19,7 +19,6 @@ import {applySet} from './applySet';
 import {createMutator} from './createMutator';
 import {createState} from './createState';
 import {
-  StoreI,
   Module,
   MountedModule,
   Mutation,
@@ -27,6 +26,7 @@ import {
   SinkArgs,
   SourceArgs,
   State,
+  StoreI,
 } from './store';
 
 const applyMutation = (

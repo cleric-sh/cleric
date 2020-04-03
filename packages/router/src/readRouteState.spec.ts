@@ -1,20 +1,20 @@
-import {route} from './route';
-import {readRouteState} from './readRouteState';
-import {SubscribeState} from 'router5';
 import * as t from 'io-ts';
+import {SubscribeState} from 'router5';
 import {RouteMap} from '.';
+import {readRouteState} from './readRouteState';
+import {route} from './route';
 
 describe('readRouteState', () => {
   it('should', () => {
     const routeMap = {
-      TEST: {
-        path: '/test',
-        codec: t.exact(t.type({anotherValue: t.string})),
-        children: {
-          NESTED: {path: '/nested', codec: t.exact(t.type({id: t.number}))},
-        },
-      },
       SECOND: {path: '/second', type: t.exact(t.type({tag: t.string}))},
+      TEST: {
+        children: {
+          NESTED: {codec: t.exact(t.type({id: t.number})), path: '/nested'},
+        },
+        codec: t.exact(t.type({anotherValue: t.string})),
+        path: '/test',
+      },
     };
 
     const state: SubscribeState = {

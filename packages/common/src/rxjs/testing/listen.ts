@@ -1,4 +1,4 @@
-import {from, ObservableInput} from 'rxjs';
+import {ObservableInput, from} from 'rxjs';
 import {toArray} from 'rxjs/internal/operators/toArray';
 
 /**

@@ -1,9 +1,9 @@
 import {Observable} from 'rxjs';
 
 import {buildSourceInput} from './buildSourceInput';
-import {Reducer} from './reducer/createReducer';
-import {ReducerObservables} from './reducer/ReducerObservables';
 import {isSource} from './guards';
+import {ReducerObservables} from './reducer/ReducerObservables';
+import {Reducer} from './reducer/createReducer';
 import {Source, SourceArgs, SourceProps} from './store';
 
 export function convertArgsToProps<T>(source: Source<T>): Observable<T>;

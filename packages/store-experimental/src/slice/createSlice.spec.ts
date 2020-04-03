@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import {listen} from '@cleric/common';
 import * as t from 'io-ts';
 import {BehaviorSubject} from 'rxjs';
-import {createSlice} from './createSlice';
-import {listen} from '@cleric/common';
+import '../configs/test';
 import {FooBar} from '../configs/test/types/FooBar';
 import {Root} from '../configs/test/types/Root';
-import {Slice} from './Slice';
-import '../configs/test';
 import {StoreNode} from '../store/StoreNode';
+import {Slice} from './Slice';
+import {createSlice} from './createSlice';
 
 describe('createSlice', () => {
   const initial: t.TypeOf<typeof Root> = {

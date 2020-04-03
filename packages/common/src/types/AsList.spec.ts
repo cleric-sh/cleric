@@ -1,4 +1,4 @@
-import {checks, check, Pass} from '../ts-toolbelt/Test';
+import {Pass, check, checks} from '../ts-toolbelt/Test';
 import {AsList} from './AsList';
 
 describe('List', () => {

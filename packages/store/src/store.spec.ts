@@ -1,19 +1,19 @@
+import {listen} from '@cleric/common';
+import {performance} from 'perf_hooks';
+import {BehaviorSubject, Subject, from, of} from 'rxjs';
 import {marbles} from 'rxjs-marbles';
 import {
-  map,
-  reduce,
   elementAt,
+  map,
   mergeMap,
+  reduce,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import {Subject, BehaviorSubject, from, of} from 'rxjs';
-import {createStore} from './createStore';
 import {createModule} from './_createModule';
-import {Store, Source} from './store';
-import {listen} from '@cleric/common';
-import {performance} from 'perf_hooks';
+import {createStore} from './createStore';
+import {Source, Store} from './store';
 
 interface SecondValState {
   nestedVal: number;
@@ -26,23 +26,23 @@ interface SecondValState {
 }
 
 interface BlahState {
+  arr: string[];
   firstVal: string;
   secondVal: SecondValState;
-  arr: string[];
 }
 
 const INITIAL_STATE: BlahState = {
+  arr: ['testing'],
   firstVal: 'blah',
   secondVal: {
-    nestedVal: 22,
-    secondNestedValue: 10,
     deeper: {
       nested: {
         property: 'foo',
       },
     },
+    nestedVal: 22,
+    secondNestedValue: 10,
   },
-  arr: ['testing'],
 };
 
 describe('StoreNode', () => {
@@ -97,17 +97,17 @@ describe('StoreNode', () => {
 
   it('should only propogate changes when setting actual different values', async () => {
     const SECOND_STATE: BlahState = {
+      arr: ['second'],
       firstVal: 'second blah',
       secondVal: {
-        nestedVal: 22,
-        secondNestedValue: 50,
         deeper: {
           nested: {
             property: 'foo',
           },
         },
+        nestedVal: 22,
+        secondNestedValue: 50,
       },
-      arr: ['second'],
     };
 
     const _storeValues = listen(store.$);
@@ -135,12 +135,12 @@ describe('StoreNode', () => {
 
   it('should only propogate changes when merging different values', async () => {
     const SECOND_STATE = {
+      arr: ['second'],
       firstVal: 'second blah',
       secondVal: {
         // Deliberately leave out nestedVal. It should be preserved.
         secondNestedValue: 50,
       },
-      arr: ['second'],
     };
 
     const _storeValues = listen(store.$);
@@ -158,12 +158,12 @@ describe('StoreNode', () => {
     expect(await _storeValues).toMatchObject([
       INITIAL_STATE,
       {
+        arr: ['second'],
         firstVal: 'second blah',
         secondVal: {
           nestedVal: 22,
           secondNestedValue: 50,
         },
-        arr: ['second'],
       },
     ]);
 
@@ -333,12 +333,12 @@ describe('StoreNode', () => {
     expect(await _store).toMatchObject([
       INITIAL_STATE,
       {
+        arr: ['testing'],
         firstVal: 'blah',
         secondVal: {
           nestedVal: 42,
           secondNestedValue: 10,
         },
-        arr: ['testing'],
       },
     ]);
 
@@ -374,9 +374,9 @@ describe('StoreNode', () => {
     };
 
     type MyExampleSources = {
+      myExtraSource: Source<number>;
       onOff: Source<boolean>;
       something: {moreCh: Source<string>};
-      myExtraSource: Source<number>;
     };
 
     // type ValueOf<TReducer extends Reducer<unknown>> = TReducer extends Reducer<infer U>
@@ -392,18 +392,6 @@ describe('StoreNode', () => {
     const MyExampleModule = createModule<MyExampleState, MyExampleSources>(
       'MY_EXAMPLE_MODULE'
     )({
-      sinks: () => ({
-        didSomething: new Subject<number>(),
-      }),
-      reducer: ({myExtraSource}) => ({
-        someNestedValue: {
-          somethingElse: $ =>
-            $.pipe(
-              withLatestFrom(myExtraSource),
-              map(([_, x]) => _ + x)
-            ),
-        },
-      }),
       effects: ({didSomething, onOff}, {someNestedValue: {$set: setSnv}}) => {
         return {
           DO_SOMETHING: onOff.pipe(
@@ -422,19 +410,31 @@ describe('StoreNode', () => {
           ),
         };
       },
+      reducer: ({myExtraSource}) => ({
+        someNestedValue: {
+          somethingElse: $ =>
+            $.pipe(
+              withLatestFrom(myExtraSource),
+              map(([_, x]) => _ + x)
+            ),
+        },
+      }),
+      sinks: () => ({
+        didSomething: new Subject<number>(),
+      }),
     });
 
     const store = createStore<{foo: MyExampleState; bar: MyExampleState}>({
-      foo: {
-        blah: 'blah',
-        someNestedValue: {
-          somethingElse: 1,
-        },
-      },
       bar: {
         blah: 'blah',
         someNestedValue: {
           somethingElse: 2,
+        },
+      },
+      foo: {
+        blah: 'blah',
+        someNestedValue: {
+          somethingElse: 1,
         },
       },
     });
@@ -450,10 +450,10 @@ describe('StoreNode', () => {
 
     const mountedFoo = store.foo.$mount(MyExampleModule, {
       ...MyActions,
+      myExtraSource: [1, 2, 3, 4],
       something: {
         moreCh: from(['blah']),
       },
-      myExtraSource: [1, 2, 3, 4],
     });
 
     mountedFoo.didSomething.subscribe(value => {
@@ -493,17 +493,17 @@ describe('StoreNode', () => {
       // This is a full state set, so an expensive operation. The entire hash tree is regenerated here.
       // In practical applications, we will avoid these operations except for init, or re-setting state.
       store.$set({
+        arr: ['testing'],
         firstVal: 'foo',
         secondVal: {
-          nestedVal: 2,
-          secondNestedValue: 10,
           deeper: {
             nested: {
               property: 'foo',
             },
           },
+          nestedVal: 2,
+          secondNestedValue: 10,
         },
-        arr: ['testing'],
       });
 
       // These operations are all incremental, and should trigger minimal changes to the object graph.
@@ -526,17 +526,17 @@ describe('StoreNode', () => {
 
     store.$batch(m => {
       m.$set({
+        arr: ['derp'],
         firstVal: 'foobar',
         secondVal: {
-          nestedVal: 123,
-          secondNestedValue: 321,
           deeper: {
             nested: {
               property: 'foo',
             },
           },
+          nestedVal: 123,
+          secondNestedValue: 321,
         },
-        arr: ['derp'],
       });
 
       m.arr.$delete();
@@ -549,12 +549,12 @@ describe('StoreNode', () => {
     expect(await _store).toMatchObject([
       INITIAL_STATE,
       {
+        arr: ['darp'],
         firstVal: 'foobar',
         secondVal: {
           nestedVal: 123,
           secondNestedValue: 111,
         },
-        arr: ['darp'],
       },
     ]);
   });

@@ -1,13 +1,13 @@
-import {ApiTypeOf} from './ApiTypeOf';
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
+import {Compute} from 'Any/_api';
 import '../../configs/test';
+import {BarApi} from '../../configs/test/apis/BarApi';
 import {FooApi} from '../../configs/test/apis/FooApi';
 import {Bar} from '../../configs/test/types/Bar';
-import {Unknown} from '../../configs/test/types/Unknown';
 import {Foo} from '../../configs/test/types/Foo';
-import {BarApi} from '../../configs/test/apis/BarApi';
 import {FooBar} from '../../configs/test/types/FooBar';
-import {Compute} from 'Any/_api';
+import {Unknown} from '../../configs/test/types/Unknown';
+import {ApiTypeOf} from './ApiTypeOf';
 
 describe('ApiTypeOf', () => {
   it('should return type of API when a single API matches', () => {

@@ -6,8 +6,8 @@ describe('ShapeFromSourceArgs', () => {
     type MySourceArgs = {
       blah: Source<boolean>;
       nested: {
-        value: Source<number>;
         optional?: string;
+        value: Source<number>;
       };
     };
 

@@ -1,4 +1,4 @@
-import {isObservable, from} from 'rxjs';
+import {from, isObservable} from 'rxjs';
 
 describe('isObservable', () => {
   it('returns false for arrays', () => {

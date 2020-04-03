@@ -1,21 +1,21 @@
-import {createReducer} from './createReducer';
-import {scan, map, withLatestFrom, tap, combineLatest} from 'rxjs/operators';
-import {Subject, BehaviorSubject} from 'rxjs';
-import {Source} from '../store';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {combineLatest, map, scan, tap, withLatestFrom} from 'rxjs/operators';
 import {createStore} from '../createStore';
+import {Source} from '../store';
+import {createReducer} from './createReducer';
 
 type State = {
   isLayoutExpanded: boolean;
   isSidebarExpanded: boolean;
   test: {
-    someProp: string;
     someNum: number;
+    someProp: string;
   };
 };
 
 type Sources = {
-  toggleExpand: Source<{}>;
   isMouseOver: Source<boolean>;
+  toggleExpand: Source<{}>;
   someSource: {
     trigger: Source<number>;
   };
@@ -61,10 +61,10 @@ describe('createReducer', () => {
 
     const MyActions = {
       isMouseOver: new BehaviorSubject(false),
-      toggleExpand: new Subject<{}>(),
       someSource: {
         trigger: [] as any[],
       },
+      toggleExpand: new Subject<{}>(),
     };
 
     const subscriptions = Reducer(store, MyActions);

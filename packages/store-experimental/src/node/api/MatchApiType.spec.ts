@@ -1,10 +1,10 @@
+import {Pass, check, checks} from '@cleric/common';
 import * as t from 'io-ts';
 import {ApiTypes} from '.';
-import {checks, check, Pass} from '@cleric/common';
-import {MatchApiType} from './MatchApiType';
-import {FooBar} from '../../configs/test/types/FooBar';
-import {Foo} from '../../configs/test/types/Foo';
 import {Bar} from '../../configs/test/types/Bar';
+import {Foo} from '../../configs/test/types/Foo';
+import {FooBar} from '../../configs/test/types/FooBar';
+import {MatchApiType} from './MatchApiType';
 
 describe('MatchApiType', () => {
   it('should return API for type when type guard is exactly type.', () => {

@@ -3,14 +3,14 @@ import * as t from 'io-ts';
 import {Union} from 'ts-toolbelt';
 
 import {createRoutes} from './createRoutes';
-import {route, RouteArgs, RoutesArgs} from './route';
+import {RouteArgs, RoutesArgs, route} from './route';
 
 export type RouteNode<TProps extends t.Props> = Omit<
   RouteArgs<TProps>,
   'type' | 'children'
 > & {
-  codec?: t.ExactC<t.TypeC<TProps>>;
   children?: RouteMap;
+  codec?: t.ExactC<t.TypeC<TProps>>;
 };
 
 export type RouteMap<TProps extends t.Props = {}> = {

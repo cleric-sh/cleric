@@ -11,17 +11,14 @@ import packageSchema from './package.schema.json';
 
 export interface Package {
     author?: PersonObject | string;
-    bin?:    { [key: string]: string } | string;
+    bin?:    string | { [key: string]: string };
     /**
      * The url to your project's issue tracker and / or the email address to which issues should
      * be reported. These are helpful for people who encounter issues with your package.
      */
     bugs?: BugsObject | string;
-    /**
-     * A 'config' hash can be used to set configuration parameters used in package scripts that
-     * persist across upgrades.
-     */
-    config?: { [key: string]: any };
+    bundleDependencies?:  string[];
+    bundledDependencies?: string[];
     /**
      * A list of people who contributed to this package.
      */
@@ -30,15 +27,12 @@ export interface Package {
      * If your code only runs on certain cpu architectures, you can specify which ones.
      */
     cpu?:          string[];
-    dependencies?: { [key: string]: string };
     /**
      * This helps people discover your package, as it's listed in 'npm search'.
      */
     description?:     string;
-    devDependencies?: { [key: string]: string };
     directories?:     Directories;
     dist?:            Dist;
-    engines?:         { [key: string]: string };
     engineStrict?:    boolean;
     /**
      * A module ID with untranspiled code that is the primary entry point to your program.
@@ -53,6 +47,7 @@ export interface Package {
      * The url to the project homepage.
      */
     homepage?: string;
+    jspm?:                CoreProperties;
     /**
      * This helps people discover your package as it's listed in 'npm search'.
      */
@@ -80,7 +75,7 @@ export interface Package {
      * Specify either a single file or an array of filenames to put in place for the man program
      * to find.
      */
-    man?: string[] | string;
+    man?: string | string[];
     /**
      * An ECMAScript module ID that is the primary entry point to your program.
      */
@@ -89,12 +84,10 @@ export interface Package {
      * The name of the package.
      */
     name?:                 string;
-    optionalDependencies?: { [key: string]: string };
     /**
      * You can specify which operating systems your module will run on
      */
     os?:               string[];
-    peerDependencies?: { [key: string]: string };
     /**
      * DEPRECATED: This option used to trigger an npm warning, but it will no longer warn. It is
      * purely there for informational purposes. It is now recommended that you install any
@@ -105,14 +98,12 @@ export interface Package {
      * If set to true, then npm will refuse to publish it.
      */
     private?:       boolean;
-    publishConfig?: { [key: string]: any };
     readme?:        string;
     /**
      * Specify the place where your code lives. This is helpful for people who want to
      * contribute.
      */
     repository?:  RepositoryObject | string;
-    resolutions?: { [key: string]: string };
     /**
      * The 'scripts' member is an object hash of script commands that are run at various times
      * in the lifecycle of your package. The key is the lifecycle event, and the value is the
@@ -142,9 +133,18 @@ export interface Package {
      * workspaces
      */
     workspaces?:          any;
-    jspm?:                CoreProperties;
-    bundleDependencies?:  string[];
-    bundledDependencies?: string[];
+    /**
+     * A 'config' hash can be used to set configuration parameters used in package scripts that
+     * persist across upgrades.
+     */
+    config?: { [key: string]: any };
+    dependencies?: { [key: string]: string };
+    devDependencies?: { [key: string]: string };
+    engines?:         { [key: string]: string };
+    optionalDependencies?: { [key: string]: string };
+    peerDependencies?: { [key: string]: string };
+    publishConfig?: { [key: string]: any };
+    resolutions?: { [key: string]: string };
 }
 
 export interface PersonObject {
@@ -202,17 +202,12 @@ export interface EsnextObject {
 
 export interface CoreProperties {
     author?: PersonObject | string;
-    bin?:    { [key: string]: string } | string;
+    bin?:    string | { [key: string]: string };
     /**
      * The url to your project's issue tracker and / or the email address to which issues should
      * be reported. These are helpful for people who encounter issues with your package.
      */
     bugs?: BugsObject | string;
-    /**
-     * A 'config' hash can be used to set configuration parameters used in package scripts that
-     * persist across upgrades.
-     */
-    config?: { [key: string]: any };
     /**
      * A list of people who contributed to this package.
      */
@@ -221,15 +216,12 @@ export interface CoreProperties {
      * If your code only runs on certain cpu architectures, you can specify which ones.
      */
     cpu?:          string[];
-    dependencies?: { [key: string]: string };
     /**
      * This helps people discover your package, as it's listed in 'npm search'.
      */
     description?:     string;
-    devDependencies?: { [key: string]: string };
     directories?:     Directories;
     dist?:            Dist;
-    engines?:         { [key: string]: string };
     engineStrict?:    boolean;
     /**
      * A module ID with untranspiled code that is the primary entry point to your program.
@@ -271,7 +263,7 @@ export interface CoreProperties {
      * Specify either a single file or an array of filenames to put in place for the man program
      * to find.
      */
-    man?: string[] | string;
+    man?: string | string[];
     /**
      * An ECMAScript module ID that is the primary entry point to your program.
      */
@@ -280,12 +272,10 @@ export interface CoreProperties {
      * The name of the package.
      */
     name?:                 string;
-    optionalDependencies?: { [key: string]: string };
     /**
      * You can specify which operating systems your module will run on
      */
     os?:               string[];
-    peerDependencies?: { [key: string]: string };
     /**
      * DEPRECATED: This option used to trigger an npm warning, but it will no longer warn. It is
      * purely there for informational purposes. It is now recommended that you install any
@@ -296,14 +286,12 @@ export interface CoreProperties {
      * If set to true, then npm will refuse to publish it.
      */
     private?:       boolean;
-    publishConfig?: { [key: string]: any };
     readme?:        string;
     /**
      * Specify the place where your code lives. This is helpful for people who want to
      * contribute.
      */
     repository?:  RepositoryObject | string;
-    resolutions?: { [key: string]: string };
     /**
      * The 'scripts' member is an object hash of script commands that are run at various times
      * in the lifecycle of your package. The key is the lifecycle event, and the value is the
@@ -333,6 +321,18 @@ export interface CoreProperties {
      * workspaces
      */
     workspaces?: any;
+    /**
+     * A 'config' hash can be used to set configuration parameters used in package scripts that
+     * persist across upgrades.
+     */
+    config?: { [key: string]: any };
+    dependencies?: { [key: string]: string };
+    devDependencies?: { [key: string]: string };
+    engines?:         { [key: string]: string };
+    optionalDependencies?: { [key: string]: string };
+    peerDependencies?: { [key: string]: string };
+    publishConfig?: { [key: string]: any };
+    resolutions?: { [key: string]: string };
 }
 
 export interface License {
@@ -538,11 +538,11 @@ function u(...typs: any[]) {
 }
 
 function o(props: any[], additional: any) {
-    return { props, additional };
+    return { additional, props };
 }
 
 function m(additional: any) {
-    return { props: [], additional };
+    return { additional, props: [] };
 }
 
 function r(name: string) {
@@ -550,154 +550,154 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Package": o([
-        { json: "author", js: "author", typ: u(undefined, u(r("PersonObject"), "")) },
-        { json: "bin", js: "bin", typ: u(undefined, u(m(""), "")) },
-        { json: "bugs", js: "bugs", typ: u(undefined, u(r("BugsObject"), "")) },
-        { json: "config", js: "config", typ: u(undefined, m("any")) },
-        { json: "contributors", js: "contributors", typ: u(undefined, a(u(r("PersonObject"), ""))) },
-        { json: "cpu", js: "cpu", typ: u(undefined, a("")) },
-        { json: "dependencies", js: "dependencies", typ: u(undefined, m("")) },
-        { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "devDependencies", js: "devDependencies", typ: u(undefined, m("")) },
-        { json: "directories", js: "directories", typ: u(undefined, r("Directories")) },
-        { json: "dist", js: "dist", typ: u(undefined, r("Dist")) },
-        { json: "engines", js: "engines", typ: u(undefined, m("")) },
-        { json: "engineStrict", js: "engineStrict", typ: u(undefined, true) },
-        { json: "esnext", js: "esnext", typ: u(undefined, u(r("EsnextObject"), "")) },
-        { json: "files", js: "files", typ: u(undefined, a("")) },
-        { json: "homepage", js: "homepage", typ: u(undefined, "") },
-        { json: "keywords", js: "keywords", typ: u(undefined, a("")) },
-        { json: "license", js: "license", typ: u(undefined, "") },
-        { json: "licenses", js: "licenses", typ: u(undefined, a(r("License"))) },
-        { json: "main", js: "main", typ: u(undefined, "") },
-        { json: "maintainers", js: "maintainers", typ: u(undefined, a(u(r("PersonObject"), ""))) },
-        { json: "man", js: "man", typ: u(undefined, u(a(""), "")) },
-        { json: "module", js: "module", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "optionalDependencies", js: "optionalDependencies", typ: u(undefined, m("")) },
-        { json: "os", js: "os", typ: u(undefined, a("")) },
-        { json: "peerDependencies", js: "peerDependencies", typ: u(undefined, m("")) },
-        { json: "preferGlobal", js: "preferGlobal", typ: u(undefined, true) },
-        { json: "private", js: "private", typ: u(undefined, true) },
-        { json: "publishConfig", js: "publishConfig", typ: u(undefined, m("any")) },
-        { json: "readme", js: "readme", typ: u(undefined, "") },
-        { json: "repository", js: "repository", typ: u(undefined, u(r("RepositoryObject"), "")) },
-        { json: "resolutions", js: "resolutions", typ: u(undefined, m("")) },
-        { json: "scripts", js: "scripts", typ: u(undefined, r("Scripts")) },
-        { json: "type", js: "type", typ: u(undefined, "") },
-        { json: "types", js: "types", typ: u(undefined, "") },
-        { json: "typings", js: "typings", typ: u(undefined, "") },
-        { json: "version", js: "version", typ: u(undefined, "") },
-        { json: "workspaces", js: "workspaces", typ: u(undefined, "any") },
-        { json: "jspm", js: "jspm", typ: u(undefined, r("CoreProperties")) },
-        { json: "bundleDependencies", js: "bundleDependencies", typ: u(undefined, a("")) },
-        { json: "bundledDependencies", js: "bundledDependencies", typ: u(undefined, a("")) },
-    ], "any"),
-    "PersonObject": o([
-        { json: "email", js: "email", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: "" },
-        { json: "url", js: "url", typ: u(undefined, "") },
-    ], "any"),
     "BugsObject": o([
-        { json: "email", js: "email", typ: u(undefined, "") },
-        { json: "url", js: "url", typ: u(undefined, "") },
+        { js: "email", json: "email", typ: u(undefined, "") },
+        { js: "url", json: "url", typ: u(undefined, "") },
+    ], "any"),
+    "CoreProperties": o([
+        { js: "author", json: "author", typ: u(undefined, u(r("PersonObject"), "")) },
+        { js: "bin", json: "bin", typ: u(undefined, u(m(""), "")) },
+        { js: "bugs", json: "bugs", typ: u(undefined, u(r("BugsObject"), "")) },
+        { js: "config", json: "config", typ: u(undefined, m("any")) },
+        { js: "contributors", json: "contributors", typ: u(undefined, a(u(r("PersonObject"), ""))) },
+        { js: "cpu", json: "cpu", typ: u(undefined, a("")) },
+        { js: "dependencies", json: "dependencies", typ: u(undefined, m("")) },
+        { js: "description", json: "description", typ: u(undefined, "") },
+        { js: "devDependencies", json: "devDependencies", typ: u(undefined, m("")) },
+        { js: "directories", json: "directories", typ: u(undefined, r("Directories")) },
+        { js: "dist", json: "dist", typ: u(undefined, r("Dist")) },
+        { js: "engines", json: "engines", typ: u(undefined, m("")) },
+        { js: "engineStrict", json: "engineStrict", typ: u(undefined, true) },
+        { js: "esnext", json: "esnext", typ: u(undefined, u(r("EsnextObject"), "")) },
+        { js: "files", json: "files", typ: u(undefined, a("")) },
+        { js: "homepage", json: "homepage", typ: u(undefined, "") },
+        { js: "keywords", json: "keywords", typ: u(undefined, a("")) },
+        { js: "license", json: "license", typ: u(undefined, "") },
+        { js: "licenses", json: "licenses", typ: u(undefined, a(r("License"))) },
+        { js: "main", json: "main", typ: u(undefined, "") },
+        { js: "maintainers", json: "maintainers", typ: u(undefined, a(u(r("PersonObject"), ""))) },
+        { js: "man", json: "man", typ: u(undefined, u(a(""), "")) },
+        { js: "module", json: "module", typ: u(undefined, "") },
+        { js: "name", json: "name", typ: u(undefined, "") },
+        { js: "optionalDependencies", json: "optionalDependencies", typ: u(undefined, m("")) },
+        { js: "os", json: "os", typ: u(undefined, a("")) },
+        { js: "peerDependencies", json: "peerDependencies", typ: u(undefined, m("")) },
+        { js: "preferGlobal", json: "preferGlobal", typ: u(undefined, true) },
+        { js: "private", json: "private", typ: u(undefined, true) },
+        { js: "publishConfig", json: "publishConfig", typ: u(undefined, m("any")) },
+        { js: "readme", json: "readme", typ: u(undefined, "") },
+        { js: "repository", json: "repository", typ: u(undefined, u(r("RepositoryObject"), "")) },
+        { js: "resolutions", json: "resolutions", typ: u(undefined, m("")) },
+        { js: "scripts", json: "scripts", typ: u(undefined, r("Scripts")) },
+        { js: "type", json: "type", typ: u(undefined, "") },
+        { js: "types", json: "types", typ: u(undefined, "") },
+        { js: "typings", json: "typings", typ: u(undefined, "") },
+        { js: "version", json: "version", typ: u(undefined, "") },
+        { js: "workspaces", json: "workspaces", typ: u(undefined, "any") },
     ], "any"),
     "Directories": o([
-        { json: "bin", js: "bin", typ: u(undefined, "") },
-        { json: "doc", js: "doc", typ: u(undefined, "") },
-        { json: "example", js: "example", typ: u(undefined, "") },
-        { json: "lib", js: "lib", typ: u(undefined, "") },
-        { json: "man", js: "man", typ: u(undefined, "") },
-        { json: "test", js: "test", typ: u(undefined, "") },
+        { js: "bin", json: "bin", typ: u(undefined, "") },
+        { js: "doc", json: "doc", typ: u(undefined, "") },
+        { js: "example", json: "example", typ: u(undefined, "") },
+        { js: "lib", json: "lib", typ: u(undefined, "") },
+        { js: "man", json: "man", typ: u(undefined, "") },
+        { js: "test", json: "test", typ: u(undefined, "") },
     ], "any"),
     "Dist": o([
-        { json: "shasum", js: "shasum", typ: u(undefined, "") },
-        { json: "tarball", js: "tarball", typ: u(undefined, "") },
+        { js: "shasum", json: "shasum", typ: u(undefined, "") },
+        { js: "tarball", json: "tarball", typ: u(undefined, "") },
     ], "any"),
     "EsnextObject": o([
-        { json: "browser", js: "browser", typ: u(undefined, "") },
-        { json: "main", js: "main", typ: u(undefined, "") },
+        { js: "browser", json: "browser", typ: u(undefined, "") },
+        { js: "main", json: "main", typ: u(undefined, "") },
     ], ""),
-    "CoreProperties": o([
-        { json: "author", js: "author", typ: u(undefined, u(r("PersonObject"), "")) },
-        { json: "bin", js: "bin", typ: u(undefined, u(m(""), "")) },
-        { json: "bugs", js: "bugs", typ: u(undefined, u(r("BugsObject"), "")) },
-        { json: "config", js: "config", typ: u(undefined, m("any")) },
-        { json: "contributors", js: "contributors", typ: u(undefined, a(u(r("PersonObject"), ""))) },
-        { json: "cpu", js: "cpu", typ: u(undefined, a("")) },
-        { json: "dependencies", js: "dependencies", typ: u(undefined, m("")) },
-        { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "devDependencies", js: "devDependencies", typ: u(undefined, m("")) },
-        { json: "directories", js: "directories", typ: u(undefined, r("Directories")) },
-        { json: "dist", js: "dist", typ: u(undefined, r("Dist")) },
-        { json: "engines", js: "engines", typ: u(undefined, m("")) },
-        { json: "engineStrict", js: "engineStrict", typ: u(undefined, true) },
-        { json: "esnext", js: "esnext", typ: u(undefined, u(r("EsnextObject"), "")) },
-        { json: "files", js: "files", typ: u(undefined, a("")) },
-        { json: "homepage", js: "homepage", typ: u(undefined, "") },
-        { json: "keywords", js: "keywords", typ: u(undefined, a("")) },
-        { json: "license", js: "license", typ: u(undefined, "") },
-        { json: "licenses", js: "licenses", typ: u(undefined, a(r("License"))) },
-        { json: "main", js: "main", typ: u(undefined, "") },
-        { json: "maintainers", js: "maintainers", typ: u(undefined, a(u(r("PersonObject"), ""))) },
-        { json: "man", js: "man", typ: u(undefined, u(a(""), "")) },
-        { json: "module", js: "module", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "optionalDependencies", js: "optionalDependencies", typ: u(undefined, m("")) },
-        { json: "os", js: "os", typ: u(undefined, a("")) },
-        { json: "peerDependencies", js: "peerDependencies", typ: u(undefined, m("")) },
-        { json: "preferGlobal", js: "preferGlobal", typ: u(undefined, true) },
-        { json: "private", js: "private", typ: u(undefined, true) },
-        { json: "publishConfig", js: "publishConfig", typ: u(undefined, m("any")) },
-        { json: "readme", js: "readme", typ: u(undefined, "") },
-        { json: "repository", js: "repository", typ: u(undefined, u(r("RepositoryObject"), "")) },
-        { json: "resolutions", js: "resolutions", typ: u(undefined, m("")) },
-        { json: "scripts", js: "scripts", typ: u(undefined, r("Scripts")) },
-        { json: "type", js: "type", typ: u(undefined, "") },
-        { json: "types", js: "types", typ: u(undefined, "") },
-        { json: "typings", js: "typings", typ: u(undefined, "") },
-        { json: "version", js: "version", typ: u(undefined, "") },
-        { json: "workspaces", js: "workspaces", typ: u(undefined, "any") },
-    ], "any"),
     "License": o([
-        { json: "type", js: "type", typ: u(undefined, "") },
-        { json: "url", js: "url", typ: u(undefined, "") },
+        { js: "type", json: "type", typ: u(undefined, "") },
+        { js: "url", json: "url", typ: u(undefined, "") },
+    ], "any"),
+    "Package": o([
+        { js: "author", json: "author", typ: u(undefined, u(r("PersonObject"), "")) },
+        { js: "bin", json: "bin", typ: u(undefined, u(m(""), "")) },
+        { js: "bugs", json: "bugs", typ: u(undefined, u(r("BugsObject"), "")) },
+        { js: "config", json: "config", typ: u(undefined, m("any")) },
+        { js: "contributors", json: "contributors", typ: u(undefined, a(u(r("PersonObject"), ""))) },
+        { js: "cpu", json: "cpu", typ: u(undefined, a("")) },
+        { js: "dependencies", json: "dependencies", typ: u(undefined, m("")) },
+        { js: "description", json: "description", typ: u(undefined, "") },
+        { js: "devDependencies", json: "devDependencies", typ: u(undefined, m("")) },
+        { js: "directories", json: "directories", typ: u(undefined, r("Directories")) },
+        { js: "dist", json: "dist", typ: u(undefined, r("Dist")) },
+        { js: "engines", json: "engines", typ: u(undefined, m("")) },
+        { js: "engineStrict", json: "engineStrict", typ: u(undefined, true) },
+        { js: "esnext", json: "esnext", typ: u(undefined, u(r("EsnextObject"), "")) },
+        { js: "files", json: "files", typ: u(undefined, a("")) },
+        { js: "homepage", json: "homepage", typ: u(undefined, "") },
+        { js: "keywords", json: "keywords", typ: u(undefined, a("")) },
+        { js: "license", json: "license", typ: u(undefined, "") },
+        { js: "licenses", json: "licenses", typ: u(undefined, a(r("License"))) },
+        { js: "main", json: "main", typ: u(undefined, "") },
+        { js: "maintainers", json: "maintainers", typ: u(undefined, a(u(r("PersonObject"), ""))) },
+        { js: "man", json: "man", typ: u(undefined, u(a(""), "")) },
+        { js: "module", json: "module", typ: u(undefined, "") },
+        { js: "name", json: "name", typ: u(undefined, "") },
+        { js: "optionalDependencies", json: "optionalDependencies", typ: u(undefined, m("")) },
+        { js: "os", json: "os", typ: u(undefined, a("")) },
+        { js: "peerDependencies", json: "peerDependencies", typ: u(undefined, m("")) },
+        { js: "preferGlobal", json: "preferGlobal", typ: u(undefined, true) },
+        { js: "private", json: "private", typ: u(undefined, true) },
+        { js: "publishConfig", json: "publishConfig", typ: u(undefined, m("any")) },
+        { js: "readme", json: "readme", typ: u(undefined, "") },
+        { js: "repository", json: "repository", typ: u(undefined, u(r("RepositoryObject"), "")) },
+        { js: "resolutions", json: "resolutions", typ: u(undefined, m("")) },
+        { js: "scripts", json: "scripts", typ: u(undefined, r("Scripts")) },
+        { js: "type", json: "type", typ: u(undefined, "") },
+        { js: "types", json: "types", typ: u(undefined, "") },
+        { js: "typings", json: "typings", typ: u(undefined, "") },
+        { js: "version", json: "version", typ: u(undefined, "") },
+        { js: "workspaces", json: "workspaces", typ: u(undefined, "any") },
+        { js: "jspm", json: "jspm", typ: u(undefined, r("CoreProperties")) },
+        { js: "bundleDependencies", json: "bundleDependencies", typ: u(undefined, a("")) },
+        { js: "bundledDependencies", json: "bundledDependencies", typ: u(undefined, a("")) },
+    ], "any"),
+    "PersonObject": o([
+        { js: "email", json: "email", typ: u(undefined, "") },
+        { js: "name", json: "name", typ: "" },
+        { js: "url", json: "url", typ: u(undefined, "") },
     ], "any"),
     "RepositoryObject": o([
-        { json: "directory", js: "directory", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: u(undefined, "") },
-        { json: "url", js: "url", typ: u(undefined, "") },
+        { js: "directory", json: "directory", typ: u(undefined, "") },
+        { js: "type", json: "type", typ: u(undefined, "") },
+        { js: "url", json: "url", typ: u(undefined, "") },
     ], "any"),
     "Scripts": o([
-        { json: "install", js: "install", typ: u(undefined, "") },
-        { json: "postinstall", js: "postinstall", typ: u(undefined, "") },
-        { json: "postpack", js: "postpack", typ: u(undefined, "") },
-        { json: "postpublish", js: "postpublish", typ: u(undefined, "") },
-        { json: "postrestart", js: "postrestart", typ: u(undefined, "") },
-        { json: "poststart", js: "poststart", typ: u(undefined, "") },
-        { json: "poststop", js: "poststop", typ: u(undefined, "") },
-        { json: "posttest", js: "posttest", typ: u(undefined, "") },
-        { json: "postuninstall", js: "postuninstall", typ: u(undefined, "") },
-        { json: "postversion", js: "postversion", typ: u(undefined, "") },
-        { json: "preinstall", js: "preinstall", typ: u(undefined, "") },
-        { json: "prepack", js: "prepack", typ: u(undefined, "") },
-        { json: "prepare", js: "prepare", typ: u(undefined, "") },
-        { json: "prepublish", js: "prepublish", typ: u(undefined, "") },
-        { json: "prepublishOnly", js: "prepublishOnly", typ: u(undefined, "") },
-        { json: "prerestart", js: "prerestart", typ: u(undefined, "") },
-        { json: "prestart", js: "prestart", typ: u(undefined, "") },
-        { json: "prestop", js: "prestop", typ: u(undefined, "") },
-        { json: "pretest", js: "pretest", typ: u(undefined, "") },
-        { json: "preuninstall", js: "preuninstall", typ: u(undefined, "") },
-        { json: "preversion", js: "preversion", typ: u(undefined, "") },
-        { json: "publish", js: "publish", typ: u(undefined, "") },
-        { json: "restart", js: "restart", typ: u(undefined, "") },
-        { json: "start", js: "start", typ: u(undefined, "") },
-        { json: "stop", js: "stop", typ: u(undefined, "") },
-        { json: "test", js: "test", typ: u(undefined, "") },
-        { json: "uninstall", js: "uninstall", typ: u(undefined, "") },
-        { json: "version", js: "version", typ: u(undefined, "") },
+        { js: "install", json: "install", typ: u(undefined, "") },
+        { js: "postinstall", json: "postinstall", typ: u(undefined, "") },
+        { js: "postpack", json: "postpack", typ: u(undefined, "") },
+        { js: "postpublish", json: "postpublish", typ: u(undefined, "") },
+        { js: "postrestart", json: "postrestart", typ: u(undefined, "") },
+        { js: "poststart", json: "poststart", typ: u(undefined, "") },
+        { js: "poststop", json: "poststop", typ: u(undefined, "") },
+        { js: "posttest", json: "posttest", typ: u(undefined, "") },
+        { js: "postuninstall", json: "postuninstall", typ: u(undefined, "") },
+        { js: "postversion", json: "postversion", typ: u(undefined, "") },
+        { js: "preinstall", json: "preinstall", typ: u(undefined, "") },
+        { js: "prepack", json: "prepack", typ: u(undefined, "") },
+        { js: "prepare", json: "prepare", typ: u(undefined, "") },
+        { js: "prepublish", json: "prepublish", typ: u(undefined, "") },
+        { js: "prepublishOnly", json: "prepublishOnly", typ: u(undefined, "") },
+        { js: "prerestart", json: "prerestart", typ: u(undefined, "") },
+        { js: "prestart", json: "prestart", typ: u(undefined, "") },
+        { js: "prestop", json: "prestop", typ: u(undefined, "") },
+        { js: "pretest", json: "pretest", typ: u(undefined, "") },
+        { js: "preuninstall", json: "preuninstall", typ: u(undefined, "") },
+        { js: "preversion", json: "preversion", typ: u(undefined, "") },
+        { js: "publish", json: "publish", typ: u(undefined, "") },
+        { js: "restart", json: "restart", typ: u(undefined, "") },
+        { js: "start", json: "start", typ: u(undefined, "") },
+        { js: "stop", json: "stop", typ: u(undefined, "") },
+        { js: "test", json: "test", typ: u(undefined, "") },
+        { js: "uninstall", json: "uninstall", typ: u(undefined, "") },
+        { js: "version", json: "version", typ: u(undefined, "") },
     ], ""),
 };
 export { packageSchema };

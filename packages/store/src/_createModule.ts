@@ -1,9 +1,9 @@
 import {convertArgsToProps} from './convertArgsToProps';
+import {mapSinksToProps} from './mapSinksToProps';
 import {
   connectReducer,
   convertReducerArgsToObservables,
 } from './reducer/createReducer';
-import {mapSinksToProps} from './mapSinksToProps';
 import {
   Module,
   ModuleSpec,

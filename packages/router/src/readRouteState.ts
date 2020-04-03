@@ -25,8 +25,8 @@ export const readRouteState = (routeMap: RouteMap, state: SubscribeState) => {
 
     next[name] = {
       name: accName.join('.'),
-      path: accPath.join(''),
       params: accParams,
+      path: accPath.join(''),
       state,
     };
 

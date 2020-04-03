@@ -1,5 +1,5 @@
+import {from, isObservable} from 'rxjs';
 import {buildSourceInput} from './buildSourceInput';
-import {isObservable, from} from 'rxjs';
 import {createStore} from './createStore';
 
 describe('buildSourceInput', () => {

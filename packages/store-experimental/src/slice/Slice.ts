@@ -8,5 +8,5 @@ export type Slice<
   TConfigKey extends ConfigKey,
   P extends SliceParentType,
   K extends keyof SliceParentProps<P>
-> = SliceNodeTypeOf<TConfigKey, P, K> &
-  ApiTypeOf<TConfigKey, SliceParentProps<P>[K]>;
+> = ApiTypeOf<TConfigKey, SliceParentProps<P>[K]> &
+  SliceNodeTypeOf<TConfigKey, P, K>;
