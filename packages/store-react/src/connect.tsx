@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as React from 'react';
+
 import {
   ShapeFromSourceArgs,
   SinkArgs,
@@ -6,7 +8,6 @@ import {
   SourceArgs,
 } from '@cleric/store';
 import {mapSinksToProps, mapSourcesToProps} from '@cleric/store';
-import * as React from 'react';
 import {Subscription} from 'rxjs';
 import {Subtract} from 'utility-types';
 

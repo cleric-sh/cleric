@@ -1,6 +1,7 @@
+import React from 'react';
+
 import {connect} from '@cleric/store-react';
 import {Slice} from '@cleric/store/src/store';
-import React from 'react';
 
 type RouteProps = {route: Slice<any>};
 
