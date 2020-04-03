@@ -7,7 +7,7 @@
     "ws": "run.env ./scripts/workspace.sh",
     "git:c": "run.env ./scripts/git-commit.sh",
     "git:cp": "run.env ./scripts/git-commit-and-push.sh",
-    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx . && sortier ."
+    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx . && sortier \"./packages/*/!(node_modules)/**/*.{ts,tsx,js,jsx}\""
   },
   "workspaces": {
     "packages": [

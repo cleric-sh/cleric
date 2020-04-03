@@ -1,6 +1,6 @@
 {
     "linters": {
-        "**/*.{ts,tsx,js,jsx,json,html}": [
+        "**/*.{ts,tsx,js,jsx}": [
             "eslint --fix",
             "sortier"
         ]
