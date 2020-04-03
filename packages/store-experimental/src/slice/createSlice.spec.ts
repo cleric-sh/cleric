@@ -9,6 +9,8 @@ import {StoreNode} from '../store/StoreNode';
 import {Slice} from './Slice';
 import {createSlice} from './createSlice';
 import {pluck} from 'rxjs/operators';
+import {$Selector} from './node/SliceNode';
+import {Foo} from '../configs/test/types/Foo';
 
 describe('createSlice', () => {
   const initial: t.TypeOf<typeof Root> = {
@@ -24,15 +26,17 @@ describe('createSlice', () => {
 
   let src: BehaviorSubject<t.TypeOf<typeof Root>>;
   let store: StoreNode<'Test', typeof Root>;
+  let selector: $Selector<typeof Root, typeof FooBar>;
   let slice: Slice<'Test', typeof Root, typeof FooBar>;
 
   beforeEach(() => {
     src = new BehaviorSubject(initial);
     store = new StoreNode('Test', Root, src);
-    slice = createSlice(store, FooBar, s => s.pipe(pluck('fooBar')));
+    selector = s => s.pipe(pluck('fooBar'));
+    slice = createSlice(store, FooBar, selector);
   });
 
-  it('should observe source values through $', async () => {
+  it('should observe selected values through $', async () => {
     const _values = listen(slice.$);
     src.complete();
     expect(await _values).toEqual([initial.fooBar]);

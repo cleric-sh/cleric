@@ -23,3 +23,15 @@ export const createSlice = <
   const slice = constructSliceNode(config.slice, $parent, $type, selector);
   return slice as Slice<TConfigKey, P, T>;
 };
+
+export const doSomethingElse = <
+  P extends t.Any,
+  T extends t.Any,
+  TConfigKey extends ConfigKey = 'Default'
+>(
+  $parent: ApiNode<TConfigKey, P>,
+  $type: T,
+  selector: $Selector<P, T>
+) => {
+  return {} as Slice<TConfigKey, P, T>;
+};
