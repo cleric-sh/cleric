@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    // When tsc fails to emit javascript, this tends to mess up wallaby and jest pretty badly, with
+    // the obscure, unhelpful [Error] Runtime error: undefined.
+    // This interrupts other test runs too, doesn't actually display any type error information and stops
+    // results from arriving in test reporters. It probably also messes with their cache. Seems like
+    // jest really depends on being able to receive js and not getting it will break it badly.
+    "noEmitOnError": false,
+    // When 'TypeError: Unable to require .d.ts file.' in a monorepo with yarn workspaces, this is because
+    // typescript is not treating symlinked node_modules folders the same was as nodejs is. It expects
+    // JS files to exist in node_modules, but doesn't find them (because they are symlinked local workspaces).
+    // Node will dereference the symlinks and return the actual path of the workspace, see that they're not
+    // actually in 'node_modules' and treat them as local code. By default, tsc ignores code in node_modules.
+    // Setting this to true, means tsc will also dereference the symlinked node_modules and compile the 
+    // workspace code.
+    "preserveSymlinks": true,
+  },
+  "include": [
+    "packages/**/*.spec.{ts,tsx}"
+  ]
+}
