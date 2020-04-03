@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     // Required for ts compatibility. See sanity/testing/jest.md
     "noEmitOnError": false,

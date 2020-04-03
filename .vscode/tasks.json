@@ -10,7 +10,7 @@
             "args": [
                 "-w",
                 "-p",
-                "tsconfig.base.json",
+                "tsconfig.json",
                 "--noEmit",
             ],
             "isBackground": true,
