@@ -4,12 +4,8 @@ import {ConfigKey, getConfig} from '../config';
 
 import {ApiNode} from './ApiNode';
 
-export const decorateNode = <
-  TConfigKey extends ConfigKey,
-  TNode extends t.Any,
-  T extends t.Any = TNode
->(
-  node: ApiNode<TConfigKey, TNode>,
+export const decorateNode = <TNode extends t.Any, T extends t.Any = TNode>(
+  node: ApiNode<ConfigKey, TNode>,
   type: T
 ) => {
   const {apis} = getConfig(node.$configKey);
