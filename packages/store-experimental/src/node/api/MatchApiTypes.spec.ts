@@ -1,10 +1,13 @@
-import {Pass, check, checks} from '@cleric/common';
-import {ApiTypes} from '.';
 import '../../configs/test';
+
+import {Pass, check, checks} from '@cleric/common';
+
+import {ApiTypes} from '.';
+import {MatchApiTypes} from './MatchApiTypes';
+
 import {Foo} from '../../configs/test/types/Foo';
 import {FooBar} from '../../configs/test/types/FooBar';
 import {Unknown} from '../../configs/test/types/Unknown';
-import {MatchApiTypes} from './MatchApiTypes';
 
 describe('MatchApiTypes', () => {
   it('should return all APIs that type guard matches', () => {

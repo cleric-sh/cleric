@@ -18,5 +18,5 @@
         "stripInternal": true,
         "skipLibCheck": true,
         "noErrorTruncation": true
-    }
+    },
 }

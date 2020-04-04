@@ -14,6 +14,6 @@ export const decorateNode = <
 ) => {
   const {apis} = getConfig(node.$configKey);
   for (const api of apis) {
-    if (api.guard(node.$type)) api.decorate(node as any, type as any);
+    if (api.guard(node.$type)) api.decorator(node as any, type as any);
   }
 };

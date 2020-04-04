@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        // Required for ts compatibility. See sanity/testing/jest.md
+        "noEmitOnError": false,
+        // Required for ts/yarn ws/monorepo compatibility. See sanity/testing/jest.md
+        "preserveSymlinks": true,
+        "noEmit": true,
+        "diagnostics": true
+    },
+    "include": [
+        "./debug.ts"
+    ]
+}

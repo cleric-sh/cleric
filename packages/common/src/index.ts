@@ -2,6 +2,7 @@ import {listen} from './rxjs/testing/listen';
 import {Fail, Pass, check, checks} from './ts-toolbelt/Test';
 import * as Types from './types';
 import {TError} from './types/TError';
+import {Defer} from './types/Defer';
 
 export {Fail, Pass, Types, check, checks};
 
@@ -12,6 +13,6 @@ export {Fail, Pass, Types, check, checks};
 const Hello = 'Hello World!';
 export {Hello};
 
-export {TError};
+export {TError, Defer};
 
 export {listen};

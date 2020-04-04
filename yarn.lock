@@ -9199,6 +9199,11 @@ ts-node@^8.6.2:
     source-map-support "^0.5.6"
     yn "3.1.1"
 
+ts-toolbelt@^6.3.11:
+  version "6.3.11"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.3.11.tgz#c1669a33f2ebbd941dd1942054d1017984562320"
+  integrity sha512-J9Cz5wLPay4OEkiDR6BEy4hh112Jhq2AMCbmtHqw9Ch1Y+Go5bwl+CTCmF7xUN4a/67ikd0gNW70u4hEOgacsA==
+
 ts-toolbelt@^6.3.3, ts-toolbelt@^6.3.5:
   version "6.3.5"
   resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.3.5.tgz#5cb4e0454ab954faa9b6e4d5bce366fdb262e364"

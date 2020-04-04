@@ -1,8 +1,11 @@
+import '../../slice/node';
+
 import * as t from 'io-ts';
 
 import {ConfigKey} from '../../config';
 import {SliceNode} from '../../slice/node/SliceNode';
 import {registerSliceNode} from '../../slice/node/registerSliceNode';
+
 export class TestSlice<
   TConfigKey extends ConfigKey,
   P extends t.Any,

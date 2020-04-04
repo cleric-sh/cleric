@@ -25,3 +25,23 @@ Decided mixins won't work, because they don't support scoping for composition. T
 Update: It's possible that mixins still have a place, in the sense that they could be used to create constructors for nodes with compound behavior around parent types, and they could be used in conjunction with decorators, which are always applied by SliceNode in the constructor. In this way, multi-type behavior that needs to be scoped could be achieved with a decorator, and isomorphic behavior could be kept in the mixin/class definition.
 
 Decided to make SliceNode 'parent aware' and configure its own '$' property from the parent's.
+
+2020-04-03:
+Revisting the case of IntersectionApi... there doesn't really seem to be a reasonable scenario where an Intersection type would need to be explicitly merged from the APIs matching its subTypes.
+It's most intuitive to consider it as the end resulting type and decorate it accordingly.
+In the case where an intersection node might need to be treated as one of its subtypes (why though?) it could easily be cast, or a cast operator implemented.
+This opens up the possibility of using mixins again, and keeping each decorator agnostic of the node it's being merged into.
+
+Brainstorming how to solve the deep instantiation problem:
+
+1. Typescript 3.9 seems to solve it, maybe due to the heavy speed optimizations introduced in it. However, I think that the fact that the error exists points to complexity that could be simplified.
+
+2. The lookups around HKT probably have a lot to do with it. Questions:
+ - do I need the HKT lookups in all of these scenarios? 
+ - might mixins help the performance any?
+ - can I pass a config interface into the store directly and pass that down
+ - can I pass along a 'context' object that has all the HKT lookups already resolved?
+
+ 2020-04-04:
+ Reached out to @gcanti (fp-ts and io-ts) and @pirix-gh (ts-toolbelt) for advice in optimizing performance.
+ Made aware of `extends infer X` syntax that defers evaluation of types, and can avoid the `exessively deep` type problem.

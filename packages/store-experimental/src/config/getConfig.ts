@@ -8,5 +8,5 @@ export const getConfig = <TConfigKey extends ConfigKey>(
   const config = Configs[configKey];
   if (!config)
     throw `Config '${configKey} is missing, have you forgotten to add it to the 'Configs' interface, or are you missing an import?'`;
-  return config as Required<ConfigTypes[TConfigKey]>;
+  return (config as unknown) as Required<ConfigTypes[TConfigKey]>;
 };
