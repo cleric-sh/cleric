@@ -1,8 +1,8 @@
-import {ApiKey} from '../node/api';
-import {ApiDefinition} from '../node/api/ApiDefinition';
-import {SliceNodeKey} from '../slice/node/SliceNodeKey';
+import * as t from 'io-ts';
 
-export interface Config {
-  apis: ApiDefinition<ApiKey, any>[];
-  slice: SliceNodeKey;
-}
+import {ApiLookupOf} from './ApiLookupOf';
+import {ConfigArgs} from './ConfigArgs';
+
+export type Config<TConfig extends ConfigArgs> = TConfig & {
+  _apiLookup: ApiLookupOf<TConfig['apis']>;
+};

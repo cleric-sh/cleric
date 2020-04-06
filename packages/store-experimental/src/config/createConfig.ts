@@ -1,10 +1,14 @@
 import {Config} from './Config';
+import {ConfigArgs} from './ConfigArgs';
 import {Configs} from './Configs';
 
-export const createConfig = <TConfig extends Config>(
+export const createConfig = <TArgs extends ConfigArgs>(
   configKey: string,
-  config: TConfig
-): TConfig => {
-  Configs[configKey] = config;
-  return config;
+  args: TArgs
+): Config<TArgs> => {
+  Configs[configKey] = args;
+  return {
+    ...args,
+    _apiLookup: undefined as any,
+  };
 };

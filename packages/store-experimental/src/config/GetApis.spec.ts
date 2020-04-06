@@ -1,22 +1,18 @@
 import {Pass, check, checks} from '@cleric/common';
-import {Any, List, Union, Object} from 'ts-toolbelt';
-import {GetApis} from '.';
+import {List, Union} from 'ts-toolbelt';
+import {GetApis, ConfigKey} from '.';
 import {Configs} from './Configs';
 import {Extends} from 'Any/Extends';
 import {GetConfig} from './GetApis';
-import {TestConfig, Foo, Bar, FooApi} from '../configs/test';
+import {TestConfig, Foo, Bar} from '../configs/test';
 import {Config} from './Config';
 import * as t from 'io-ts';
-import {ApiDecorator} from '../node/api/ApiDecorator';
-import {ApiDefinition, ApiLookup} from '../node/api/ApiDefinition';
+import {ApiLookup} from '../node/api/ApiDefinition';
 import {ApiKey} from '../node/api/ApiKey';
-import {MatchApiType} from '../node/api/MatchApiType';
 import {ApiTypes} from '../node/api';
-import {Compute, Cast} from 'Any/_api';
-import {ApiGuard} from '../node/api/ApiGuard';
+import {Cast} from 'Any/_api';
 import {FooBar} from '../configs/test/types/FooBar';
 import {Unknown} from '../configs/test/types/Unknown';
-import {Merge} from 'List/_api';
 
 describe('GetApis', () => {
   it('Returns APIs corresponding to key.', () => {
@@ -37,20 +33,7 @@ describe('GetConfig', () => {
     type actual = GetConfig<'Test'>;
     type expected = typeof TestConfig;
 
-    type ApiLookupsOf<
-      TApis extends Array<ApiLookup<t.Any, ApiKey>>
-    > = TApis extends Array<infer T>
-      ? T extends ApiLookup<infer G, infer K>
-        ? [t.TypeOf<G>, K]
-        : never
-      : never;
-
-    type ConfigOut<TConfig extends Config> = {
-      apis: ApiLookupsOf<TConfig['apis']>;
-      slice: TConfig['slice'];
-    };
-
-    type ApiLookups = ConfigOut<typeof TestConfig>['apis'];
+    type ApiLookups = Config<typeof TestConfig>['_apiLookup'];
 
     checks([
       check<
@@ -60,16 +43,19 @@ describe('GetConfig', () => {
       >(),
     ]);
 
-    type Select<L extends [unknown, string], U> = L extends [infer G, infer K]
-      ? U extends G
+    type ApiKeysOf<
+      TApiLookup extends [unknown, string],
+      T
+    > = TApiLookup extends [infer G, infer K]
+      ? T extends G
         ? K
         : never
       : never;
 
-    type FooMatch = Select<ApiLookups, t.TypeOf<typeof Foo>>;
-    type BarMatch = Select<ApiLookups, t.TypeOf<typeof Bar>>;
-    type FooBarMatch = Select<ApiLookups, t.TypeOf<typeof FooBar>>;
-    type UnknownMatch = Select<ApiLookups, t.TypeOf<typeof Unknown>>;
+    type FooMatch = ApiKeysOf<ApiLookups, t.TypeOf<typeof Foo>>;
+    type BarMatch = ApiKeysOf<ApiLookups, t.TypeOf<typeof Bar>>;
+    type FooBarMatch = ApiKeysOf<ApiLookups, t.TypeOf<typeof FooBar>>;
+    type UnknownMatch = ApiKeysOf<ApiLookups, t.TypeOf<typeof Unknown>>;
 
     checks([
       check<FooMatch, 'FooApi', Pass>(),
@@ -78,16 +64,26 @@ describe('GetConfig', () => {
       check<UnknownMatch, never, Pass>(),
     ]);
 
-    type Out<TMatches extends ApiKey> = Union.Merge<
-      TMatches extends infer K
-        ? ApiTypes<'Test', typeof Foo>[Cast<K, ApiKey>]
+    type _ApiFor<
+      TApiKeys extends ApiKey,
+      TConfigKey extends ConfigKey,
+      TNode extends t.Any
+    > = Union.Merge<
+      TApiKeys extends infer K
+        ? ApiTypes<TConfigKey, TNode>[Cast<K, ApiKey>]
         : never
     >;
 
-    type FooOut = Out<FooMatch>;
-    type BarOut = Out<BarMatch>;
-    type FooBarOut = Out<FooBarMatch>;
-    type UnknownOut = Out<UnknownMatch>;
+    type ApiFor<
+      TApiKeys extends ApiKey,
+      TConfigKey extends ConfigKey,
+      TNode extends t.Any
+    > = _ApiFor<TApiKeys, TConfigKey, TNode> extends infer X ? X : never;
+
+    type FooOut = ApiFor<FooMatch, 'Test', typeof Foo>;
+    type BarOut = ApiFor<BarMatch, 'Test', typeof Bar>;
+    type FooBarOut = ApiFor<FooBarMatch, 'Test', typeof FooBar>;
+    type UnknownOut = ApiFor<UnknownMatch, 'Test', typeof Unknown>;
 
     checks([
       check<FooOut, {doFoo: () => string}, Pass>(),

@@ -1,5 +1,6 @@
 import * as TT from 'ts-toolbelt';
 import {Test} from 'ts-toolbelt';
+import {Equals, Compute, Extends} from 'Any/_api';
 
 /**
  * Install dummy function implementations for checks and check, since
@@ -17,4 +18,17 @@ const check = Test.check;
 type Pass = Test.Pass;
 type Fail = Test.Fail;
 
-export {Fail, Pass, check, checks};
+// eslint-disable-next-line @typescript-eslint/ban-types
+function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
+  debug?: Compute<Sub>
+): Equals<Extends<Sub, Super>, Outcome> {
+  return {} as any;
+}
+
+// function checkExtends<Type, Expect, Outcome extends Pass | Fail>(
+//   debug?: Compute<Type>
+// ): Equals<Extends<Type, Expect>, Outcome> {
+//   return {} as any;
+// }
+
+export {Fail, Pass, check, checks, checkExtends};
