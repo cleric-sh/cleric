@@ -16,3 +16,6 @@ This can also force typescript to 'compute step by' when you get 'Type instantia
 
 See discussion here: https://github.com/pirix-gh/ts-toolbelt/issues/5
 And example here: https://github.com/pirix-gh/ts-toolbelt/blob/0182a00/src/Object/Assign.ts
+
+Using a type alias for Defer would merely result in typescript expanding the type before passing it to Defer.
+See: https://github.com/pirix-gh/ts-toolbelt/issues/103#issuecomment-609043856

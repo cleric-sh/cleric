@@ -45,3 +45,14 @@ Brainstorming how to solve the deep instantiation problem:
  2020-04-04:
  Reached out to @gcanti (fp-ts and io-ts) and @pirix-gh (ts-toolbelt) for advice in optimizing performance.
  Made aware of `extends infer X` syntax that defers evaluation of types, and can avoid the `exessively deep` type problem.
+
+ Decided to switch back to mixins, because:
+  - it's the best representation of an api that is agnostic of the slice it's being created on.
+  - the APIs can all be prepared ahead of time as constructors/prototypes (faster initialization).
+  - it locks each node's type... e.g. the problem we had with IntersectionApi before actually isn't a problem.
+    - e.g. in what scenario do we actually want a single node to be treated as different types anyway?
+    - The APIs for each of the intersected types should all match the resulting type anyway!
+
+ Decided to use deferred evaluation on Slice, because that would defer evaluation of child properties' types. This should make browsing a slice's child properties more performant.
+
+ Decided to resolve the Config before passing to the HKT lookup functions. Simplify the api lookup to just use the basic Union.
