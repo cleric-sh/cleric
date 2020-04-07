@@ -3,10 +3,11 @@ import {checks, Pass} from '@cleric/common';
 import {checkExtends, check, Fail} from '@cleric/common/src/ts-toolbelt/Test';
 
 describe('structural typing', () => {
-  interface Animal {}
-
-  interface Cat extends Animal {}
   it('is the default', () => {
+    interface Animal {}
+
+    interface Cat extends Animal {}
+
     checks([
       /**
        * Normally, we expect that Cat extends Animal.
@@ -65,24 +66,40 @@ describe('nominal typing', () => {
       checkExtends<Cat, Animal, Pass>(),
 
       /**
-       * However, now an Animal is not assignable to Cat.
+       * However, now an Animal is NOT assignable to Cat.
        * Because Animal is missing the '__cat' discriminator.
        */
       checkExtends<Animal, Cat, Fail>(),
     ]);
   });
+});
 
-  it('doesnt work on classes, without a discriminator', () => {
-    /**
-     * Even though classes are types that can be determined
-     * at runtime, they are not nominal.
-     *
-
-     */
+describe('classes', () => {
+  it('behave nominally runtime, but are structural at the type-level', () => {
     class Animal {}
-
     class Cat extends Animal {}
 
+    /**
+     * Classes can have their inheritence hierarchy determined at runtime.
+     *
+     * E.g. we can determine the type of a class instance at runtime with
+     * 'instanceof'.
+     */
+    expect(new Animal() instanceof Animal).toBe(true);
+    expect(new Cat() instanceof Cat).toBe(true);
+    /**
+     * And a Cat is an instanceof Animal.
+     */
+    expect(new Cat() instanceof Animal).toBe(true);
+    /**
+     * But an Animal is not necessarily an instanceof a Cat.
+     */
+    expect(new Animal() instanceof Cat).toBe(false);
+
+    /**
+     * Even though class hierarchies can be determined at runtime and behave
+     * nominally, at the type level, they are still structural.
+     */
     checks([
       /**
        * As expected, Cat still extends Animal.
