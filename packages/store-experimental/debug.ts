@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './src/configs/test';
 
 // import {Pass, check, checks} from '@cleric/common';

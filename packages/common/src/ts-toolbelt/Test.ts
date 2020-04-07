@@ -20,8 +20,10 @@ type Fail = Test.Fail;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   debug?: Compute<Sub>
 ): Equals<Extends<Sub, Super>, Outcome> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {} as any;
 }
 

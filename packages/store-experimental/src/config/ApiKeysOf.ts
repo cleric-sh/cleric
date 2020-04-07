@@ -1,5 +1,5 @@
 import {ApiKey} from '../node/api';
-import {HasApiKey} from '../node/api/ApiDefinition';
+import {HasApiKey} from '../node/api/HasApiKey';
 
 export type ApiKeysOf<
   TApis extends Array<HasApiKey<ApiKey>>

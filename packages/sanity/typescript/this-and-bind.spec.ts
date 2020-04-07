@@ -1,3 +1,4 @@
+/* eslint-disable */
 describe('bind', () => {
   const myFooApi = {
     foo: 'foo',

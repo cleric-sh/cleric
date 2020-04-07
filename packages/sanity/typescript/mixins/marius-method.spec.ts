@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 describe('marius-method', () => {
   it('should do stuff', () => {
     /**

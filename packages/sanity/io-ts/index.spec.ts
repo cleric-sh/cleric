@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {Pass, check, checks, Fail} from '@cleric/common';
 import {Extends} from 'Any/Extends';
 import * as t from 'io-ts';

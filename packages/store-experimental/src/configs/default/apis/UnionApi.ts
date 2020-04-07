@@ -33,8 +33,11 @@ export const UnionApi = createApi('Union', isUnionType, (node, type) => {
     const subType = type.types[index];
 
     if (!subSlices[index]) {
-      subSlices[index] = new SliceNode(node, subType, parent$ =>
-        parent$.pipe(filter(subType.is))
+      subSlices[index] = new SliceNode(
+        node,
+        subType,
+        parent$ => parent$.pipe(filter(subType.is))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ) as any;
     }
 

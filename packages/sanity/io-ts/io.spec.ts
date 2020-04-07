@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as t from 'io-ts';
 import {checks, check, Pass} from '@cleric/common';
 

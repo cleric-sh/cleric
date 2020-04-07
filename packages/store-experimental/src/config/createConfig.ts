@@ -9,6 +9,7 @@ export const createConfig = <TArgs extends ConfigArgs>(
   Configs[configKey] = args;
   return {
     ...args,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     _apiKeys: undefined as any,
   };
 };

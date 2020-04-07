@@ -3,7 +3,7 @@ import {Union} from 'ts-toolbelt';
 
 import {ConfigKey} from '../../config';
 
-import {GetConfig} from '../../config/GetApis';
+import {GetConfig} from '../../config/getConfig';
 import {ApiTypes} from './ApiTypes';
 import {Cast} from 'Any/Cast';
 import {ApiKey} from '.';

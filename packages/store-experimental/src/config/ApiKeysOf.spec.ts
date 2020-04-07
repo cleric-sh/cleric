@@ -8,8 +8,8 @@ import {ApiDefinition} from '../node/api/ApiDefinition';
 describe('ApiKeysOf', () => {
   it('should do stuff', () => {
     type Def = [
-      ApiDefinition<'Union', t.InterfaceType<t.Props>>,
-      ApiDefinition<'Interface', t.InterfaceType<t.Props>>
+      ApiDefinition<'Union', t.Any>,
+      ApiDefinition<'Interface', t.Any>
     ];
     type actual = ApiKeysOf<Def>;
     type expected = 'Union' | 'Interface';
