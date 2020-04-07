@@ -7,7 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 import {fooBar} from '../configs/test/types/FooBar';
 import {root} from '../configs/test/types/Root';
 import {StoreNode} from '../store/StoreNode';
-import {Slice} from './Slice';
+import {_Slice} from './Slice';
 import {createSlice} from './createSlice';
 import {pluck} from 'rxjs/operators';
 import {$Selector} from './node/SliceNode';
@@ -27,7 +27,7 @@ describe('createSlice', () => {
   let src: BehaviorSubject<t.TypeOf<typeof root>>;
   let store: StoreNode<'Test', typeof root>;
   let selector: $Selector<typeof root, typeof fooBar>;
-  let slice: Slice<'Test', typeof root, typeof fooBar>;
+  let slice: _Slice<'Test', typeof root, typeof fooBar>;
 
   beforeEach(() => {
     src = new BehaviorSubject(initial);

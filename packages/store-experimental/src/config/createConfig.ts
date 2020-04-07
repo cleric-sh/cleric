@@ -9,6 +9,6 @@ export const createConfig = <TArgs extends ConfigArgs>(
   Configs[configKey] = args;
   return {
     ...args,
-    _apiLookup: undefined as any,
+    _apiKeys: undefined as any,
   };
 };

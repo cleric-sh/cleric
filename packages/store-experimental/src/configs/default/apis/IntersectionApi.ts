@@ -1,24 +1,20 @@
 import {Cast} from 'Any/Cast';
 import * as t from 'io-ts';
-import {Tuple, Union} from 'ts-toolbelt';
+import {Union, List} from 'ts-toolbelt';
 
-import {ConfigKey} from '../../../config';
 import {ApiFor} from '../../../node/api';
 import {createApi} from '../../../node/api';
 import {decorateNode} from '../../../node/decorateNode';
 
-export type IntersectionApi<
-  TConfigKey extends ConfigKey,
-  T extends t.Any
-> = T extends t.IntersectionType<infer CS>
-  ? Union.Merge<
-      Tuple.UnionOf<{[K in keyof CS]: ApiFor<TConfigKey, Cast<CS[K], t.Any>>}>
-    >
-  : never;
-
 declare module '../../../node/api' {
   export interface ApiTypes<TConfigKey, TType> {
-    Intersection: IntersectionApi<TConfigKey, TType>;
+    Intersection: TType extends t.IntersectionType<infer CS>
+      ? ApiFor<
+          TConfigKey,
+          Cast<t.InterfaceType<Union.IntersectOf<List.UnionOf<CS>>>, t.Any>
+        >
+      : never;
+    // Intersection: never;
   }
 }
 

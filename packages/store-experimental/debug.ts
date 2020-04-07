@@ -9,7 +9,7 @@ import './src/configs/test';
 import {foo} from './src/configs/test/types/Foo';
 // import {FooBar} from './src/configs/test/types/FooBar';
 // import {Unknown} from './src/configs/test/types/Unknown';
-import {ApiTypeOf} from './src/node/api/ApiTypeOf';
+import {ApiFor} from './src/node/api/ApiFor';
 
-type actualFoo = ApiTypeOf<'Default', typeof foo>;
+type actualFoo = ApiFor<'Default', typeof foo>;
 const thisFoo: actualFoo = {} as any;

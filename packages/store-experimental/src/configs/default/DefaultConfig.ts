@@ -10,8 +10,6 @@ export const DefaultConfig = createConfig('Default', {
   slice: 'SliceNode',
 });
 
-type blah = typeof DefaultConfig['_apiLookup'];
-
 declare module '../../config' {
   export interface ConfigTypes {
     Default: typeof DefaultConfig;

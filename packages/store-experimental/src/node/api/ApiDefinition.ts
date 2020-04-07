@@ -4,12 +4,12 @@ import {ApiDecorator} from './ApiDecorator';
 import {ApiGuard} from './ApiGuard';
 import {ApiKey} from './index';
 
-export interface ApiLookup<T extends t.Any, TKey extends ApiKey> {
-  readonly guard: ApiGuard<T>;
+export interface HasApiKey<TKey extends ApiKey> {
   readonly key: TKey;
 }
 
 export interface ApiDefinition<TKey extends ApiKey, T extends t.Any>
-  extends ApiLookup<T, TKey> {
+  extends HasApiKey<TKey> {
+  readonly guard: ApiGuard<T>;
   readonly decorator: ApiDecorator<T>;
 }

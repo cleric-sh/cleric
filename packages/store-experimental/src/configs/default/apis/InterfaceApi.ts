@@ -5,7 +5,7 @@ import {pluck} from 'rxjs/operators';
 
 import {ConfigKey} from '../../../config';
 import {createApi} from '../../../node/api';
-import {Slice} from '../../../slice/Slice';
+import {_Slice} from '../../../slice/Slice';
 import {createSlice} from '../../../slice/createSlice';
 
 export type InterfaceApi<
@@ -14,7 +14,7 @@ export type InterfaceApi<
 > = T extends ParentType
   ? {
       [K in keyof ParentProps<T>]: ParentProps<T>[K] extends t.Any
-        ? Slice<TConfigKey, T, ParentProps<T>[K]>
+        ? _Slice<TConfigKey, T, ParentProps<T>[K]>
         : never;
     }
   : never;

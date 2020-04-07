@@ -5,22 +5,17 @@ import {Tuple} from 'ts-toolbelt';
 import {ConfigKey} from '../../../config';
 import {createApi} from '../../../node/api';
 import {SliceNode} from '../../../slice/node/SliceNode';
-import {Slice} from '../../../slice/Slice';
-
-export type UnionApi<
-  TConfigKey extends ConfigKey,
-  T extends t.Any
-> = T extends t.UnionType<infer TCS>
-  ? {
-      $is: <TSubType extends Tuple.UnionOf<TCS>>(
-        type: TSubType
-      ) => Slice<TConfigKey, T, TSubType>;
-    }
-  : never;
+import {_Slice} from '../../../slice/Slice';
 
 declare module '../../../node/api' {
   export interface ApiTypes<TConfigKey, TType> {
-    Union: UnionApi<TConfigKey, TType>;
+    Union: TType extends t.UnionType<infer TCS>
+      ? {
+          $is: <TSubType extends Tuple.UnionOf<TCS>>(
+            type: TSubType
+          ) => _Slice<TConfigKey, TType, TSubType>;
+        }
+      : never;
   }
 }
 
@@ -28,7 +23,7 @@ export const isUnionType = (type: t.Any): type is t.UnionType<t.Any[]> =>
   type instanceof t.UnionType;
 
 export const UnionApi = createApi('Union', isUnionType, (node, type) => {
-  const subSlices: Slice<ConfigKey, t.Any, t.Any>[] = [];
+  const subSlices: _Slice<ConfigKey, t.Any, t.Any>[] = [];
 
   node['$is'] = (guard: t.Any) => {
     const index = type.types.findIndex(t => t === guard);
