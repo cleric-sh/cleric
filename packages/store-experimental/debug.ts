@@ -10,7 +10,7 @@ import './src/configs/test';
 import {foo} from './src/configs/test/types/Foo';
 // import {FooBar} from './src/configs/test/types/FooBar';
 // import {Unknown} from './src/configs/test/types/Unknown';
-import {ApiFor} from './src/node/api/ApiFor';
+import {_ApiFor} from './src/node/api/ApiFor';
 
-type actualFoo = ApiFor<'Default', typeof foo>;
+type actualFoo = _ApiFor<'Default', typeof foo>;
 const thisFoo: actualFoo = {} as any;

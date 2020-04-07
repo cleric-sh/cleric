@@ -8,13 +8,13 @@ import {ApiTypes} from './ApiTypes';
 import {Cast} from 'Any/Cast';
 import {ApiKey} from '.';
 
-type _ApiFor<TConfigKey extends ConfigKey, TNode extends t.Any> = Union.Merge<
+type ApiFor<TConfigKey extends ConfigKey, TNode extends t.Any> = Union.Merge<
   GetConfig<TConfigKey>['_apiKeys'] extends infer K
     ? ApiTypes<TConfigKey, TNode>[Cast<K, ApiKey>]
     : never
 >;
 
-export type ApiFor<TConfigKey extends ConfigKey, TNode extends t.Any> = _ApiFor<
+export type _ApiFor<TConfigKey extends ConfigKey, TNode extends t.Any> = ApiFor<
   TConfigKey,
   TNode
 > extends infer X
