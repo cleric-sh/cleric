@@ -1,5 +1,3 @@
-import * as t from 'io-ts';
-
 import {ApiLookupOf} from './ApiLookupOf';
 import {ConfigArgs} from './ConfigArgs';
 

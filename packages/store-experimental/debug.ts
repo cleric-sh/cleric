@@ -6,10 +6,10 @@ import './src/configs/test';
 // import {BarApi} from './src/configs/test/apis/BarApi';
 // import {FooApi} from './src/configs/test/apis/FooApi';
 // import {Bar} from './src/configs/test/types/Bar';
-import {Foo} from './src/configs/test/types/Foo';
+import {foo} from './src/configs/test/types/Foo';
 // import {FooBar} from './src/configs/test/types/FooBar';
 // import {Unknown} from './src/configs/test/types/Unknown';
 import {ApiTypeOf} from './src/node/api/ApiTypeOf';
 
-type actualFoo = ApiTypeOf<'Default', typeof Foo>;
-const foo: actualFoo = {} as any;
+type actualFoo = ApiTypeOf<'Default', typeof foo>;
+const thisFoo: actualFoo = {} as any;

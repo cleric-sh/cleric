@@ -8,8 +8,6 @@ export const TestConfig = createConfig('Test', {
   slice: 'TestSlice',
 });
 
-type blah = typeof TestConfig['_apiLookup'];
-
 declare module '../../config' {
   export interface ConfigTypes {
     Test: typeof TestConfig;

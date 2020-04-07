@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as t from 'io-ts';
 
 import {ApiLookupOf} from './ApiLookupOf';
@@ -6,11 +7,12 @@ import {ApiDefinition} from '../node/api/ApiDefinition';
 
 describe('ApiLookupOf', () => {
   it('should do stuff', () => {
-    const myType = t.type({foo: t.string});
-
-    type Def = [ApiDefinition<'Union', t.InterfaceType<t.Props>>];
+    type Def = [
+      ApiDefinition<'Union', t.InterfaceType<t.Props>>,
+      ApiDefinition<'Interface', t.InterfaceType<t.Props>>
+    ];
     type actual = ApiLookupOf<Def>;
-    type expected = {};
+    type expected = 'Union' | 'Interface';
 
     checks([check<actual, expected, Pass>()]);
   });

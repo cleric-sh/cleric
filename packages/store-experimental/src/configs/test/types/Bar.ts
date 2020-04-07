@@ -1,5 +1,7 @@
 import * as t from 'io-ts';
 
-export const Bar = t.type({
+export const bar = t.type({
   bar: t.number,
 });
+
+export type Bar = typeof bar;

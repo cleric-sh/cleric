@@ -5,7 +5,11 @@ import {ConfigKey} from '../../config';
 
 import {MatchApiTypes} from './MatchApiTypes';
 
+type _ApiTypeOf<TConfigKey extends ConfigKey, T extends t.Any> = Union.Merge<
+  List.UnionOf<MatchApiTypes<TConfigKey, T>>
+>;
+
 export type ApiTypeOf<
   TConfigKey extends ConfigKey,
   T extends t.Any
-> = Union.Merge<List.UnionOf<MatchApiTypes<TConfigKey, T>>>;
+> = _ApiTypeOf<TConfigKey, T> extends infer X ? X : never;

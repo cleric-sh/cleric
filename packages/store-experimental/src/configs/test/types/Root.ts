@@ -1,5 +1,7 @@
 import * as t from 'io-ts';
 
-import {FooBar} from './FooBar';
+import {fooBar} from './FooBar';
 
-export const Root = t.type({fooBar: FooBar, fooBar2: FooBar});
+export const root = t.type({fooBar: fooBar, fooBar2: fooBar});
+
+export type Root = typeof root;

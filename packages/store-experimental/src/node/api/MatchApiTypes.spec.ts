@@ -5,30 +5,30 @@ import {Pass, check, checks} from '@cleric/common';
 import {ApiTypes} from '.';
 import {MatchApiTypes} from './MatchApiTypes';
 
-import {Foo} from '../../configs/test/types/Foo';
-import {FooBar} from '../../configs/test/types/FooBar';
-import {Unknown} from '../../configs/test/types/Unknown';
+import {foo} from '../../configs/test/types/Foo';
+import {fooBar} from '../../configs/test/types/FooBar';
+import {unknown} from '../../configs/test/types/Unknown';
 
 describe('MatchApiTypes', () => {
   it('should return all APIs that type guard matches', () => {
-    type actual = MatchApiTypes<'Test', typeof FooBar>;
+    type actual = MatchApiTypes<'Test', typeof fooBar>;
     type expected = [
-      ApiTypes<'Test', typeof FooBar>['FooApi'],
-      ApiTypes<'Test', typeof FooBar>['BarApi']
+      ApiTypes<'Test', typeof fooBar>['FooApi'],
+      ApiTypes<'Test', typeof fooBar>['BarApi']
     ];
 
     checks([check<actual, expected, Pass>()]);
   });
 
   it('should return API for type when type guard matches, otherwise never', () => {
-    type actual = MatchApiTypes<'Test', typeof Foo>;
-    type expected = [ApiTypes<'Test', typeof Foo>['FooApi'], never];
+    type actual = MatchApiTypes<'Test', typeof foo>;
+    type expected = [ApiTypes<'Test', typeof foo>['FooApi'], never];
 
     checks([check<actual, expected, Pass>()]);
   });
 
   it('should return nevers when no APIs match any type guards', () => {
-    type actual = MatchApiTypes<'Test', typeof Unknown>;
+    type actual = MatchApiTypes<'Test', typeof unknown>;
     type expected = [never, never];
 
     checks([check<actual, expected, Pass>()]);
