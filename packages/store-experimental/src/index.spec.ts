@@ -4,7 +4,7 @@ import {checks, check, Pass} from '@cleric/common';
 import {getConfig} from './config';
 
 describe('index', () => {
-  it.only('should do stuff', () => {
+  it('should do stuff', () => {
     const config = getConfig('Default');
     console.log(config);
 

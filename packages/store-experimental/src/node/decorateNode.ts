@@ -11,6 +11,6 @@ export const decorateNode = <TNode extends t.Any, T extends t.Any = TNode>(
   const {apis} = getConfig(node.$configKey);
   for (const api of apis) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (api.guard(node.$type)) api.decorator(node as any, type as any);
+    if (api.guard(type)) api.decorator(node as any, type as any);
   }
 };

@@ -8,14 +8,14 @@ import {InterfaceApi} from './InterfaceApi';
 import {_Slice} from '../../../../slice/Slice';
 import {ApiTypes} from '../../../../node/api/ApiTypes';
 import {ApiNode} from '../../../../node/ApiNode';
-import {getConfig} from '../../../../config';
 import {SliceNode} from '../../../../slice/node/SliceNode';
 import {Subject} from 'rxjs';
+import {expectConfigLoaded} from '../../expectConfigLoaded';
 
 type InterfaceApi<T extends t.Any> = ApiTypes<'Default', T>['Interface'];
 
 describe('InterfaceApi', () => {
-  it.only('should create a slice for each property on an object type', async () => {
+  it('should create a slice for each property on an object type', async () => {
     const outer = t.type({foo: t.string, bar: t.number});
 
     type actual = InterfaceApi<typeof outer>;
@@ -27,12 +27,10 @@ describe('InterfaceApi', () => {
 
     checks([check<actual, expected, Pass>()]);
 
-    const config = getConfig('Default');
-    for (const api of config.apis) {
-      expect(api).not.toBe(undefined);
-    }
+    expectConfigLoaded();
 
     const src = new Subject();
+
     const node = {$configKey: 'Default', $: src, $type: outer} as ApiNode<
       'Default',
       typeof outer
@@ -59,12 +57,13 @@ describe('InterfaceApi', () => {
     const _foo = listen(foo.$);
     const _bar = listen(bar.$);
 
-    src.next({foo: 'TestFoo', bar: 'TestBar'});
+    src.next({foo: 'TestFoo', bar: 1});
+    src.next({foo: 'TestFoo2', bar: 2});
 
     src.complete();
 
-    expect(await _foo).toEqual(['TestFoo']);
-    expect(await _bar).toEqual(['TestBar']);
+    expect(await _foo).toEqual(['TestFoo', 'TestFoo2']);
+    expect(await _bar).toEqual([1, 2]);
   });
 
   it('should create no properties on empty object type', () => {
