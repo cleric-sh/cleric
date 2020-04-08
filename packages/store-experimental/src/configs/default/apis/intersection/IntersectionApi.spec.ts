@@ -1,13 +1,15 @@
 import * as t from 'io-ts';
+import '../../index';
 
 import {_Slice} from '../../../../slice/Slice';
 import {Pass, checks, check} from '@cleric/common';
 import {ApiTypes} from '../../../../node/api';
+import {getConfig} from '../../../../config';
 
 type IntersectionApi<T extends t.Any> = ApiTypes<'Default', T>['Intersection'];
 
 describe('IntersectionApi', () => {
-  it('should create a slice for each property on an object type', () => {
+  it.only('should create a slice for each property on an object type', () => {
     const foo = t.type({foo: t.string});
     const bar = t.type({bar: t.number});
     const outer = t.intersection([foo, bar]);
@@ -20,6 +22,9 @@ describe('IntersectionApi', () => {
     };
 
     checks([check<actual, expected, Pass>()]);
+
+    const config = getConfig('Default');
+    console.log(config);
   });
 
   it('should create no properties on empty object type', () => {

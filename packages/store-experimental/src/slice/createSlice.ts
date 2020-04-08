@@ -8,7 +8,7 @@ import {ApiNode} from '../node/ApiNode';
 
 import {_Slice} from './Slice';
 import {constructSliceNode} from './node/constructSliceNode';
-import {$Selector} from './node/SliceNode';
+import {Slice$Selector} from './node/Slice$Selector';
 
 export const createSlice = <
   P extends t.Any,
@@ -17,7 +17,7 @@ export const createSlice = <
 >(
   $parent: ApiNode<TConfigKey, P>,
   $type: T,
-  selector: $Selector<P, T>
+  selector: Slice$Selector<P, T>
 ) => {
   const config = getConfig($parent.$configKey);
   const slice = constructSliceNode(config.slice, $parent, $type, selector);

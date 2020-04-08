@@ -7,7 +7,7 @@ import {SliceTypes} from '..';
 import {SliceNodeKey} from './SliceNodeKey';
 import {SliceNodes} from './SliceNodes';
 import {ApiNode} from '../../node/ApiNode';
-import {$Selector} from './SliceNode';
+import {Slice$Selector} from './Slice$Selector';
 
 export const constructSliceNode = <
   TSliceKey extends SliceNodeKey,
@@ -18,11 +18,12 @@ export const constructSliceNode = <
   sliceKey: TSliceKey,
   parent: ApiNode<TConfigKey, P>,
   type: T,
-  selector: $Selector<P, T>
+  selector: Slice$Selector<P, T>
 ) => {
   const slice = SliceNodes[sliceKey];
+  console.log(SliceNodes);
   if (!slice)
-    throw `Slice constructor '${sliceKey} is missing, have you forgotten to add it to the 'Slices' interface, or are you missing an import?'`;
+    throw `Slice constructor '${sliceKey}' is missing, have you forgotten to add it to the 'Slices' interface, or are you missing an import?'`;
   const ctor = (slice as unknown) as Constructor<
     SliceTypes<TConfigKey, P, T>[TSliceKey]
   >;

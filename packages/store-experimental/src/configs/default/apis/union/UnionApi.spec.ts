@@ -10,16 +10,16 @@ describe('UnionApi', () => {
   it('should create a slice for each property on an object type', () => {
     const foo = t.type({foo: t.string});
     const bar = t.type({bar: t.number});
+    const fooBar = t.union([foo, bar]);
+
     type Foo = typeof foo;
     type Bar = typeof bar;
-    const outer = t.union([foo, bar]);
+    type FooBar = typeof fooBar;
 
-    type actual = UnionApi<typeof outer>;
+    type actual = UnionApi<FooBar>;
 
     type expected = {
-      $is: <TSubType extends Foo | Bar>(
-        type: TSubType
-      ) => _Slice<'Default', t.UnionC<[Foo, Bar]>, TSubType>;
+      $is: <T extends Foo | Bar>(type: T) => _Slice<'Default', FooBar, T>;
     };
 
     checks([check<actual, expected, Pass>()]);
