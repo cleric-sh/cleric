@@ -87,7 +87,7 @@ describe('UnionApi', () => {
     checks([check<actual, expected, Pass>()]);
   });
 
-  it('should not match a intersection type', () => {
+  it('should not match an intersection type', () => {
     const outer = t.intersection([t.type({}), t.type({})]);
 
     type actual = UnionApi<typeof outer>;
