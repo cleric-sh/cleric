@@ -1,7 +1,8 @@
 {
   "packages": [
     "packages/*",
-    "sanity/**"
+    "sanity/**",
+    "meta"
   ],
   "version": "independent",
   "npmClient": "yarn",

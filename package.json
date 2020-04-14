@@ -12,7 +12,8 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "sanity/**"
+      "sanity/**",
+      "meta"
     ],
     "nohoist": [
       "**/gts"

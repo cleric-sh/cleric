@@ -12,6 +12,7 @@
     "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
+    "@cleric/tsconfig": "^0.0.1",
     "@types/node": "^13.7.4",
     "fuse-box": "^4.0.0-next.425",
     "nodemon": "^2.0.2",
