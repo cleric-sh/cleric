@@ -19,9 +19,7 @@ const tsConfigContent = tsconfigJson`
 `;
 
 const outPath = '~/Projects/experiments/output';
-const outPathResolved = outPath.replace('~', os.homedir());
 
-const stat = promisify(fs.stat);
 const writeFile = promisify(fs.writeFile);
 const mkdir = promisify(fs.mkdir);
 
@@ -92,19 +90,11 @@ const resolve = (path: string) => {
 const generateDirectory = async (basePath: string, dir: Directory) => {
   const basePathResolved = resolve(basePath);
 
-  if (!fs.existsSync(basePathResolved)) {
-    await mkdir(basePathResolved);
-  }
-
   const dirPath = path.join(basePathResolved, dir.name);
   console.log('creating directory:', dirPath);
 
-  try {
-    if (!fs.existsSync(dirPath)) {
-      await mkdir(dirPath);
-    }
-  } catch (e) {
-    console.log(`fucked up creating ${dirPath}: `, e);
+  if (!fs.existsSync(dirPath)) {
+    await mkdir(dirPath);
   }
 
   const generateFile = async (filename: string, content: string) => {
@@ -117,15 +107,17 @@ const generateDirectory = async (basePath: string, dir: Directory) => {
   if (!dir.nodes) return;
 
   for (const node of dir.nodes) {
-    if (node.__type === 'file') {
-      await generateFile(node.name, node.content);
-    } else if (node.__type === 'directory') {
-      await generateDirectory(dirPath, node);
+    switch (node.__type) {
+      case 'file': {
+        await generateFile(node.name, node.content);
+        break;
+      }
+      case 'directory': {
+        await generateDirectory(dirPath, node);
+        break;
+      }
     }
   }
 };
 
 generateDirectory(outPath, structure);
-
-// generate('package.json', packageJsonContent);
-// generate('tsconfig.json', tsConfigContent);
