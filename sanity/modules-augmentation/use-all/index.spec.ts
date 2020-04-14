@@ -5,7 +5,7 @@ import '@sanity/extension';
 import '@sanity/core/relative';
 import '@sanity/core/extraneous';
 
-import {checks, check, Fail, Pass} from '@cleric/common';
+import {checks, check, Pass} from '@cleric/common';
 
 describe('getShared', () => {
   it('loads from modules', () => {

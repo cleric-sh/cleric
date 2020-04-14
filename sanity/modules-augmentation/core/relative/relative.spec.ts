@@ -3,7 +3,7 @@ import '../extraneous';
 
 import {Shared} from '../shared';
 
-import {checks, check, Fail, Pass} from '@cleric/common';
+import {checks, check, Pass} from '@cleric/common';
 import {getShared} from '..';
 
 describe('relative import of public augmentation', () => {

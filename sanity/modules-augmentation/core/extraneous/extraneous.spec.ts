@@ -3,7 +3,7 @@ import '@sanity/core/extraneous';
 
 import {Shared} from '@sanity/core/shared';
 
-import {checks, check, Fail, Pass} from '@cleric/common';
+import {checks, check, Pass} from '@cleric/common';
 import {getShared} from '..';
 
 describe('extraneous import of public augmentation', () => {
