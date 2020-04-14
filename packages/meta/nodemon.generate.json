@@ -2,6 +2,6 @@
     "watch": [
         "./dist/**"
     ],
-    "exec": "node ./dist/_server_entry.js",
+    "exec": "node ./dist/app.js",
     "inspect": "0.0.0.0:9229"
 }

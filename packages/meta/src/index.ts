@@ -10,7 +10,7 @@ const packageJsonContent = packageJson`{
     "name": "testing"
 }`;
 
-const tsconfigContent = tsconfigJson`
+const tsConfigContent = tsconfigJson`
 {
     "compilerOptions": {
         "noImplicitAny": false
@@ -18,55 +18,114 @@ const tsconfigContent = tsconfigJson`
 }
 `;
 
-const outPath = '~/Projects/experiments/output'.replace('~', os.homedir());
+const outPath = '~/Projects/experiments/output';
+const outPathResolved = outPath.replace('~', os.homedir());
 
 const stat = promisify(fs.stat);
 const writeFile = promisify(fs.writeFile);
 const mkdir = promisify(fs.mkdir);
 
-type Context = {};
+type WriteContext = {};
+
+type BuildContext = {};
 
 type File = {
   __type: 'file';
-  (ctx: Context): {};
+  name: string;
+  content: string;
 };
 
 type FileBuilder = {
-  (name: string): File;
+  (name: string, content: string): File;
 };
 
-const fil: FileBuilder = (name: string) => {
-  return {} as File;
+const f: FileBuilder = (name, content) => {
+  return {__type: 'file', name, content};
 };
 
 type Directory = {
   __type: 'directory';
-  (ctx: Context): {};
+  name: string;
+  nodes?: Array<Directory | File>;
 };
 
 type DirectoryBuilder = {
   (name: string, nodes?: Array<Directory | File>): Directory;
 };
 
-const dir: DirectoryBuilder = (name, nodes): Directory => {
-  return {} as Directory;
+const d: DirectoryBuilder = (name, nodes): Directory => {
+  return {__type: 'directory', name, nodes};
 };
 
-dir('', [fil('package.json'), fil('tsconfig.json'), dir('src')]);
+/**
+ * Spec
+ * Spec + Args = Structure
+ * Structure + Target = Instructions (to write to FS)
+ *
+ */
+type Args = {foos: number[]};
 
-const root = (path: string) => {
+const createFoos = (foos: number[]) =>
+  foos.map(i => f(`foo${i}.ts`, `Foo${i}`));
+
+const spec = (args: Args) =>
+  d('', [
+    f('package.json', packageJsonContent),
+    f('tsconfig.json', tsConfigContent),
+    d('src', [
+      ...createFoos(args.foos),
+      d('nested-dir', [
+        f('testing.json', 'foo'),
+        f('testing2.json', 'foo'),
+        f('testing3.json', 'foo'),
+      ]),
+    ]),
+  ]);
+
+const structure = spec({foos: [1, 2, 3, 4]});
+
+const resolve = (path: string) => {
   // Resolve the '~' character to OS's home dir, if it is used.
-  path = path.replace('~', os.homedir());
+  return path.replace('~', os.homedir());
 };
 
-const generate = async (filename: string, content: string) => {
-  const filePath = path.join(outPath, filename);
+const generateDirectory = async (basePath: string, dir: Directory) => {
+  const basePathResolved = resolve(basePath);
 
-  if (!(await stat(outPath))) {
-    await mkdir(outPath);
+  if (!fs.existsSync(basePathResolved)) {
+    await mkdir(basePathResolved);
   }
 
-  await writeFile(filePath, content);
+  const dirPath = path.join(basePathResolved, dir.name);
+  console.log('creating directory:', dirPath);
+
+  try {
+    if (!fs.existsSync(dirPath)) {
+      await mkdir(dirPath);
+    }
+  } catch (e) {
+    console.log(`fucked up creating ${dirPath}: `, e);
+  }
+
+  const generateFile = async (filename: string, content: string) => {
+    const filePath = path.join(dirPath, filename);
+    console.log('creating file:', filePath);
+
+    await writeFile(filePath, content);
+  };
+
+  if (!dir.nodes) return;
+
+  for (const node of dir.nodes) {
+    if (node.__type === 'file') {
+      await generateFile(node.name, node.content);
+    } else if (node.__type === 'directory') {
+      await generateDirectory(dirPath, node);
+    }
+  }
 };
-generate('package.json', packageJsonContent);
-generate('tsconfig.json', tsconfigContent);
+
+generateDirectory(outPath, structure);
+
+// generate('package.json', packageJsonContent);
+// generate('tsconfig.json', tsConfigContent);

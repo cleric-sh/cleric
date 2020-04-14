@@ -32,8 +32,10 @@ export const json = <T extends object>(schema: object | undefined): Json<T> => (
 
   if (schema) {
     const validationResult = validate(input, schema);
-    if (validationResult.errors.length > 0)
+    if (validationResult.errors.length > 0) {
       console.log(validationResult.errors);
+    }
   }
+
   return JSON.stringify(input, null, 2);
 };

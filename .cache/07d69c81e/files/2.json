@@ -1,0 +1,1 @@
+{"contents":"exports.__esModule = true;\nvar package_1 = __fusereq(4);\nvar json_1 = __fusereq(5);\nexports.packageJson = json_1.json(package_1.packageSchema);\n","sourceMap":"{\"version\":3,\"sources\":[\"/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/generators/packageJson.ts\"],\"names\":[\"json_1\",\"package_1\"],\"mappings\":\";;;sBAI2BA,YAAcC\"}"}

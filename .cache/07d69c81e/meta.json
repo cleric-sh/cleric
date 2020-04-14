@@ -1,0 +1,95 @@
+{
+  "currentId": 8,
+  "modules": {
+    "1": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/index.ts",
+      "dependencies": [
+        2,
+        3
+      ],
+      "id": 1,
+      "mtime": 1586885318518,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/index.ts"
+    },
+    "2": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/generators/packageJson.ts",
+      "dependencies": [
+        5,
+        4
+      ],
+      "id": 2,
+      "mtime": 1585918577360,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/generators/packageJson.ts"
+    },
+    "3": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/generators/tsconfigJson.ts",
+      "dependencies": [
+        5,
+        6
+      ],
+      "id": 3,
+      "mtime": 1585918577361,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/generators/tsconfigJson.ts"
+    },
+    "4": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/schemas/json/package.ts",
+      "dependencies": [
+        8
+      ],
+      "id": 4,
+      "mtime": 1585918577738,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/schemas/json/package.ts"
+    },
+    "5": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/generators/json.ts",
+      "dependencies": [],
+      "id": 5,
+      "mtime": 1586880197310,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/generators/json.ts"
+    },
+    "6": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/schemas/json/tsconfig.ts",
+      "dependencies": [
+        7
+      ],
+      "id": 6,
+      "mtime": 1585918578158,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/schemas/json/tsconfig.ts"
+    },
+    "7": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/schemas/json/tsconfig.schema.json",
+      "dependencies": [],
+      "id": 7,
+      "mtime": 1585479568158,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/schemas/json/tsconfig.schema.json"
+    },
+    "8": {
+      "absPath": "/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/schemas/json/package.schema.json",
+      "dependencies": [],
+      "id": 8,
+      "mtime": 1585479544157,
+      "packageId": "default",
+      "publicPath": "packages/meta/src/schemas/json/package.schema.json"
+    }
+  },
+  "packages": {
+    "default": {
+      "type": 0,
+      "publicName": "default",
+      "isUserPackage": true,
+      "isExternalPackage": false
+    }
+  },
+  "ctx": {
+    "linkedReferences": {},
+    "systemDependencies": {},
+    "tsConfigAtPaths": []
+  }
+}

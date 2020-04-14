@@ -2,3 +2,5 @@
 **/yarn-error.log
 
 **/dist
+
+**/report*.json

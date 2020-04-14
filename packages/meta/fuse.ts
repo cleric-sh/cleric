@@ -9,9 +9,10 @@ class Context {
       entry: './src/index.ts',
       target: 'server',
       cache: true,
-      watch: {
-        paths: [path.join(__dirname, '/src')],
-      },
+      // watcher: {
+      //   paths: [path.join(__dirname, '/src')],
+      // },
+      watcher: true,
       hmr: true,
       logging: {
         level: 'verbose',
