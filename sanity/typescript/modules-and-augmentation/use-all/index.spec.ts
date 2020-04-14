@@ -2,8 +2,8 @@ import {getShared} from '@sanity/core';
 
 import '@sanity/extension';
 
-import '@sanity/core/relative';
-import '@sanity/core/extraneous';
+import '@sanity/core/src/relative';
+import '@sanity/core/src/extraneous';
 
 import {checks, check, Pass} from '@cleric/common';
 

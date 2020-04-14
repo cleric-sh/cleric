@@ -6,7 +6,6 @@
     "license": "UNLICENSED",
     "dependencies": {
         "@cleric/common": "0.0.9",
-        "@sanity/core": "0.0.1",
-        "@sanity/extension": "0.0.1"
+        "@sanity/core": "0.0.1"
     }
 }

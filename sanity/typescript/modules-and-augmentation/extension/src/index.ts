@@ -1,6 +1,6 @@
-import {shared} from '@sanity/core/shared';
+import {shared} from '@sanity/core/src/shared';
 
-declare module '@sanity/core/shared' {
+declare module '@sanity/core/src/shared' {
   export interface Shared {
     extension: 'EXTENSION';
   }

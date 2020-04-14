@@ -1,0 +1,6 @@
+{
+    "extends": "@cleric/tsconfig/tsconfig.base.json",
+    "compilerOptions": {
+        "baseUrl": "src/"
+    }
+}

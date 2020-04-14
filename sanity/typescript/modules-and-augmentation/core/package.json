@@ -1,8 +1,8 @@
 {
     "name": "@sanity/core",
     "version": "0.0.1",
-    "main": "index.ts",
-    "typings": "index.ts",
+    "main": "src/index.ts",
+    "typings": "src/index.ts",
     "license": "UNLICENSED",
     "dependencies": {
         "@cleric/common": "0.0.9"
