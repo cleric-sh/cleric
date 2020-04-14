@@ -1,0 +1,12 @@
+{
+    "name": "@sanity/use-all",
+    "version": "0.0.1",
+    "main": "index.spec.ts",
+    "typings": "index.spec.ts",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "@cleric/common": "0.0.9",
+        "@sanity/core": "0.0.1",
+        "@sanity/extension": "0.0.1"
+    }
+}

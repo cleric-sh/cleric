@@ -1,7 +1,7 @@
-import '@sanity/a/relative';
-import '@sanity/a/extraneous';
+import '@sanity/core/relative';
+import '@sanity/core/extraneous';
 
-import {Shared} from '@sanity/a/shared';
+import {Shared} from '@sanity/core/shared';
 
 import {checks, check, Fail, Pass} from '@cleric/common';
 import {getShared} from '..';

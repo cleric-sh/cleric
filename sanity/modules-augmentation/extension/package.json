@@ -1,10 +1,10 @@
 {
-    "name": "@sanity/b",
+    "name": "@sanity/extension",
     "version": "0.0.1",
     "main": "index.ts",
     "typings": "index.ts",
     "license": "UNLICENSED",
     "dependencies": {
-        "@sanity/a": "0.0.1"
+        "@sanity/core": "0.0.1"
     }
 }

@@ -1,7 +1,7 @@
 {
   "packages": [
     "packages/*",
-    "sanity/*"
+    "sanity/**"
   ],
   "version": "independent",
   "npmClient": "yarn",

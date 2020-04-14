@@ -1,9 +1,6 @@
-import {getShared} from '@sanity/a';
+import {getShared} from '@sanity/core';
 
-import '@sanity/b';
-
-import '@sanity/a/relative';
-import '@sanity/a/extraneous';
+import '@sanity/extension';
 
 import {checks, check, Fail, Pass} from '@cleric/common';
 
@@ -14,15 +11,15 @@ describe('getShared', () => {
     checks([
       check<
         typeof s,
-        {b: 'B'; relative: 'RELATIVE'; extraneous: 'EXTRANEOUS'},
+        {
+          extension: 'EXTENSION';
+        },
         Pass
       >(),
     ]);
 
     expect(s).toStrictEqual({
-      b: 'B',
-      relative: 'RELATIVE',
-      extraneous: 'EXTRANEOUS',
+      extension: 'EXTENSION',
     });
   });
 });

@@ -14,7 +14,7 @@
  * it finds the root node_modules, where '@cleric/a' is symlinked by yarn as
  * a workspace.
  */
-import {shared} from '@sanity/a/shared';
+import {shared} from '@sanity/core/shared';
 
 /**
  * Module augmentation needs to match something that's imported, otherwise
@@ -24,7 +24,7 @@ import {shared} from '@sanity/a/shared';
  * 'new' module with the same name, and it would overwrite the existing '@cleric/a',
  * rather than augmenting it.
  */
-declare module '@sanity/a/shared' {
+declare module '@sanity/core/shared' {
   export interface Shared {
     extraneous: 'EXTRANEOUS';
   }

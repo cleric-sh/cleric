@@ -1,5 +1,5 @@
 {
-    "name": "@sanity/a",
+    "name": "@sanity/core",
     "version": "0.0.1",
     "main": "index.ts",
     "typings": "index.ts",
