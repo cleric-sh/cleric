@@ -1,1 +1,0 @@
-{"contents":"exports.__esModule = true;\nvar tsconfig_1 = __fusereq(6);\nvar json_1 = __fusereq(5);\nexports.tsconfigJson = json_1.json(tsconfig_1.tsconfigSchema);\n","sourceMap":"{\"version\":3,\"sources\":[\"/Users/martaver/Projects/bernie/git/app/cleric/packages/meta/src/generators/tsconfigJson.ts\"],\"names\":[\"json_1\",\"tsconfig_1\"],\"mappings\":\";;;uBAI4BA,YAAeC\"}"}
