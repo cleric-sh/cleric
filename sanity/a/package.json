@@ -1,0 +1,10 @@
+{
+    "name": "@sanity/a",
+    "version": "0.0.1",
+    "main": "index.ts",
+    "typings": "index.ts",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "@cleric/common": "0.0.9"
+    }
+}
