@@ -1,10 +1,8 @@
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
-import {promisify} from 'util';
-
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
+import {generate} from './generate';
+import {f} from './spec/f';
+import {d} from './spec/d';
 
 const packageJsonContent = packageJson`{
     "name": "testing"
@@ -15,109 +13,23 @@ const tsConfigContent = tsconfigJson`
     "compilerOptions": {
         "noImplicitAny": false
     }
-}
-`;
+}`;
 
-const outPath = '~/Projects/experiments/output';
-
-const writeFile = promisify(fs.writeFile);
-const mkdir = promisify(fs.mkdir);
-
-type WriteContext = {};
-
-type BuildContext = {};
-
-type File = {
-  __type: 'file';
-  name: string;
-  content: string;
-};
-
-type FileBuilder = {
-  (name: string, content: string): File;
-};
-
-const f: FileBuilder = (name, content) => {
-  return {__type: 'file', name, content};
-};
-
-type Directory = {
-  __type: 'directory';
-  name: string;
-  nodes?: Array<Directory | File>;
-};
-
-type DirectoryBuilder = {
-  (name: string, nodes?: Array<Directory | File>): Directory;
-};
-
-const d: DirectoryBuilder = (name, nodes): Directory => {
-  return {__type: 'directory', name, nodes};
-};
-
-/**
- * Spec
- * Spec + Args = Structure
- * Structure + Target = Instructions (to write to FS)
- *
- */
 type Args = {foos: number[]};
 
-const createFoos = (foos: number[]) =>
-  foos.map(i => f(`foo${i}.ts`, `Foo${i}`));
+const Foos = (foos: number[]) => foos.map(i => f(`foo${i}.ts`, `Foo${i}`));
 
-const spec = (args: Args) =>
-  d('', [
-    f('package.json', packageJsonContent),
-    f('tsconfig.json', tsConfigContent),
-    d('src', [
-      ...createFoos(args.foos),
-      d('nested-dir', [
-        f('testing.json', 'foo'),
-        f('testing2.json', 'foo'),
-        f('testing3.json', 'foo'),
-      ]),
+const Spec = (args: Args) => [
+  f('package.json', packageJsonContent),
+  f('tsconfig.json', tsConfigContent),
+  d('src', [
+    ...Foos(args.foos),
+    d('nested-dir', [
+      f('testing.json', 'foo'),
+      f('testing2.json', 'foo'),
+      f('testing3.json', 'foo'),
     ]),
-  ]);
+  ]),
+];
 
-const structure = spec({foos: [1, 2, 3, 4]});
-
-const resolve = (path: string) => {
-  // Resolve the '~' character to OS's home dir, if it is used.
-  return path.replace('~', os.homedir());
-};
-
-const generateDirectory = async (basePath: string, dir: Directory) => {
-  const basePathResolved = resolve(basePath);
-
-  const dirPath = path.join(basePathResolved, dir.name);
-  console.log('creating directory:', dirPath);
-
-  if (!fs.existsSync(dirPath)) {
-    await mkdir(dirPath);
-  }
-
-  const generateFile = async (filename: string, content: string) => {
-    const filePath = path.join(dirPath, filename);
-    console.log('creating file:', filePath);
-
-    await writeFile(filePath, content);
-  };
-
-  if (!dir.nodes) return;
-
-  for (const node of dir.nodes) {
-    switch (node.__type) {
-      case 'file': {
-        await generateFile(node.name, node.content);
-        break;
-      }
-      case 'directory': {
-        await generateDirectory(dirPath, node);
-        break;
-      }
-    }
-  }
-};
-
-generateDirectory(outPath, structure);
+generate('~/Projects/experiments/output', Spec({foos: [1, 2, 3, 4, 5]}));
