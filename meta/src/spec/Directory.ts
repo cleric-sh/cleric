@@ -1,7 +1,7 @@
-import {File} from './File';
+import {Nodes} from './Nodes';
 
 export type Directory = {
   __type: 'directory';
   name: string;
-  nodes?: Array<Directory | File>;
+  nodes?: Nodes;
 };

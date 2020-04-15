@@ -3,6 +3,7 @@ import {tsconfigJson} from './generators/tsconfigJson';
 import {generate} from './generate';
 import {f} from './spec/f';
 import {d} from './spec/d';
+import {Nodes} from './spec/Nodes';
 
 const packageJsonContent = packageJson`{
     "name": "testing"
@@ -17,12 +18,16 @@ const tsConfigContent = tsconfigJson`
 
 type Args = {foos: number[]};
 
+const Project = (args: Args, children: Nodes) => [
+  f('package.json', packageJsonContent),
+  f('tsconfig.json', tsConfigContent),
+  d('src', [...children]),
+];
+
 const Foos = (foos: number[]) => foos.map(i => f(`foo${i}.ts`, `Foo${i}`));
 
 const Spec = (args: Args) => [
-  f('package.json', packageJsonContent),
-  f('tsconfig.json', tsConfigContent),
-  d('src', [
+  ...Project(args, [
     ...Foos(args.foos),
     d('nested-dir', [
       f('testing.json', 'foo'),
