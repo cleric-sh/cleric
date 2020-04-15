@@ -2,7 +2,7 @@
     "name": "@sanity/ts-toolbelt",
     "version": "0.0.1",
     "description": "A playground for asserting ts-toolbelt knowledge.",
-    "main": "src/index.spec.ts",
+    "main": "src/List.spec.ts",
     "author": "Sebastian Nemeth",
     "license": "MIT",
     "engines": {
