@@ -1,5 +1,5 @@
-import {checks, Pass} from '@cleric/common';
-import {checkExtends, Fail} from '@cleric/common/src/ts-toolbelt/Test';
+import {Pass, checks} from '@cleric/common';
+import {Fail, checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 
 describe('contravariance', () => {
   interface Animal {

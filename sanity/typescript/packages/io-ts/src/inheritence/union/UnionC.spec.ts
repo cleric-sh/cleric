@@ -1,7 +1,7 @@
-import {Pass, checks, Fail} from '@cleric/common';
-import * as t from 'io-ts';
+import {Fail, Pass, checks} from '@cleric/common';
 import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
-import {foo, bar} from '../types';
+import * as t from 'io-ts';
+import {bar, foo} from '../types';
 
 type BaseCS = [t.Mixed, t.Mixed, ...Array<t.Mixed>];
 

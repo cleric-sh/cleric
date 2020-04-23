@@ -1,8 +1,8 @@
 /* eslint-disable */
-import {Pass, check, checks, Fail} from '@cleric/common';
+import {Fail, Pass, check, checks} from '@cleric/common';
+import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 import {Extends} from 'Any/Extends';
 import * as t from 'io-ts';
-import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 
 describe('t.InterfaceType', () => {
   it('is assignable to t.Any', () => {
@@ -12,7 +12,7 @@ describe('t.InterfaceType', () => {
   it('is assignable to compatible props', () => {
     const foo = t.type({foo: t.string});
     const bar = t.type({bar: t.string});
-    const fooBar = t.type({foo: t.string, bar: t.string});
+    const fooBar = t.type({bar: t.string, foo: t.string});
 
     const intersection = t.intersection([foo, bar]);
     const union = t.union([foo, bar]);

@@ -6,17 +6,17 @@ class Context {
   runServer = false;
   getConfig = () =>
     fusebox({
-      entry: './src/index.ts',
-      target: 'server',
       cache: true,
-      // watcher: {
-      //   paths: [path.join(__dirname, '/src')],
-      // },
-      watcher: true,
+      entry: './src/index.ts',
       hmr: true,
       logging: {
         level: 'verbose',
       },
+      target: 'server',
+      // watcher: {
+      //   paths: [path.join(__dirname, '/src')],
+      // },
+      watcher: true,
     });
 }
 

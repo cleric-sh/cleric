@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {checks, Pass, Fail} from '@cleric/common';
+import {Fail, Pass, checks} from '@cleric/common';
 import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 
 describe('never', () => {

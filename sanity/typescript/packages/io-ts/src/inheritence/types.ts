@@ -15,7 +15,7 @@ export type Baz = typeof baz;
 export type BazType = t.TypeOf<Baz>;
 export type BazProps = t.PropsOf<Baz>;
 
-export const fooBar = t.type({foo: t.string, bar: t.string});
+export const fooBar = t.type({bar: t.string, foo: t.string});
 export type FooBar = typeof fooBar;
 export type FooBarType = t.TypeOf<FooBar>;
 export type FooBarProps = t.PropsOf<FooBar>;

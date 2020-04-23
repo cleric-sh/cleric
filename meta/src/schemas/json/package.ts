@@ -20,6 +20,11 @@ export interface Package {
     bundleDependencies?:  string[];
     bundledDependencies?: string[];
     /**
+     * A 'config' hash can be used to set configuration parameters used in package scripts that
+     * persist across upgrades.
+     */
+    config?: { [key: string]: any };
+    /**
      * A list of people who contributed to this package.
      */
     contributors?: Array<PersonObject | string>;
@@ -27,13 +32,16 @@ export interface Package {
      * If your code only runs on certain cpu architectures, you can specify which ones.
      */
     cpu?:          string[];
+    dependencies?: { [key: string]: string };
     /**
      * This helps people discover your package, as it's listed in 'npm search'.
      */
     description?:     string;
+    devDependencies?: { [key: string]: string };
     directories?:     Directories;
     dist?:            Dist;
     engineStrict?:    boolean;
+    engines?:         { [key: string]: string };
     /**
      * A module ID with untranspiled code that is the primary entry point to your program.
      */
@@ -84,10 +92,12 @@ export interface Package {
      * The name of the package.
      */
     name?:                 string;
+    optionalDependencies?: { [key: string]: string };
     /**
      * You can specify which operating systems your module will run on
      */
     os?:               string[];
+    peerDependencies?: { [key: string]: string };
     /**
      * DEPRECATED: This option used to trigger an npm warning, but it will no longer warn. It is
      * purely there for informational purposes. It is now recommended that you install any
@@ -98,12 +108,14 @@ export interface Package {
      * If set to true, then npm will refuse to publish it.
      */
     private?:       boolean;
+    publishConfig?: { [key: string]: any };
     readme?:        string;
     /**
      * Specify the place where your code lives. This is helpful for people who want to
      * contribute.
      */
     repository?:  RepositoryObject | string;
+    resolutions?: { [key: string]: string };
     /**
      * The 'scripts' member is an object hash of script commands that are run at various times
      * in the lifecycle of your package. The key is the lifecycle event, and the value is the
@@ -133,18 +145,6 @@ export interface Package {
      * workspaces
      */
     workspaces?:          any;
-    /**
-     * A 'config' hash can be used to set configuration parameters used in package scripts that
-     * persist across upgrades.
-     */
-    config?: { [key: string]: any };
-    dependencies?: { [key: string]: string };
-    devDependencies?: { [key: string]: string };
-    engines?:         { [key: string]: string };
-    optionalDependencies?: { [key: string]: string };
-    peerDependencies?: { [key: string]: string };
-    publishConfig?: { [key: string]: any };
-    resolutions?: { [key: string]: string };
 }
 
 export interface PersonObject {
@@ -209,6 +209,11 @@ export interface CoreProperties {
      */
     bugs?: BugsObject | string;
     /**
+     * A 'config' hash can be used to set configuration parameters used in package scripts that
+     * persist across upgrades.
+     */
+    config?: { [key: string]: any };
+    /**
      * A list of people who contributed to this package.
      */
     contributors?: Array<PersonObject | string>;
@@ -216,13 +221,16 @@ export interface CoreProperties {
      * If your code only runs on certain cpu architectures, you can specify which ones.
      */
     cpu?:          string[];
+    dependencies?: { [key: string]: string };
     /**
      * This helps people discover your package, as it's listed in 'npm search'.
      */
     description?:     string;
+    devDependencies?: { [key: string]: string };
     directories?:     Directories;
     dist?:            Dist;
     engineStrict?:    boolean;
+    engines?:         { [key: string]: string };
     /**
      * A module ID with untranspiled code that is the primary entry point to your program.
      */
@@ -272,10 +280,12 @@ export interface CoreProperties {
      * The name of the package.
      */
     name?:                 string;
+    optionalDependencies?: { [key: string]: string };
     /**
      * You can specify which operating systems your module will run on
      */
     os?:               string[];
+    peerDependencies?: { [key: string]: string };
     /**
      * DEPRECATED: This option used to trigger an npm warning, but it will no longer warn. It is
      * purely there for informational purposes. It is now recommended that you install any
@@ -286,12 +296,14 @@ export interface CoreProperties {
      * If set to true, then npm will refuse to publish it.
      */
     private?:       boolean;
+    publishConfig?: { [key: string]: any };
     readme?:        string;
     /**
      * Specify the place where your code lives. This is helpful for people who want to
      * contribute.
      */
     repository?:  RepositoryObject | string;
+    resolutions?: { [key: string]: string };
     /**
      * The 'scripts' member is an object hash of script commands that are run at various times
      * in the lifecycle of your package. The key is the lifecycle event, and the value is the
@@ -321,18 +333,6 @@ export interface CoreProperties {
      * workspaces
      */
     workspaces?: any;
-    /**
-     * A 'config' hash can be used to set configuration parameters used in package scripts that
-     * persist across upgrades.
-     */
-    config?: { [key: string]: any };
-    dependencies?: { [key: string]: string };
-    devDependencies?: { [key: string]: string };
-    engines?:         { [key: string]: string };
-    optionalDependencies?: { [key: string]: string };
-    peerDependencies?: { [key: string]: string };
-    publishConfig?: { [key: string]: any };
-    resolutions?: { [key: string]: string };
 }
 
 export interface License {

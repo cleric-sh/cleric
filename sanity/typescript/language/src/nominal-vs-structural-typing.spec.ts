@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import {checks, Pass} from '@cleric/common';
-import {checkExtends, check, Fail} from '@cleric/common/src/ts-toolbelt/Test';
+import {Pass, checks} from '@cleric/common';
+import {Fail, check, checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 
 describe('structural typing', () => {
   it('is the default', () => {

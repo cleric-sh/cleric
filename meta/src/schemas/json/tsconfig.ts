@@ -312,6 +312,10 @@ export interface TsconfigCompilerOptions {
      */
     outFile?: string;
     /**
+     * Specify path mapping to be computed relative to baseUrl option.
+     */
+    paths?: { [key: string]: string[] };
+    /**
      * List of TypeScript language server plugins to load. Requires TypeScript version 2.3 or
      * later.
      */
@@ -433,10 +437,6 @@ export interface TsconfigCompilerOptions {
      * Watch input files.
      */
     watch?: boolean;
-    /**
-     * Specify path mapping to be computed relative to baseUrl option.
-     */
-    paths?: { [key: string]: string[] };
 }
 
 /**
@@ -793,6 +793,10 @@ export interface TsNodeCompilerOptions {
      */
     outFile?: string;
     /**
+     * Specify path mapping to be computed relative to baseUrl option.
+     */
+    paths?: { [key: string]: string[] };
+    /**
      * List of TypeScript language server plugins to load. Requires TypeScript version 2.3 or
      * later.
      */
@@ -914,10 +918,6 @@ export interface TsNodeCompilerOptions {
      * Watch input files.
      */
     watch?: boolean;
-    /**
-     * Specify path mapping to be computed relative to baseUrl option.
-     */
-    paths?: { [key: string]: string[] };
 }
 
 /**

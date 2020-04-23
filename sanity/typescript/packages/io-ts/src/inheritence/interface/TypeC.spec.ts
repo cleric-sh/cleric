@@ -1,7 +1,7 @@
-import {Pass, check, checks, Fail} from '@cleric/common';
-import * as t from 'io-ts';
+import {Fail, Pass, check, checks} from '@cleric/common';
 import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
-import {FooBar, Foo, FooProps, FooBarProps, BarProps} from '../types';
+import * as t from 'io-ts';
+import {BarProps, Foo, FooBar, FooBarProps, FooProps} from '../types';
 
 describe('t.TypeC', () => {
   it('is assignable to t.Any', () => {

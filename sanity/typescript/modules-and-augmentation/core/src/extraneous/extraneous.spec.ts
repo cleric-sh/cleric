@@ -1,9 +1,9 @@
-import '@sanity/core/src/relative';
 import '@sanity/core/src/extraneous';
+import '@sanity/core/src/relative';
 
 import {Shared} from '@sanity/core/src/shared';
 
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 import {getShared} from '..';
 
 describe('extraneous import of public augmentation', () => {

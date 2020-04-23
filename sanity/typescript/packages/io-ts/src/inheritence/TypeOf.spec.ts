@@ -1,4 +1,4 @@
-import {Pass, checks, Fail} from '@cleric/common';
+import {Fail, Pass, checks} from '@cleric/common';
 import {checkExtends} from '@cleric/common/src/ts-toolbelt/Test';
 import {FooBarType, FooType} from './types';
 

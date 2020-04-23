@@ -2,10 +2,10 @@ import {getShared} from '@sanity/core';
 
 import '@sanity/extension';
 
-import '@sanity/core/src/relative';
 import '@sanity/core/src/extraneous';
+import '@sanity/core/src/relative';
 
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 
 describe('getShared', () => {
   it('loads from modules', () => {
@@ -25,8 +25,8 @@ describe('getShared', () => {
 
     expect(s).toStrictEqual({
       extension: 'EXTENSION',
-      relative: 'RELATIVE',
       extraneous: 'EXTRANEOUS',
+      relative: 'RELATIVE',
     });
   });
 });

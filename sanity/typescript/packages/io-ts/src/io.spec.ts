@@ -1,7 +1,7 @@
 /* eslint-disable */
 
+import {Pass, check, checks} from '@cleric/common';
 import * as t from 'io-ts';
-import {checks, check, Pass} from '@cleric/common';
 
 describe('io-ts', () => {
   it('can navigate through type graph', () => {

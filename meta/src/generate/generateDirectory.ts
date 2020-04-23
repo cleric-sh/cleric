@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import {WriteContext} from './WriteContext';
 import {mkdir} from '../util/fs';
+import {WriteContext} from './WriteContext';
 
 export const generateDirectory = async (ctx: WriteContext, name: string) => {
   const {basePath, currentPath} = ctx;
