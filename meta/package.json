@@ -7,21 +7,24 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "fuse": "nodemon --config nodemon.fuse.json",
-    "generate": "nodemon --config nodemon.generate.json",
+    "dev": "concurrently \"nodemon --config nodemon.fuse.json\" \"nodemon --config nodemon.generate.json\"",
     "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
     "@cleric/tsconfig": "^0.0.1",
     "@types/node": "^13.7.4",
+    "@types/ramda": "^0.26.41",
+    "concurrently": "^5.1.0",
     "fuse-box": "^4.0.0-next.425",
     "nodemon": "^2.0.2",
-    "ts-node": "^8.6.2",
-    "@types/ramda": "^0.26.41"
+    "ts-node": "^8.6.2"
   },
   "dependencies": {
+    "@types/rimraf": "^3.0.0",
     "jsonschema": "^1.2.5",
     "quicktype": "^15.0.210",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.0",
+    "rimraf": "^3.0.2",
+    "ts-toolbelt": "^6.5.1"
   }
 }
