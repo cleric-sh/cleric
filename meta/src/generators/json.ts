@@ -1,30 +1,26 @@
 import {validate} from 'jsonschema';
+import {file} from './file';
 
 export type Json<T extends object> = {
-  (value: string): string;
-  (value: T): string;
-  (value: TemplateStringsArray, ...placeholders: string[]): string;
+  (value: T): Promise<string>;
+  (value: TemplateStringsArray, ...placeholders: string[]): Promise<string>;
+  (value: string): Promise<string>;
 };
 
-export const json = <T extends object>(schema: object | undefined): Json<T> => (
-  value: unknown,
-  ...placeholders: string[]
-) => {
-  let input: object | undefined = undefined;
+const isTemplateStringsArray = (
+  value: unknown
+): value is TemplateStringsArray => Array.isArray(value) && !!value['raw'];
+
+export const json = <T extends object>(
+  schema: undefined | object
+): Json<T> => async (value: unknown, ...placeholders: string[]) => {
+  let input: undefined | object = undefined;
 
   if (typeof value === 'string') {
     input = JSON.parse(value);
-  } else if (Array.isArray(value)) {
-    let result = '';
+  } else if (isTemplateStringsArray(value)) {
+    const result = await file(value, ...placeholders);
 
-    // interleave the literals with the placeholders
-    for (let i = 0; i < placeholders.length; i++) {
-      result += value[i];
-      result += placeholders[i];
-    }
-
-    // add the last literal
-    result += value[value.length - 1];
     input = JSON.parse(result);
   } else if (value !== null && typeof value === 'object') {
     input = value as object;

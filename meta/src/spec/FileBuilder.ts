@@ -1,5 +1,5 @@
 import {File} from './File';
 
 export type FileBuilder = {
-  (name: string, content: string): File;
+  (name: string, content: Promise<string> | string): File;
 };
