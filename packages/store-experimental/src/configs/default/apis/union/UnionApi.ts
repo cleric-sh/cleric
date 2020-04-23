@@ -5,8 +5,8 @@ import {Tuple} from 'ts-toolbelt';
 
 import {ConfigKey} from '../../../../config';
 import {createApi} from '../../../../node/api';
-import {SliceNode} from '../../../../slice/node/SliceNode';
 import {_Slice} from '../../../../slice/Slice';
+import {SliceNode} from '../../../../slice/node/SliceNode';
 import {isUnionType} from './isUnionType';
 
 declare module '../../../../node/api' {

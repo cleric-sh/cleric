@@ -16,13 +16,13 @@ import {createStore} from './createStore';
 import {Source, Store} from './store';
 
 interface SecondValState {
-  nestedVal: number;
-  secondNestedValue: number;
   deeper: {
     nested: {
       property: string;
     };
   };
+  nestedVal: number;
+  secondNestedValue: number;
 }
 
 interface BlahState {

@@ -50,11 +50,11 @@ describe('hash', () => {
 
   it('should allow hashing boolean values', () => {
     type MyState = {
-      value: boolean;
       nested: {
         anotherValue: string;
         thirdValue: boolean;
       };
+      value: boolean;
     };
 
     const first = createHash<MyState>({

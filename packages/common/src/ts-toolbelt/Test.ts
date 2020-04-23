@@ -1,6 +1,6 @@
+import {Compute, Equals, Extends} from 'Any/_api';
 import * as TT from 'ts-toolbelt';
 import {Test} from 'ts-toolbelt';
-import {Equals, Compute, Extends} from 'Any/_api';
 
 /**
  * Install dummy function implementations for checks and check, since
@@ -33,4 +33,4 @@ function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
 //   return {} as any;
 // }
 
-export {Fail, Pass, check, checks, checkExtends};
+export {Fail, Pass, check, checkExtends, checks};

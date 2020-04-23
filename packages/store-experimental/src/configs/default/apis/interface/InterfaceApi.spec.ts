@@ -2,27 +2,27 @@ import * as t from 'io-ts';
 
 import '../../index';
 
-import {Pass, checks, check, listen} from '@cleric/common';
+import {Pass, check, checks, listen} from '@cleric/common';
 
-import {InterfaceApi} from './InterfaceApi';
-import {_Slice} from '../../../../slice/Slice';
-import {ApiTypes} from '../../../../node/api/ApiTypes';
-import {ApiNode} from '../../../../node/ApiNode';
-import {SliceNode} from '../../../../slice/node/SliceNode';
 import {Subject} from 'rxjs';
+import {ApiNode} from '../../../../node/ApiNode';
+import {ApiTypes} from '../../../../node/api/ApiTypes';
+import {_Slice} from '../../../../slice/Slice';
+import {SliceNode} from '../../../../slice/node/SliceNode';
 import {expectConfigLoaded} from '../../expectConfigLoaded';
+import {InterfaceApi} from './InterfaceApi';
 
 type InterfaceApi<T extends t.Any> = ApiTypes<'Default', T>['Interface'];
 
 describe('InterfaceApi', () => {
   it('should create a slice for each property on an object type', async () => {
-    const outer = t.type({foo: t.string, bar: t.number});
+    const outer = t.type({bar: t.number, foo: t.string});
 
     type actual = InterfaceApi<typeof outer>;
 
     type expected = {
-      foo: _Slice<'Default', typeof outer, t.StringC>;
       bar: _Slice<'Default', typeof outer, t.NumberC>;
+      foo: _Slice<'Default', typeof outer, t.StringC>;
     };
 
     checks([check<actual, expected, Pass>()]);
@@ -57,8 +57,8 @@ describe('InterfaceApi', () => {
     const _foo = listen(foo.$);
     const _bar = listen(bar.$);
 
-    src.next({foo: 'TestFoo', bar: 1});
-    src.next({foo: 'TestFoo2', bar: 2});
+    src.next({bar: 1, foo: 'TestFoo'});
+    src.next({bar: 2, foo: 'TestFoo2'});
 
     src.complete();
 

@@ -15,10 +15,10 @@ type State = {
 
 type Sources = {
   isMouseOver: Source<boolean>;
-  toggleExpand: Source<{}>;
   someSource: {
     trigger: Source<number>;
   };
+  toggleExpand: Source<{}>;
 };
 
 describe('createReducer', () => {

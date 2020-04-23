@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 
-import {Union, List} from 'ts-toolbelt';
 import {Cast, Compute} from 'Any/_api';
+import {List, Union} from 'ts-toolbelt';
 
 import {_ApiFor} from '../../../../node/api';
 import {createApi} from '../../../../node/api';

@@ -1,15 +1,15 @@
 import * as t from 'io-ts';
 
+import {Cast} from 'Any/Cast';
 import {ConfigKey} from '../config';
 import {_ApiFor} from '../node/api';
 import {SliceNodeTypeOf} from './node/SliceNodeTypeOf';
-import {Cast} from 'Any/Cast';
 
 type Slice<
   TConfigKey extends ConfigKey,
   P extends t.Any,
   T extends t.Any
-> = _ApiFor<TConfigKey, T> & SliceNodeTypeOf<TConfigKey, P, T>;
+> = SliceNodeTypeOf<TConfigKey, P, T> & _ApiFor<TConfigKey, T>;
 
 export type _Slice<
   TConfigKey extends ConfigKey,

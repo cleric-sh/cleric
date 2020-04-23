@@ -2,7 +2,7 @@ import {TestConfig} from './TestConfig';
 import {TestSlice} from './TestSlice';
 import {BarApi} from './apis/BarApi';
 import {FooApi} from './apis/FooApi';
-import {foo, Foo} from './types/Foo';
-import {bar, Bar} from './types/Bar';
+import {Bar, bar} from './types/Bar';
+import {Foo, foo} from './types/Foo';
 
-export {BarApi, FooApi, TestConfig, TestSlice, foo, Foo, bar, Bar};
+export {Bar, BarApi, Foo, FooApi, TestConfig, TestSlice, bar, foo};

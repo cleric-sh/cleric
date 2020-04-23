@@ -1,6 +1,6 @@
 import {PerfConfig} from './PerfConfig';
 import {PerfSlice} from './PerfSlice';
-import {foo, Foo} from './types/Foo';
-import {bar, Bar} from './types/Bar';
+import {Bar, bar} from './types/Bar';
+import {Foo, foo} from './types/Foo';
 
-export {PerfConfig, PerfSlice, foo, Foo, bar, Bar};
+export {Bar, Foo, PerfConfig, PerfSlice, bar, foo};

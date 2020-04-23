@@ -51,10 +51,10 @@ describe('mapSourcesToProps', () => {
 
 type Test = {
   arr: number;
-  obs: string;
   obj: {
     narf: number;
   };
+  obs: string;
 };
 
 const sources: SourceArgs = {
@@ -85,10 +85,10 @@ const specFromSources = sourceToSpec({
 
 type MySpec = {
   arr: number;
-  obs: number;
   obj: {
     narf: string;
   };
+  obs: number;
 };
 
 const sourcesFromSpec = specToSources<typeof specFromSources>({

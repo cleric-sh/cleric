@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import '../configs/test';
 import * as t from 'io-ts';
+import '../configs/test';
 
 import {listen} from '@cleric/common';
 import {BehaviorSubject} from 'rxjs';
+import {pluck} from 'rxjs/operators';
 import {fooBar} from '../configs/test/types/FooBar';
 import {root} from '../configs/test/types/Root';
 import {StoreNode} from '../store/StoreNode';
 import {_Slice} from './Slice';
 import {createSlice} from './createSlice';
-import {pluck} from 'rxjs/operators';
 import {Slice$Selector} from './node/Slice$Selector';
 
 describe('createSlice', () => {

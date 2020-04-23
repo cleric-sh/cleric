@@ -7,8 +7,8 @@ import {ConfigKey, getConfig} from '../config';
 import {ApiNode} from '../node/ApiNode';
 
 import {_Slice} from './Slice';
-import {constructSliceNode} from './node/constructSliceNode';
 import {Slice$Selector} from './node/Slice$Selector';
+import {constructSliceNode} from './node/constructSliceNode';
 
 export const createSlice = <
   P extends t.Any,

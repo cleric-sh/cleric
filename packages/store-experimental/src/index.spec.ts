@@ -1,6 +1,6 @@
 import './configs/default';
 
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 import {getConfig} from './config';
 
 describe('index', () => {

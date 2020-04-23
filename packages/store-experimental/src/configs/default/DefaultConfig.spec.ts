@@ -1,7 +1,7 @@
-import {Pass, checks, checkExtends} from '@cleric/common';
+import {Pass, checkExtends, checks} from '@cleric/common';
 import {Config} from '../../config/Config';
-import {DefaultConfig} from './DefaultConfig';
 import {ConfigArgs} from '../../config/ConfigArgs';
+import {DefaultConfig} from './DefaultConfig';
 
 describe('DefaultConfig', () => {
   it('Default configuration is assignable to Config interface', () => {

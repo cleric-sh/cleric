@@ -1,14 +1,14 @@
 import * as t from 'io-ts';
 import '../../index';
 
-import {_Slice} from '../../../../slice/Slice';
-import {Pass, checks, check, listen} from '@cleric/common';
+import {Pass, check, checks, listen} from '@cleric/common';
+import {Subject} from 'rxjs';
+import {ApiNode} from '../../../../node/ApiNode';
 import {ApiTypes} from '../../../../node/api';
+import {_Slice} from '../../../../slice/Slice';
+import {SliceNode} from '../../../../slice/node/SliceNode';
 import {expectConfigLoaded} from '../../expectConfigLoaded';
 import {IntersectionApi} from '../../index';
-import {ApiNode} from '../../../../node/ApiNode';
-import {SliceNode} from '../../../../slice/node/SliceNode';
-import {Subject} from 'rxjs';
 
 type IntersectionApi<T extends t.Any> = ApiTypes<'Default', T>['Intersection'];
 
@@ -21,8 +21,8 @@ describe('IntersectionApi', () => {
     type actual = IntersectionApi<typeof outer>;
 
     type expected = {
-      foo: _Slice<'Default', typeof foo, t.StringC>;
       bar: _Slice<'Default', typeof bar, t.NumberC>;
+      foo: _Slice<'Default', typeof foo, t.StringC>;
     };
 
     checks([check<actual, expected, Pass>()]);
@@ -57,8 +57,8 @@ describe('IntersectionApi', () => {
     const _foo = listen(fooProp.$);
     const _bar = listen(barProp.$);
 
-    src.next({foo: 'TestFoo', bar: 1});
-    src.next({foo: 'TestFoo2', bar: 2});
+    src.next({bar: 1, foo: 'TestFoo'});
+    src.next({bar: 2, foo: 'TestFoo2'});
 
     src.complete();
 

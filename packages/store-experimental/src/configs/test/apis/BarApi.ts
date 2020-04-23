@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 
 import {createApi} from '../../../node/api';
-import {bar, Bar} from '../types/Bar';
+import {Bar, bar} from '../types/Bar';
 
 export const BarGuard = (type: t.Any): type is typeof bar =>
   type instanceof t.InterfaceType && !!type.props['bar'];

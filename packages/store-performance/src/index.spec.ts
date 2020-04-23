@@ -2,8 +2,8 @@ import * as t from 'io-ts';
 
 import './perf';
 
-import {checks, Pass, checkExtends, Fail} from '@cleric/common';
-import {createSlice, ConfigKey, ApiNode} from '@cleric/store-experimental';
+import {Fail, Pass, checkExtends, checks} from '@cleric/common';
+import {ApiNode, ConfigKey, createSlice} from '@cleric/store-experimental';
 
 import {Subject} from 'rxjs';
 import {pluck} from 'rxjs/operators';

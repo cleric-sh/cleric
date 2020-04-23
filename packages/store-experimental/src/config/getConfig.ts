@@ -1,10 +1,10 @@
 import {TError} from '@cleric/common';
 
+import {List} from 'List/_api';
+import {Config} from './Config';
 import {ConfigKey} from './ConfigKey';
 import {ConfigTypes} from './ConfigTypes';
 import {Configs} from './Configs';
-import {Config} from './Config';
-import {List} from 'List/_api';
 
 export const getConfig = <TConfigKey extends ConfigKey>(
   configKey: TConfigKey

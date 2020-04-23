@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as t from 'io-ts';
 
-import {ApiKeysOf} from './ApiKeysOf';
-import {checks, check, Pass} from '@cleric/common';
+import {Pass, check, checks} from '@cleric/common';
 import {ApiDefinition} from '../node/api/ApiDefinition';
+import {ApiKeysOf} from './ApiKeysOf';
 
 describe('ApiKeysOf', () => {
   it('should do stuff', () => {
@@ -12,7 +12,7 @@ describe('ApiKeysOf', () => {
       ApiDefinition<'Interface', t.Any>
     ];
     type actual = ApiKeysOf<Def>;
-    type expected = 'Union' | 'Interface';
+    type expected = 'Interface' | 'Union';
 
     checks([check<actual, expected, Pass>()]);
   });

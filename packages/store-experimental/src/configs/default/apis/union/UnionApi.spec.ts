@@ -1,14 +1,14 @@
 import * as t from 'io-ts';
 import '../../index';
 
-import {_Slice} from '../../../../slice/Slice';
-import {Pass, checks, check, listen} from '@cleric/common';
-import {ApiTypes} from '../../../../node/api';
-import {UnionApi} from './UnionApi';
-import {expectConfigLoaded} from '../../expectConfigLoaded';
+import {Pass, check, checks, listen} from '@cleric/common';
 import {Subject} from 'rxjs';
 import {ApiNode} from '../../../../node/ApiNode';
+import {ApiTypes} from '../../../../node/api';
+import {_Slice} from '../../../../slice/Slice';
 import {SliceNode} from '../../../../slice/node/SliceNode';
+import {expectConfigLoaded} from '../../expectConfigLoaded';
+import {UnionApi} from './UnionApi';
 
 type UnionApi<T extends t.Any> = ApiTypes<'Default', T>['Union'];
 

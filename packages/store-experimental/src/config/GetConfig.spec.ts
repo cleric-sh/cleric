@@ -2,8 +2,8 @@ import '../configs/test';
 
 import {Pass, check, checks} from '@cleric/common';
 import {Extends} from 'Any/Extends';
-import {GetConfig, getConfig} from './getConfig';
 import {TestConfig} from '../configs/test';
+import {GetConfig, getConfig} from './getConfig';
 
 describe('GetConfig', () => {
   it('Returns Config object corresponding to key.', () => {

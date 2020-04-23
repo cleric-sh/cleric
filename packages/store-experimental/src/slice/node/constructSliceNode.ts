@@ -4,10 +4,10 @@ import {Constructor} from '@cleric/common/src/types';
 import {ConfigKey} from '../../config';
 
 import {SliceTypes} from '..';
-import {SliceNodeKey} from './SliceNodeKey';
-import {SliceNodes} from './SliceNodes';
 import {ApiNode} from '../../node/ApiNode';
 import {Slice$Selector} from './Slice$Selector';
+import {SliceNodeKey} from './SliceNodeKey';
+import {SliceNodes} from './SliceNodes';
 
 export const constructSliceNode = <
   TSliceKey extends SliceNodeKey,

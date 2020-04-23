@@ -1,5 +1,5 @@
-import {createSlice} from './slice';
-import {ApiNode} from './node/ApiNode';
 import {ConfigKey} from './config';
+import {ApiNode} from './node/ApiNode';
+import {createSlice} from './slice';
 
-export {createSlice, ApiNode, ConfigKey};
+export {ApiNode, ConfigKey, createSlice};
