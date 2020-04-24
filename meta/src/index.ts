@@ -140,8 +140,8 @@ const Spec = (args: Args) => [
   Config(args.numbers),
 ];
 
-generate(
-  '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
-  Spec({numbers: [...Array(1).keys()].map(i => i + 1)}),
-  false
-);
+// generate(
+//   '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
+//   Spec({numbers: [...Array(1).keys()].map(i => i + 1)}),
+//   false
+// );
