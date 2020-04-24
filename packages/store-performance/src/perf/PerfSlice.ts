@@ -11,7 +11,7 @@ export class PerfSlice<
   P extends t.Any,
   T extends t.Any
 > extends SliceNode<TConfigKey, P, T> {
-  doTest = () => 'Test';
+  doPerfFromPerfNode = () => 'Perf';
 }
 
 registerSliceNode('PerfSlice', PerfSlice);

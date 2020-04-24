@@ -1,5 +1,4 @@
 // Import the default configuration, so that it's always available.
-import '../configs/default';
 
 import * as t from 'io-ts';
 

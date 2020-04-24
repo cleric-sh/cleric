@@ -20,7 +20,7 @@ export type GetConfig<
   TConfig = ConfigTypes[TConfigKey]
 > = TConfig extends Config<infer Args>
   ? Args['apis'] extends List<unknown>
-    ? TConfig // This step ensures that typed arrays are converted into tuples.
+    ? TConfig
     : TError<
         "Configuration's 'apis' property must be an Array or Tuple of SliceApis."
       >

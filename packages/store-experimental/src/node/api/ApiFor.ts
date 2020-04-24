@@ -18,5 +18,5 @@ export type _ApiFor<TConfigKey extends ConfigKey, TNode extends t.Any> = ApiFor<
   TConfigKey,
   TNode
 > extends infer X
-  ? Cast<X, object>
+  ? X
   : never;

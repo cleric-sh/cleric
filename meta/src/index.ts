@@ -87,10 +87,11 @@ const Config = (numbers: number[]) => {
     `PerfConfig.ts`,
     `import {createConfig} from '@cleric/store-experimental/src/config';
 
+import {RootApi} from './apis/RootApi';
 ${imports}
 
 export const PerfConfig = createConfig('Perf', {
-  apis: [${apis}],
+  apis: [RootApi, ${apis}],
   slice: 'PerfSlice',
 });
 
@@ -105,18 +106,28 @@ declare module '@cleric/store-experimental/src/config' {
 
 const Root = (numbers: number[]) => {
   const imports = numbers
-    .map(i => `import {type${i}} from './Type${i}';`)
+    .map(i => `import {type${i}, Type${i}} from './Type${i}';`)
     .join(`\n`);
 
-  const props = numbers.map(i => `\n  type${i},`).join(``);
+  const propTypes = numbers.map(i => `type${i}: t.TypeOf<Type${i}>;`).join(``);
+  const props = numbers.map(i => `type${i},`).join(``);
 
   return f(
     `Root.ts`,
     `import * as t from 'io-ts';
 
 ${imports}
+export interface RootType {
+  ${propTypes}
+  root: RootType;
+}
 
-export const root = t.type({${props}\n});
+export const root: t.Type<RootType> = t.recursion('Root', () =>
+  t.type({
+    ${props}
+    root,
+  })
+);
 
 export type Root = typeof root;
 `
@@ -131,6 +142,6 @@ const Spec = (args: Args) => [
 
 generate(
   '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
-  Spec({numbers: [...Array(5).keys()].map(i => i + 1)}),
+  Spec({numbers: [...Array(1).keys()].map(i => i + 1)}),
   false
 );
