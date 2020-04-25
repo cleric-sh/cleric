@@ -101,4 +101,28 @@ describe('IntersectionApi', () => {
 
     checks([check<actual, expected, Pass>()]);
   });
+
+  it('should not match a recursion type', () => {
+    type _Recursion = {
+      foo: _Recursion;
+    };
+
+    type Recursion = t.RecursiveType<
+      t.TypeC<{
+        foo: Recursion;
+      }>,
+      _Recursion
+    >;
+
+    const recursion: Recursion = t.recursion('RecursiveType', () =>
+      t.type({
+        foo: recursion,
+      })
+    );
+
+    type actual = IntersectionApi<typeof recursion>;
+    type expected = never;
+
+    checks([check<actual, expected, Pass>()]);
+  });
 });
