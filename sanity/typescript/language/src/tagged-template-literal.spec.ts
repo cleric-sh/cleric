@@ -22,7 +22,7 @@ const asyncTag = async (
 };
 
 describe('tagged template literals', () => {
-  it.only('can also operate async', async () => {
+  it('can also operate async', async () => {
     const _foo = _('foo');
     const _bar = _('bar');
     const _testFoo = asyncTag`test${_foo}`;
@@ -35,7 +35,7 @@ describe('tagged template literals', () => {
     expect(fooBar).toBe(`testfoo:testbar foobar`);
   });
 
-  it.only('can also operate a mix of sync and async', async () => {
+  it('can also operate a mix of sync and async', async () => {
     const test = 'test';
     const _foo = _('foo');
     const _bar = _('bar');
@@ -49,7 +49,7 @@ describe('tagged template literals', () => {
     expect(fooBar).toBe(`testfoo:testbar foobar`);
   });
 
-  it.only('can also handle a single string without overload', async () => {
+  it('can also handle a single string without overload', async () => {
     const _foo = asyncTag`foo`;
 
     const foo = await _foo;

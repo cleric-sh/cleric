@@ -1,4 +1,4 @@
-import {TError} from '@cleric/common';
+import {TError} from '@cleric/common/src/types';
 
 import {List} from 'List/_api';
 import {Config} from './Config';

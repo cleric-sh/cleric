@@ -1,7 +1,7 @@
-import {Types} from '@cleric/common/src';
 import * as t from 'io-ts';
 import {Union} from 'ts-toolbelt';
 
+import {OnlyKnown} from '@cleric/common/src/types/types';
 import {createRoutes} from './createRoutes';
 import {RouteArgs, RoutesArgs, route} from './route';
 
@@ -33,10 +33,10 @@ export type RoutesState<
   [P in keyof TRoutesArgs]: TRoutesArgs[P] extends RouteArgs<infer U>
     ? Union.Strict<
         RouteProps &
-          RouteParams<Union.Strict<TLastProps & Types.OnlyKnown<U>>> &
+          RouteParams<Union.Strict<TLastProps & OnlyKnown<U>>> &
           RoutesState<
             NonNullable<TRoutesArgs[P]['children']>,
-            Union.Strict<TLastProps & Types.OnlyKnown<U>>
+            Union.Strict<TLastProps & OnlyKnown<U>>
           >
       >
     : never;

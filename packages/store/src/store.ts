@@ -1,8 +1,8 @@
-import {Types} from '@cleric/common';
 import {HashState} from '@cleric/hash';
 import {Observable, ObservableInput, Subject, Subscribable} from 'rxjs';
 import {DeepPartial} from 'utility-types';
 
+import {FilterExclude} from '@cleric/common/src/types';
 import {Compute} from 'Any/_api';
 import {ReducerBuilder} from './reducer/createReducer';
 
@@ -33,7 +33,7 @@ export interface NodeI {
   state$: Observable<State<any>>;
 }
 
-type Valid<T> = Types.FilterExclude<T, Function>;
+type Valid<T> = FilterExclude<T, Function>;
 
 /**
  * Provides the API for interacting with a Store based on a specified state's
@@ -69,12 +69,12 @@ export interface StoreI<T> extends StoreApiI<T>, NodeI {
  */
 export type Slice<T> = SliceApiI<T> &
   {
-    [P in keyof Types.FilterExclude<T, Function>]-?: Types.FilterExclude<
+    [P in keyof FilterExclude<T, Function>]-?: FilterExclude<
       T,
       Function
     >[P] extends object
-      ? Slice<Types.FilterExclude<T, Function>[P]>
-      : SliceApiI<Types.FilterExclude<T, Function>[P]>;
+      ? Slice<FilterExclude<T, Function>[P]>
+      : SliceApiI<FilterExclude<T, Function>[P]>;
   };
 
 export type Mutator<T> = MutationApiI<T> &

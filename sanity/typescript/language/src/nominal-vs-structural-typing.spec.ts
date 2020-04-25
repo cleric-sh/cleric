@@ -32,12 +32,14 @@ describe('structural typing', () => {
 
       /**
        * This is called structural typing, and under it two types are the same
-       * when they share the same properties.
-       *
+       * when they share exactly the same properties.
+       */
+      check<{foo: string}, {foo: string}, Pass>(),
+      check<{foo: string; bar: string}, {foo: string}, Fail>(),
+      /**
        * Also, a type is assignable to another if it contains all the properties
        * of the other type.
        */
-      check<{foo: string}, {foo: string}, Pass>(),
       checkExtends<{foo: string; bar: string}, {foo: string}, Pass>(),
     ]);
   });

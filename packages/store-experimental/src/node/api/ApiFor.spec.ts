@@ -32,7 +32,7 @@ describe('ApiFor', () => {
 
   it('should return merged object when more than one API matches', () => {
     type actual = _ApiFor<'Test', FooBar>;
-    type expected = Compute<FooApi & BarApi>;
+    type expected = BarApi & FooApi;
 
     checks([check<actual, expected, Pass>()]);
   });

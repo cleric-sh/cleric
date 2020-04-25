@@ -1,8 +1,8 @@
-import {Types} from '@cleric/common';
+import {FilterExclude} from '@cleric/common/src/types';
 
 export type HashState<T> = {
-  [P in keyof Types.FilterExclude<T, Function>]: HashState<
-    Types.FilterExclude<T, Function>[P]
+  [P in keyof FilterExclude<T, Function>]: HashState<
+    FilterExclude<T, Function>[P]
   >;
 } & {
   __hash: number;
