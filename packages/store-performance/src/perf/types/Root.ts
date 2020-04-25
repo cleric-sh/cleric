@@ -21,10 +21,3 @@ export const root: Root = t.recursion('Root', () =>
     type1,
   })
 );
-
-type TValue = t.TypeOf<Root>;
-type Props = Root extends t.RecursiveType<infer C>
-  ? C extends {props: t.AnyProps}
-    ? t.PropsOf<C>
-    : never
-  : never;
