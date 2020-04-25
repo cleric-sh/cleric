@@ -1,4 +1,3 @@
-import rimraf from 'rimraf';
 import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
@@ -149,8 +148,8 @@ const Spec = (args: Args) => [
   Config(args.numbers),
 ];
 
-// generate(
-//   '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
-//   Spec({numbers: [...Array(1).keys()].map(i => i + 1)}),
-//   false
-// );
+generate(
+  '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
+  Spec({numbers: [...Array(100).keys()].map(i => i + 1)}),
+  false
+);
