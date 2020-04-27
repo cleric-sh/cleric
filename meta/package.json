@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "concurrently \"nodemon --config nodemon.fuse.json\" \"nodemon --config nodemon.generate.json\"",
+    "dev": "rm -rf dist/ && concurrently \"nodemon --config nodemon.fuse.json\" \"nodemon --config nodemon.generate.json\"",
     "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
