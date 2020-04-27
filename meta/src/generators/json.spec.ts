@@ -13,7 +13,7 @@ describe('jsonFile', () => {
   });
 
   it('fails on invalid json string, without schema', async () => {
-    expect(async () => await json(undefined)('rubbish')).toThrow();
+    await expect(json(undefined)('rubbish')).rejects.toThrow();
   });
 
   it('accepts plain object, without schema', async () => {
@@ -27,6 +27,6 @@ describe('jsonFile', () => {
   });
 
   it('fails on invalid json template literal, without schema', async () => {
-    expect(async () => await json(undefined)`rubbish`).toThrow();
+    await expect(json(undefined)`rubbish`).rejects.toThrow();
   });
 });
