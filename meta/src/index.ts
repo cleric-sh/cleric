@@ -9,8 +9,7 @@ const packageJsonContent = packageJson`{
     "name": "testing"
 }`;
 
-const tsConfigContent = tsconfigJson`
-{
+const tsConfigContent = tsconfigJson`{
     "compilerOptions": {
         "noImplicitAny": false
     }

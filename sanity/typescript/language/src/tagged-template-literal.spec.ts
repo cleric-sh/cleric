@@ -1,3 +1,6 @@
+import {Cast} from 'Any/Cast';
+import {Object, Tuple, Union} from 'ts-toolbelt';
+
 const _ = (value: string) => (async () => await value)();
 
 const asyncTag = async (
@@ -55,5 +58,49 @@ describe('tagged template literals', () => {
     const foo = await _foo;
     console.log(foo);
     expect(foo).toBe('foo');
+  });
+
+  it('can infer generic types of placeholders', async () => {
+    type Sym<T extends string> = {name: T};
+    type Ph<T> = Promise<T> | T;
+
+    type Phs = Ph<Sym<string>>[];
+
+    type Out<TPhs extends Phs> = Union.Merge<
+      Tuple.UnionOf<
+        {
+          [P in keyof TPhs]: TPhs[P] extends Ph<Sym<infer N>>
+            ? {
+                [K in Cast<N, string | symbol | number>]: TPhs[P];
+              }
+            : never;
+        }
+      >
+    >;
+
+    const genericTag = async <TPhs extends Phs>(
+      value: TemplateStringsArray,
+      ...placeholders: TPhs
+    ) => {
+      let result = '';
+
+      // wait for all the placeholder dependencies to resolve
+      const placeholderValues = await Promise.all(placeholders);
+
+      // interleave the literals with the placeholders
+      for (let i = 0; i < placeholders.length; i++) {
+        result += value[i];
+        result += placeholderValues[i];
+      }
+
+      // add the last literal (empty string if there is a final literal value)
+      result += value[value.length - 1];
+
+      return {} as Out<TPhs>;
+    };
+
+    const sym = <T extends string>(name: T) => ({name} as Sym<T>);
+
+    const blah = await genericTag`foo: ${sym('foo')}, bar: ${sym('bar')}`;
   });
 });
