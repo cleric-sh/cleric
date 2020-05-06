@@ -5,7 +5,7 @@ import {ExportsOf} from './ExportsOf';
 import {Import} from './Import';
 import {Spec} from './Spec';
 
-type ImportsOf<T, U = ExportsOf<T>> = Clean<
+export type ImportsOf<T, U = ExportsOf<T>> = Clean<
   Compute<
     {
       [K in keyof U]: U[K] extends Record<string, unknown>

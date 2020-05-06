@@ -1,8 +1,10 @@
+import {PromiseOf} from 'Class/PromiseOf';
 import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
 import {BaseSpec} from './spec/BaseSpec';
 import {Export} from './spec/Export';
+import {ImportsOf} from './spec/ImportsOf';
 import {Nodes} from './spec/Nodes';
 import {TemplateArgs} from './spec/TemplateArgs';
 import {TemplateExports} from './spec/TemplateExports';
@@ -74,3 +76,13 @@ class MySpec extends BaseSpec<MySpec> {
   files = (args: MyArgs) =>
     tag`foo: ${exp('foo')}, bar: ${() => this.refs.foo}`;
 }
+
+const createSpec = <TSpec extends (...args: never[]) => unknown>(
+  spec: TSpec
+): [TSpec, ImportsOf<PromiseOf<ReturnType<TSpec>>>] => {
+  return [spec, {} as any];
+};
+
+const [_spec, refs] = createSpec(
+  (args: MyArgs) => tag`foo: ${exp('foo')}, bar: ${() => refs.foo}`
+);
