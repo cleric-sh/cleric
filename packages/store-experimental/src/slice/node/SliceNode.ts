@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 
 import {ConfigKey} from '../../config';
 import {ApiNode} from '../../node/ApiNode';
-import {Slice$Selector} from './Slice$Selector';
+import {SliceSelector} from './SliceSelector';
 import {registerSliceNode} from './registerSliceNode';
 
 export class SliceNode<
@@ -24,7 +24,7 @@ export class SliceNode<
   constructor(
     public readonly $parent: ApiNode<TConfigKey, P>,
     public readonly $type: T,
-    private readonly selector: Slice$Selector<P, T>
+    private readonly selector: SliceSelector<P, T>
   ) {
     super($parent.$configKey, $type);
   }

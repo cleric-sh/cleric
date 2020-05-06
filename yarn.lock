@@ -1220,13 +1220,13 @@
   dependencies:
     type-detect "4.0.8"
 
-"@snowcoders/sortier@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@snowcoders/sortier/-/sortier-3.1.0.tgz#8bc691158a624783a9c498f976cb09f6f8290790"
-  integrity sha512-pybP6MBeIPss3JV9e0MRbZu9dFTL4P63Z3lqzv/oOeQkIhFdGMOsAzLjNIG3g0pnSVVLJeCRCLrjbZ6R0ebZgQ==
+"@snowcoders/sortier@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@snowcoders/sortier/-/sortier-3.1.1.tgz#cb7a4f57bdf208db7a87f9a64581bf9fba0a6ec6"
+  integrity sha512-IlujewBSY2Lnwi2xDRspmi7mrwMo96lr+ft115c+TbXKfrRsceFFbtuaHUAJqo2mo7r263VuaShiMDRjkp2m8A==
   dependencies:
-    "@typescript-eslint/typescript-estree" "2.28.0"
-    angular-html-parser "1.4.0"
+    "@typescript-eslint/typescript-estree" "2.29.0"
+    angular-html-parser "1.5.0"
     cosmiconfig "6.0.0"
     find-up "4.1.0"
     flow-parser "0.123.0"
@@ -1234,6 +1234,7 @@
     ignore "5.1.4"
     postcss-less "3.1.4"
     postcss-scss "2.0.0"
+    typescript "3.8.3"
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
@@ -1473,7 +1474,20 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@typescript-eslint/typescript-estree@2.28.0", "@typescript-eslint/typescript-estree@^2.21.0":
+"@typescript-eslint/typescript-estree@2.29.0":
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.29.0.tgz#1be6612bb02fc37ac9f466521c1459a4744e8d3a"
+  integrity sha512-3YGbtnWy4az16Egy5Fj5CckkVlpIh0MADtAQza+jiMADRSKkjdpzZp/5WuvwK/Qib3Z0HtzrDFeWanS99dNhnA==
+  dependencies:
+    debug "^4.1.1"
+    eslint-visitor-keys "^1.1.0"
+    glob "^7.1.6"
+    is-glob "^4.0.1"
+    lodash "^4.17.15"
+    semver "^6.3.0"
+    tsutils "^3.17.1"
+
+"@typescript-eslint/typescript-estree@^2.21.0":
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.28.0.tgz#d34949099ff81092c36dc275b6a1ea580729ba00"
   integrity sha512-HDr8MP9wfwkiuqzRVkuM3BeDrOC4cKbO5a6BymZBHUt5y/2pL0BXD6I/C/ceq2IZoHWhcASk+5/zo+dwgu9V8Q==
@@ -1600,10 +1614,10 @@ ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-angular-html-parser@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/angular-html-parser/-/angular-html-parser-1.4.0.tgz#4080989e46cad183264f950fb475590888d31104"
-  integrity sha512-5KyzzYOeZV9g9ahXw4rbi8IIbMjUdXoarXJ0CfbWue5U1YsvMnjMZJ3oadpU8ZtnIx1zR/dsyt+FLJx2U65d2Q==
+angular-html-parser@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/angular-html-parser/-/angular-html-parser-1.5.0.tgz#837817a4e84ca37fd638e0dbe65cfa7e11ae66b1"
+  integrity sha512-RPprvw7JGg38+yc0HOOd1A4ST4VAbeTMr8Bgj6eTLk5rQLmVHXvgklOAEoaz4vrmuBFdalo6OAH2lAFTQqBkWA==
   dependencies:
     tslib "^1.9.3"
 
@@ -3968,10 +3982,10 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-fuse-box@^4.0.0-next.425:
-  version "4.0.0-next.425"
-  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-4.0.0-next.425.tgz#627f79f4db1fa87d17ed7cd525f167ac0b648cf5"
-  integrity sha512-MgLXykHsLCC3ywSIj8vHNhYrpgn6RdPgftBi3w6r9kpFS7FRJsaOd1DdfbIkX3VrwqATTdnX89SxDc8BZrtfRg==
+fuse-box@^4.0.0-next.430:
+  version "4.0.0-next.430"
+  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-4.0.0-next.430.tgz#6d3f2571ec49c5816dc620ed0e676594f908f4ad"
+  integrity sha512-oh8Xs7H3ZTX102Yag1mckyR1X6C/7cQ1ZaHeN5S7i/atYd8xuV1oL9pQm+LOyI0h9LlD41u49IQcFPkKsjpy4Q==
   dependencies:
     "@typescript-eslint/typescript-estree" "^2.21.0"
     app-root-path "^3.0.0"
@@ -9290,7 +9304,7 @@ typescript@3.8.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
   integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
 
-typescript@^3.8.3:
+typescript@3.8.3, typescript@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==

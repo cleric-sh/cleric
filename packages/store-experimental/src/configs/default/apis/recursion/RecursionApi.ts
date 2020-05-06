@@ -1,9 +1,8 @@
 import * as t from 'io-ts';
 
-import {createApi} from '@cleric/store-experimental/src/node/api';
-
-import {_Slice} from '@cleric/store-experimental/src/slice/Slice';
+import {createApi} from '../../../../node/api';
 import {decorateNode} from '../../../../node/decorateNode';
+import {_Slice} from '../../../../slice/Slice';
 import {isRecursiveType} from './isRecursiveType';
 
 declare module '../../../../node/api' {

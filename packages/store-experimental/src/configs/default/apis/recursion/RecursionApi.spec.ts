@@ -71,10 +71,25 @@ describe('InterfaceApi', () => {
   });
 
   it('should create no properties on empty object type', () => {
-    const outer = t.recursion('Empty', () => t.type({}));
+    type _Recursion = {
+      root: _Recursion;
+    };
 
-    type actual = RecursionApi<typeof outer>;
-    type expected = {};
+    type Recursion = t.RecursiveType<
+      t.TypeC<{
+        root: Recursion;
+      }>,
+      _Recursion
+    >;
+
+    const recursion: Recursion = t.recursion('Root', () =>
+      t.type({
+        root: recursion,
+      })
+    );
+
+    type actual = RecursionApi<typeof recursion>;
+    type expected = {root: SliceNode<'Default', Recursion, Recursion>};
 
     checks([check<actual, expected, Pass>()]);
   });

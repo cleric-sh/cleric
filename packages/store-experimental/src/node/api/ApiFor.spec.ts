@@ -1,5 +1,4 @@
 import {Pass, check, checks} from '@cleric/common';
-import {Compute} from 'Any/_api';
 import '../../configs/test';
 import {Bar} from '../../configs/test/types/Bar';
 import {Foo} from '../../configs/test/types/Foo';

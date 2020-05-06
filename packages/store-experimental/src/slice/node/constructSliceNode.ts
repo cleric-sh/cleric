@@ -5,9 +5,9 @@ import {ConfigKey} from '../../config';
 
 import {SliceTypes} from '..';
 import {ApiNode} from '../../node/ApiNode';
-import {Slice$Selector} from './Slice$Selector';
 import {SliceNodeKey} from './SliceNodeKey';
 import {SliceNodes} from './SliceNodes';
+import {SliceSelector} from './SliceSelector';
 
 export const constructSliceNode = <
   TSliceKey extends SliceNodeKey,
@@ -18,7 +18,7 @@ export const constructSliceNode = <
   sliceKey: TSliceKey,
   parent: ApiNode<TConfigKey, P>,
   type: T,
-  selector: Slice$Selector<P, T>
+  selector: SliceSelector<P, T>
 ) => {
   const slice = SliceNodes[sliceKey];
   console.log(SliceNodes);

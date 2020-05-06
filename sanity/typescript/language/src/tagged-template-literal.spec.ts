@@ -1,5 +1,9 @@
 import {Cast} from 'Any/Cast';
-import {Object, Tuple, Union} from 'ts-toolbelt';
+import {Clean, Compute} from 'Any/_api';
+import {AtStrict} from 'Object/At';
+import {Strict} from 'Union/_api';
+import {never} from 'rxjs';
+import {O, Object, T, Tuple, Union} from 'ts-toolbelt';
 
 const _ = (value: string) => (async () => await value)();
 
@@ -63,7 +67,6 @@ describe('tagged template literals', () => {
   it('can infer generic types of placeholders', async () => {
     type Sym<T extends string> = {name: T};
     type Ph<T> = Promise<T> | T;
-
     type Phs = Ph<Sym<string>>[];
 
     type Out<TPhs extends Phs> = Union.Merge<
@@ -78,7 +81,7 @@ describe('tagged template literals', () => {
       >
     >;
 
-    const genericTag = async <TPhs extends Phs>(
+    const tag = async <TPhs extends Phs>(
       value: TemplateStringsArray,
       ...placeholders: TPhs
     ) => {
@@ -96,11 +99,75 @@ describe('tagged template literals', () => {
       // add the last literal (empty string if there is a final literal value)
       result += value[value.length - 1];
 
-      return {} as Out<TPhs>;
+      return result as Out<TPhs>;
     };
 
-    const sym = <T extends string>(name: T) => ({name} as Sym<T>);
+    const exp = <T extends string>(name: T) => ({name} as Sym<T>);
 
-    const blah = await genericTag`foo: ${sym('foo')}, bar: ${sym('bar')}`;
+    const blah = await tag`foo: ${exp('foo')}, bar: ${exp('bar')}`;
+
+    console.log(blah);
+
+    type Schema<TSchema extends Schema<TSchema>> = {
+      [K: string]: Table<TSchema>;
+    };
+
+    type Table<TSchema extends Schema<TSchema>> = {
+      ref1: keyof TSchema;
+      ref2: number;
+    };
+
+    const schema = <TSchema extends Schema<TSchema>>(schema: TSchema) => schema;
+
+    const table = <T extends Table<TSchema>, TSchema extends Schema<TSchema>>(
+      tbl: T
+    ) => tbl;
+
+    type ExportOnly<T> = T extends Export<unknown> ? T : never;
+
+    type ExportsOf<T> = Compute<
+      {
+        [K in keyof T]: T[K] extends Record<string, unknown>
+          ? ExportsOf<T[K]>
+          : ExportOnly<T[K]>;
+      }
+    >;
+
+    type ImportsOf<T, U = ExportsOf<T>> = Clean<
+      Compute<
+        {
+          [K in keyof U]: U[K] extends Record<string, unknown>
+            ? ImportsOf<U[K]>
+            : Import<U[K]>;
+        }
+      >
+    >;
+
+    interface Import<T> {
+      __type: 'Import';
+    }
+
+    interface Export<T> {
+      __type: 'Export';
+    }
+
+    type Paths<T extends object> = O.Paths<T> extends infer X ? X : never;
+    const x: (path: Paths<typeof t>) => number = () => 1;
+
+    const t = schema({
+      bar: table({ref1: 'foo', ref2: 1}),
+      foo: table({ref1: 'bar', ref2: x(['bar', 'ref2'])}),
+    });
+
+    /**
+     * An idea:
+     * Spec - All Generators, bound to this spec.
+     * SpecGenerator - Takes the Spec's shape and maps deps.
+     * Generator - Takes deps as props.
+     */
+
+    type Node<TNode extends Node<TNode>> = {
+      [K in keyof TNode]: TNode[K];
+    };
   });
 });
