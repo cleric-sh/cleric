@@ -1,4 +1,4 @@
-import {f} from '../../spec/f';
+import {f} from '../../spec/file/f';
 export const Type = (i: number) => {
   const typeName = `Type${i}`;
   const _typeName = typeName.toLowerCase();

@@ -1,7 +1,9 @@
 import {validate} from 'jsonschema';
 import {file} from './file';
 
-export type Json<T extends object> = {
+export type Json = <T extends object>(
+  schema: undefined | object
+) => {
   (value: T): Promise<string>;
   (value: TemplateStringsArray, ...placeholders: string[]): Promise<string>;
   (value: string): Promise<string>;
@@ -11,9 +13,10 @@ const isTemplateStringsArray = (
   value: unknown
 ): value is TemplateStringsArray => Array.isArray(value) && !!value['raw'];
 
-export const json = <T extends object>(
-  schema: undefined | object
-): Json<T> => async (value: unknown, ...placeholders: string[]) => {
+export const json: Json = schema => async (
+  value: unknown,
+  ...placeholders: string[]
+) => {
   let input: undefined | object = undefined;
 
   if (typeof value === 'string') {

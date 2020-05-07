@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import {Directory} from '../spec/Directory';
-import {File} from '../spec/File';
+import {Directory} from '../spec/directory/Directory';
+import {File} from '../spec/file/File';
 import {WriteContext} from './WriteContext';
 import {generateDirectory} from './generateDirectory';
 import {generateFile} from './generateFile';

@@ -1,16 +1,14 @@
-import {PromiseOf} from 'Class/PromiseOf';
 import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
 import {Export} from './spec/Export';
-import {ExportsOf} from './spec/ExportsOf';
-import {ImportsOf, _ImportsOf} from './spec/ImportsOf';
+import {_ImportsOf} from './spec/ImportsOf';
 import {Nodes} from './spec/Nodes';
 import {Spec} from './spec/Spec';
-import {TemplateArgs} from './spec/TemplateArgs';
-import {TemplateExports} from './spec/TemplateExports';
-import {d} from './spec/d';
-import {f} from './spec/f';
+import {d} from './spec/directory/d';
+import {f} from './spec/file/f';
+import {Placeholder} from './spec/template/Placeholder';
+import {TemplateExports} from './spec/template/TemplateExports';
 
 const packageJsonContent = packageJson`{
     "name": "testing"
@@ -49,7 +47,7 @@ generate(
   true
 );
 
-const tag = async <TPhs extends TemplateArgs>(
+const tag = async <TPhs extends Placeholder[]>(
   value: TemplateStringsArray,
   ...placeholders: TPhs
 ) => {
@@ -70,16 +68,46 @@ const tag = async <TPhs extends TemplateArgs>(
   return result as TemplateExports<TPhs>;
 };
 
-const exp = <T extends string>(name: T) =>
+const export_ = <T extends string>(name: T) =>
   ({__type: 'Export', name} as Export<T>);
 
-const createSpec = <TSpec extends Spec>(
+type CreateSpec = <TSpec extends Spec>(
   spec: TSpec
-): [TSpec, _ImportsOf<TSpec>] => {
+) => [TSpec, _ImportsOf<TSpec>];
+
+const createSpec: CreateSpec = spec => {
   return [spec, {} as any];
 };
 
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  tag`foo: ${exp('foo')}, bar: ${() => refs[1].bar}`,
-  tag`bar: ${exp('bar')}, bar: ${() => refs[0].foo}`,
+  tag`foo: ${export_('foo')}, bar: ${() => refs[1].bar}`,
+  tag`bar: ${export_('bar')}, bar: ${() => refs[0].foo}`,
 ]);
+
+type Template<TPhs extends Placeholder[]> = {
+  __type: 'Template';
+  exports: TemplateExports<TPhs>;
+};
+
+export type File = {
+  <TPhs extends Placeholder[]>(
+    value: TemplateStringsArray,
+    ...placeholders: TPhs
+  ): Promise<Template<TPhs>>;
+};
+
+export const file: File = async (value, ...placeholders) => {
+  const placeholderValues = await Promise.all(placeholders);
+
+  let result = '';
+
+  // interleave the literals with the placeholders
+  for (let i = 0; i < placeholders.length; i++) {
+    result += value[i];
+    result += placeholderValues[i];
+  }
+
+  // add the last literal
+  result += value[value.length - 1];
+  return result as any; // Remove any, use correct return type.
+};

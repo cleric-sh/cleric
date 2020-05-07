@@ -1,11 +1,11 @@
 export type File = {
-  (value: TemplateStringsArray, ...placeholders: string[]): Promise<string>;
+  (
+    value: TemplateStringsArray,
+    ...placeholders: (string | Promise<string>)[]
+  ): Promise<string>;
 };
 
-export const file: File = async (
-  value: TemplateStringsArray,
-  ...placeholders: (string | Promise<string>)[]
-) => {
+export const file: File = async (value, ...placeholders) => {
   const placeholderValues = await Promise.all(placeholders);
 
   let result = '';

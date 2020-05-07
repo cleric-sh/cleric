@@ -1,4 +1,4 @@
-import {Nodes} from './Nodes';
+import {Nodes} from '../Nodes';
 
 export type Directory = {
   __type: 'directory';

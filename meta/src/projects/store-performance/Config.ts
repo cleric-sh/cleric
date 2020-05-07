@@ -1,4 +1,4 @@
-import {f} from '../../spec/f';
+import {f} from '../../spec/file/f';
 export const Config = (numbers: number[]) => {
   const imports = numbers
     .map(i => `import {Type${i}Api} from './apis/Type${i}Api';`)

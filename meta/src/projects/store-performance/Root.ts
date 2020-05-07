@@ -1,4 +1,4 @@
-import {f} from '../../spec/f';
+import {f} from '../../spec/file/f';
 export const Root = (numbers: number[]) => {
   const imports = numbers
     .map(i => `import {type${i}, Type${i}} from './Type${i}';`)

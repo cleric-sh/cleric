@@ -1,5 +1,5 @@
 import {generate} from '../../generate';
-import {d} from '../../spec/d';
+import {d} from '../../spec/directory/d';
 import {Api} from './Api';
 import {Config} from './Config';
 import {Root} from './Root';
