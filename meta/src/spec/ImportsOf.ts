@@ -8,7 +8,7 @@ import {Spec} from './Spec';
 export type ImportsOf<T, U = ExportsOf<T>> = Clean<
   Compute<
     {
-      [K in keyof U]: U[K] extends Record<string, unknown>
+      [K in keyof U]: U[K] extends Record<string, unknown> | Array<unknown>
         ? ImportsOf<U[K]>
         : Import;
     }
