@@ -79,9 +79,6 @@ const createSpec = <TSpec extends Spec>(
   return [spec, {} as any];
 };
 
-// Todo:
-// See: https://stackoverflow.com/questions/61638616/can-i-infer-a-tuple-type-from-a-functions-return-type-without-using-as-const/61639024#61639024
-
 const [_spec, refs] = createSpec((args: MyArgs) => [
   tag`foo: ${exp('foo')}, bar: ${() => refs[1].bar}`,
   tag`bar: ${exp('bar')}, bar: ${() => refs[0].foo}`,
