@@ -2,11 +2,11 @@ import {PromiseOf} from 'Class/PromiseOf';
 import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
-import {BaseSpec} from './spec/BaseSpec';
 import {Export} from './spec/Export';
 import {ExportsOf} from './spec/ExportsOf';
-import {ImportsOf} from './spec/ImportsOf';
+import {ImportsOf, _ImportsOf} from './spec/ImportsOf';
 import {Nodes} from './spec/Nodes';
+import {Spec} from './spec/Spec';
 import {TemplateArgs} from './spec/TemplateArgs';
 import {TemplateExports} from './spec/TemplateExports';
 import {d} from './spec/d';
@@ -73,23 +73,16 @@ const tag = async <TPhs extends TemplateArgs>(
 const exp = <T extends string>(name: T) =>
   ({__type: 'Export', name} as Export<T>);
 
-class MySpec extends BaseSpec<MySpec> {
-  files = (args: MyArgs) =>
-    tag`foo: ${exp('foo')}, bar: ${() => this.refs.foo}`;
-}
-
-type TupleOf<T> = T[] | [T];
-
-const createSpec = <TSpec extends (...args: never[]) => TupleOf<unknown>>(
+const createSpec = <TSpec extends Spec>(
   spec: TSpec
-): [TSpec, ImportsOf<PromiseOf<ReturnType<TSpec>>>] => {
+): [TSpec, _ImportsOf<TSpec>] => {
   return [spec, {} as any];
 };
 
 // Todo:
-// Get rid of BaseSpec class structures.
 // See: https://stackoverflow.com/questions/61638616/can-i-infer-a-tuple-type-from-a-functions-return-type-without-using-as-const/61639024#61639024
 
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  tag`foo: ${exp('foo')}, bar: ${() => refs[0].foo}`,
+  tag`foo: ${exp('foo')}, bar: ${() => refs[1].bar}`,
+  tag`bar: ${exp('bar')}, bar: ${() => refs[0].foo}`,
 ]);

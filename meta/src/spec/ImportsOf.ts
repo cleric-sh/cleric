@@ -15,8 +15,8 @@ export type ImportsOf<T, U = ExportsOf<T>> = Clean<
   >
 >;
 
-export type _ImportsOf<TSpec extends Spec<unknown>> = ImportsOf<
-  PromiseOf<ReturnType<TSpec['files']>>
+export type _ImportsOf<TSpec extends Spec> = ImportsOf<
+  PromiseOf<ReturnType<TSpec>>
 > extends infer X
   ? X
   : never;
