@@ -6,6 +6,4 @@ import {Template} from './Template';
  * allows us to pass lazy self-references to templates without the type resolver getting
  * lost in recursion.
  */
-export type Placeholder = MaybePromise<
-  Template<Placeholder[]> | Function | string
->;
+export type Placeholder = MaybePromise<Template | Function | string>;

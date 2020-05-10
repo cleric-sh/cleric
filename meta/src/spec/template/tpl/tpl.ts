@@ -1,12 +1,12 @@
 import {isTemplateStringsArray} from '../../../generators/isTemplateStringsArray';
 import {Placeholder} from '../Placeholder';
-import {CreatedKeyedTemplate, createKeyedTemplate} from './createKeyedTemplate';
+import {CreateKeyedTemplate, createKeyedTemplate} from './createKeyedTemplate';
 import {
   CreateUnkeyedTemplate,
   createUnkeyedTemplate,
 } from './createUnkeyedTemplate';
 
-export type Tpl = CreateUnkeyedTemplate & CreatedKeyedTemplate;
+export type Tpl = CreateKeyedTemplate & CreateUnkeyedTemplate;
 
 export const tpl: Tpl = (
   keyOrTemplate: TemplateStringsArray | string,
@@ -17,7 +17,7 @@ export const tpl: Tpl = (
   }
 
   if (typeof keyOrTemplate === 'string') {
-    return createKeyedTemplate(keyOrTemplate);
+    return createKeyedTemplate(keyOrTemplate) as any;
   }
   throw 'First parameter must always either be a string or TemplateStringsArray';
 };

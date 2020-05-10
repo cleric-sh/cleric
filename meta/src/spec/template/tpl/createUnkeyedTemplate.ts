@@ -1,11 +1,11 @@
 import {Placeholder} from '../Placeholder';
-import {Template} from '../Template';
+import {UnkeyedTemplate} from '../UnkeyedTemplate';
 
 export interface CreateUnkeyedTemplate {
   <TPlaceholders extends Placeholder[]>(
     value: TemplateStringsArray,
     ...placeholders: TPlaceholders
-  ): Promise<Template<TPlaceholders>>;
+  ): Promise<UnkeyedTemplate<TPlaceholders>>;
 }
 
 export const createUnkeyedTemplate: CreateUnkeyedTemplate = async (

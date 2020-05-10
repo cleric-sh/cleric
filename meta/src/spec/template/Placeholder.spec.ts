@@ -1,14 +1,12 @@
 import {Fail, Pass, check, checks} from '@cleric/common';
+import {KeyedTemplate as _KeyedTemplate} from './KeyedTemplate';
 import {Placeholder} from './Placeholder';
-import {Template} from './Template';
+import {UnkeyedTemplate as _UnkeyedTemplate} from './UnkeyedTemplate';
 
 describe('Placeholder', () => {
   it('should do stuff', () => {
-    type actual = {};
-    type expected = {};
-
-    type KeyedTemplate = Template<'foo', Placeholder[]>;
-    type UnkeyedTemplate = Template<never, Placeholder[]>;
+    type KeyedTemplate = _KeyedTemplate<'foo', Placeholder[]>;
+    type UnkeyedTemplate = _UnkeyedTemplate<Placeholder[]>;
 
     checks([
       check.extends<Function, Placeholder, Pass>(),
