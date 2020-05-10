@@ -1,14 +1,14 @@
 import {validate} from 'jsonschema';
+import {CreateUnkeyedTemplate} from '../spec/template/tpl/createUnkeyedTemplate';
+import {tpl} from '../spec/template/tpl/tpl';
+import {ObjectWriter} from './ObjectWriter';
+import {StringWriter} from './StringWriter';
 import {file} from './file';
 import {isTemplateStringsArray} from './isTemplateStringsArray';
 
 export type Json = <T extends object>(
   schema: undefined | object
-) => {
-  (value: T): Promise<string>;
-  (value: TemplateStringsArray, ...placeholders: string[]): Promise<string>;
-  (value: string): Promise<string>;
-};
+) => CreateUnkeyedTemplate | ObjectWriter<T> | StringWriter;
 
 export const json: Json = schema => async (
   value: unknown,
@@ -19,7 +19,7 @@ export const json: Json = schema => async (
   if (typeof value === 'string') {
     input = JSON.parse(value);
   } else if (isTemplateStringsArray(value)) {
-    const result = await file(value, ...placeholders);
+    const result = await tpl(value, ...placeholders);
 
     input = JSON.parse(result);
   } else if (value !== null && typeof value === 'object') {
