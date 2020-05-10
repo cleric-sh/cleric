@@ -1,3 +1,5 @@
+import {Clean, Compute} from 'Any/_api';
+import {PromiseOf} from 'Class/_api';
 import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
@@ -9,6 +11,8 @@ import {d} from './spec/directory/d';
 import {f} from './spec/file/f';
 import {Placeholder} from './spec/template/Placeholder';
 import {TemplateExports} from './spec/template/TemplateExports';
+import {tpl} from './spec/template/tpl/tpl';
+import {MaybePromise} from './util/MaybePromise';
 
 const packageJsonContent = packageJson`{
     "name": "testing"
@@ -80,34 +84,12 @@ const createSpec: CreateSpec = spec => {
 };
 
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  tag`foo: ${export_('foo')}, bar: ${() => refs[1].bar}`,
-  tag`bar: ${export_('bar')}, bar: ${() => refs[0].foo}`,
+  tpl`foo: ${tpl('foo')``}, bar: ${() => refs[1]}`,
+  tpl`bar: ${tpl('bar')``}, bar: ${() => refs[0]}`,
 ]);
 
-type Template<TPhs extends Placeholder[]> = {
-  __type: 'Template';
-  exports: TemplateExports<TPhs>;
-};
-
-export type File = {
-  <TPhs extends Placeholder[]>(
-    value: TemplateStringsArray,
-    ...placeholders: TPhs
-  ): Promise<Template<TPhs>>;
-};
-
-export const file: File = async (value, ...placeholders) => {
-  const placeholderValues = await Promise.all(placeholders);
-
-  let result = '';
-
-  // interleave the literals with the placeholders
-  for (let i = 0; i < placeholders.length; i++) {
-    result += value[i];
-    result += placeholderValues[i];
-  }
-
-  // add the last literal
-  result += value[value.length - 1];
-  return result as any; // Remove any, use correct return type.
+const test = async () => {
+  const bar = tpl('bar')` bing`;
+  const foo = tpl('foo')` bar ${bar} `;
+  const baz = await tpl` narf ${foo}`;
 };

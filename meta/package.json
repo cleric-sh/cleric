@@ -25,6 +25,7 @@
     "quicktype": "^15.0.210",
     "ramda": "^0.27.0",
     "rimraf": "^3.0.2",
-    "ts-toolbelt": "^6.5.1"
+    "ts-toolbelt": "^6.5.1",
+    "@cleric/common": "0.0.9"
   }
 }

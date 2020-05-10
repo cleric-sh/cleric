@@ -1,18 +1,11 @@
-import {Tuple, Union} from 'ts-toolbelt';
-import {MaybePromise} from '../../util/MaybePromise';
-import {Export} from '../Export';
 import {Placeholder} from './Placeholder';
+import {PlaceholderExports} from './PlaceholderExports';
+import {KeyedTemplate, Template} from './Template';
 
-export type TemplateExports<TPlaceholders extends Placeholder[]> = Union.Merge<
-  Tuple.UnionOf<
-    {
-      [P in keyof TPlaceholders]: TPlaceholders[P] extends MaybePromise<
-        Export<infer N>
-      >
-        ? {
-            [K in N]: TPlaceholders[P];
-          }
-        : never;
-    }
-  >
->;
+export type TemplateExports<
+  T extends Template<Placeholder[]>
+> = T extends KeyedTemplate<infer Key, infer Phs>
+  ? {[K in Key]: PlaceholderExports<Phs>}
+  : T extends Template<infer Phs>
+  ? PlaceholderExports<Phs>
+  : never;

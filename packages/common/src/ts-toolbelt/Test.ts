@@ -14,7 +14,7 @@ import {Test} from 'ts-toolbelt';
 };
 
 const checks = Test.checks;
-const check = Test.check;
+const _check = Test.check;
 type Pass = Test.Pass;
 type Fail = Test.Fail;
 
@@ -26,6 +26,13 @@ function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {} as any;
 }
+
+type Check = typeof _check & {
+  extends: typeof checkExtends;
+};
+
+const check = _check as Check;
+check.extends = checkExtends;
 
 // function checkExtends<Type, Expect, Outcome extends Pass | Fail>(
 //   debug?: Compute<Type>
