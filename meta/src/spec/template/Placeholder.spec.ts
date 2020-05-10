@@ -13,10 +13,12 @@ describe('Placeholder', () => {
       check.extends<KeyedTemplate, Placeholder, Pass>(),
       check.extends<UnkeyedTemplate, Placeholder, Pass>(),
       check.extends<string, Placeholder, Pass>(),
+
       check.extends<Promise<Function>, Placeholder, Pass>(),
       check.extends<Promise<KeyedTemplate>, Placeholder, Pass>(),
       check.extends<Promise<UnkeyedTemplate>, Placeholder, Pass>(),
       check.extends<Promise<string>, Placeholder, Pass>(),
+
       check.extends<{}, Placeholder, Fail>(),
       check.extends<Promise<{}>, Placeholder, Fail>(),
     ]);

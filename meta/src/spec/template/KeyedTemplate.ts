@@ -4,9 +4,9 @@ import {Template} from './Template';
 
 export type KeyedTemplate<
   TKey extends string,
-  TPhs extends Placeholder[]
+  TPlaceholders extends Placeholder[]
 > = Template<
   {
-    [K in TKey]: PlaceholderExports<TPhs>;
+    [K in TKey]: PlaceholderExports<TPlaceholders>;
   }
 >;

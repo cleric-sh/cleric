@@ -1,22 +1,11 @@
 import {isArrayLike} from 'lodash';
-import {ObservableInput, Subscribable} from 'rxjs';
+import {ObservableInput} from 'rxjs';
 
+import {isPromise, isSubscribable} from '@cleric/common/src/guards';
 import {AsyncFunction, SliceApiI, Source} from './store';
 
 export const isSlice = <T>(source: unknown): source is SliceApiI<T> => {
   if (typeof source === 'object' && source) return !!source['$'];
-  return false;
-};
-
-export const isSubscribable = <T>(
-  source: unknown
-): source is Subscribable<T> => {
-  if (typeof source === 'object' && source) return !!source['subscribe'];
-  return false;
-};
-
-export const isPromise = <T>(source: unknown): source is Promise<T> => {
-  if (typeof source === 'object' && source) return !!source['then'];
   return false;
 };
 
@@ -37,3 +26,5 @@ export const isSource = <T>(source: unknown): source is Source<T> => {
     isSlice(source) || isObservableInput(source) || isAsyncFunction(source)
   );
 };
+
+export {isPromise, isSubscribable};

@@ -17,7 +17,7 @@ export const tpl: Tpl = (
   }
 
   if (typeof keyOrTemplate === 'string') {
-    return createKeyedTemplate(keyOrTemplate) as any;
+    return createKeyedTemplate(keyOrTemplate);
   }
   throw 'First parameter must always either be a string or TemplateStringsArray';
 };

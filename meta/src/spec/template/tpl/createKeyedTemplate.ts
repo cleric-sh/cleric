@@ -17,10 +17,7 @@ export const createKeyedTemplate: CreateKeyedTemplate = key => async (
 ) => {
   const unkeyed = await createUnkeyedTemplate(template, ...placeholders);
   return {
-    generate: unkeyed.generate,
-    exports: {
-      [key]: unkeyed.exports,
-    },
+    ...unkeyed,
     key,
   } as any;
 };
