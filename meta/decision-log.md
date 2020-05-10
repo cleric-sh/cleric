@@ -12,3 +12,7 @@ look up a particular symbol's containing file and import it, given the location 
 
 The location of the requesting template can be passed into the generate function.
 
+---
+
+Decided to implement ImportsOf without requiring the ExportsOf type. Refactored to Refs and SpecExports types,
+since 'importing' is just one things we might want to do with a ref.

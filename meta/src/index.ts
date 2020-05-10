@@ -4,9 +4,9 @@ import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
 import {Export} from './spec/Export';
-import {_ImportsOf} from './spec/ImportsOf';
 import {Nodes} from './spec/Nodes';
 import {Spec} from './spec/Spec';
+import {_SpecExports} from './spec/SpecExports';
 import {d} from './spec/directory/d';
 import {f} from './spec/file/f';
 import {Placeholder} from './spec/template/Placeholder';
@@ -77,15 +77,15 @@ const export_ = <T extends string>(name: T) =>
 
 type CreateSpec = <TSpec extends Spec>(
   spec: TSpec
-) => [TSpec, _ImportsOf<TSpec>];
+) => [TSpec, _SpecExports<TSpec>];
 
 const createSpec: CreateSpec = spec => {
   return [spec, {} as any];
 };
 
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  tpl`foo: ${tpl('foo')``}, bar: ${() => refs[1]}`,
-  tpl`bar: ${tpl('bar')``}, bar: ${() => refs[0]}`,
+  tpl`foo: ${tpl('foo')``}, bar: ${() => refs[1].bar.baz}`,
+  tpl`bar: ${tpl('bar')` ${tpl('baz')` baz`}`}, bar: ${() => refs[0].foo}`,
 ]);
 
 const test = async () => {
