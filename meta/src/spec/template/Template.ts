@@ -1,6 +1,6 @@
-import {Context} from './Context';
+import {WriteContext} from '../../generate/WriteContext';
 
-export type GenerateFn = (ctx: Context) => Promise<string>;
+export type GenerateFn = (ctx: WriteContext) => Promise<string>;
 
 export interface Template<TExports = {}> {
   __errors?: TExports;

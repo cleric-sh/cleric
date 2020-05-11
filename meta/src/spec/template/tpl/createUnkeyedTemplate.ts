@@ -1,8 +1,7 @@
-import {Context} from '../Context';
+import {WriteContext} from '../../../generate/WriteContext';
 import {Placeholder} from '../Placeholder';
 import {UnkeyedTemplate} from '../UnkeyedTemplate';
-import {isTemplate} from '../isTemplate';
-import {handleLazyPlaceholder} from './handleLazyPlaceholder';
+import {handlePlaceholder} from './handlePlaceholder';
 
 export interface CreateUnkeyedTemplate {
   <TPlaceholders extends Placeholder[]>(
@@ -15,7 +14,7 @@ export const createUnkeyedTemplate: CreateUnkeyedTemplate = async (
   tsa,
   ...placeholders
 ) => {
-  const generate = async (ctx: Context) => {
+  const generate = async (ctx: WriteContext) => {
     const placeholderValues = await Promise.all(placeholders);
 
     let result = '';
@@ -25,13 +24,7 @@ export const createUnkeyedTemplate: CreateUnkeyedTemplate = async (
 
       const value = placeholderValues[i];
 
-      if (isTemplate(value)) {
-        result += await value.generate(ctx);
-      } else if (typeof value === 'function') {
-        result += await handleLazyPlaceholder(value);
-      } else if (typeof value === 'string') {
-        result += value;
-      } else throw 'Unrecognized placeholder value: ' + value;
+      result += await handlePlaceholder(value, ctx);
     }
     // add the last literal
     result += tsa[tsa.length - 1];

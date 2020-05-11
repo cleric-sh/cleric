@@ -11,15 +11,15 @@ export type Json = <T extends object>(
   schema?: object
 ) => CreateUnkeyedTemplate & ObjectWriter<T> & StringWriter;
 
-const post = (value: object, schema?: object) => {
+const validateAndStringify = (jsonObject: object, schema?: object) => {
   if (schema) {
-    const validation = validate(value, schema);
+    const validation = validate(jsonObject, schema);
     if (validation.errors.length > 0) {
       console.log(validation.errors);
     }
   }
 
-  return JSON.stringify(value, null, 2);
+  return JSON.stringify(jsonObject, null, 2);
 };
 
 export const json: Json = schema => async (
@@ -30,8 +30,8 @@ export const json: Json = schema => async (
     const template = await tpl(value, ...placeholders);
 
     const generate: GenerateFn = async ctx => {
-      const _value = JSON.parse(await template.generate(ctx));
-      return post(_value, schema);
+      const jsonObject = JSON.parse(await template.generate(ctx));
+      return validateAndStringify(jsonObject, schema);
     };
 
     return {
@@ -41,11 +41,11 @@ export const json: Json = schema => async (
   }
 
   if (typeof value === 'object' && value !== null) {
-    return post(value, schema);
+    return validateAndStringify(value, schema);
   }
 
   if (typeof value === 'string') {
-    return post(JSON.parse(value), schema);
+    return validateAndStringify(JSON.parse(value), schema);
   }
 
   throw 'Input value not recognized.';
