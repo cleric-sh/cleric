@@ -1,8 +1,8 @@
+import {RefsOf} from './RefsOf';
 import {Spec} from './Spec';
-import {SpecRefs} from './SpecRefs';
 import {createRefs} from './createRefs';
 
-type CreateSpec = <TSpec extends Spec>(spec: TSpec) => [TSpec, SpecRefs<TSpec>];
+type CreateSpec = <TSpec extends Spec>(spec: TSpec) => [TSpec, RefsOf<TSpec>];
 
 export const createSpec: CreateSpec = spec => {
   return [spec, createRefs() as any];

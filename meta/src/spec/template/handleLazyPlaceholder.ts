@@ -1,5 +1,5 @@
 import {isPromise} from '@cleric/common/src/guards';
-import {isRef} from '../../isRef';
+import {isRef} from '../isRef';
 
 export const handleLazyPlaceholder = async (value: Function) => {
   const maybePromise = value();

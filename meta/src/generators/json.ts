@@ -1,8 +1,8 @@
 import {validate} from 'jsonschema';
 import {Placeholder} from '../spec/template/Placeholder';
 import {GenerateFn} from '../spec/template/Template';
-import {CreateUnkeyedTemplate} from '../spec/template/tpl/createUnkeyedTemplate';
-import {tpl} from '../spec/template/tpl/tpl';
+import {CreateUnkeyedTemplate} from '../spec/template/createUnkeyedTemplate';
+import {t} from '../spec/template/t';
 import {ObjectWriter} from './ObjectWriter';
 import {StringWriter} from './StringWriter';
 import {isTemplateStringsArray} from './isTemplateStringsArray';
@@ -27,7 +27,7 @@ export const json: Json = schema => async (
   ...placeholders: Placeholder[]
 ) => {
   if (isTemplateStringsArray(value)) {
-    const template = await tpl(value, ...placeholders);
+    const template = await t(value, ...placeholders);
 
     const generate: GenerateFn = async ctx => {
       const jsonObject = JSON.parse(await template.generate(ctx));

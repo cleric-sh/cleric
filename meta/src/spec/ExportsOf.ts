@@ -1,7 +1,7 @@
 import {Compute} from 'Any/_api';
 import {L, U} from 'ts-toolbelt';
-import {File} from '../file/File';
-import {Directory} from './Directory';
+import {Directory} from './directory/Directory';
+import {File} from './file/File';
 
 export type ExportsOf<TNodes extends Array<Directory | File>> = Compute<
   U.IntersectOf<

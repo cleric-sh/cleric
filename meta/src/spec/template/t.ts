@@ -1,14 +1,14 @@
-import {isTemplateStringsArray} from '../../../generators/isTemplateStringsArray';
-import {Placeholder} from '../Placeholder';
+import {isTemplateStringsArray} from '../../generators/isTemplateStringsArray';
+import {Placeholder} from './Placeholder';
 import {CreateKeyedTemplate, createKeyedTemplate} from './createKeyedTemplate';
 import {
   CreateUnkeyedTemplate,
   createUnkeyedTemplate,
 } from './createUnkeyedTemplate';
 
-export type Tpl = CreateKeyedTemplate & CreateUnkeyedTemplate;
+export type T = CreateKeyedTemplate & CreateUnkeyedTemplate;
 
-export const tpl: Tpl = (
+export const t: T = (
   keyOrTemplate: TemplateStringsArray | string,
   ...placeholders: Placeholder[]
 ) => {

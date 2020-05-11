@@ -1,6 +1,6 @@
-import {WriteContext} from '../../../generate/WriteContext';
-import {Placeholder} from '../Placeholder';
-import {UnkeyedTemplate} from '../UnkeyedTemplate';
+import {WriteContext} from '../../generate/WriteContext';
+import {Placeholder} from './Placeholder';
+import {UnkeyedTemplate} from './UnkeyedTemplate';
 import {handlePlaceholder} from './handlePlaceholder';
 
 export interface CreateUnkeyedTemplate {

@@ -1,5 +1,5 @@
-import {KeyedTemplate} from '../KeyedTemplate';
-import {Placeholder} from '../Placeholder';
+import {KeyedTemplate} from './KeyedTemplate';
+import {Placeholder} from './Placeholder';
 import {createUnkeyedTemplate} from './createUnkeyedTemplate';
 
 export interface CreateKeyedTemplate {

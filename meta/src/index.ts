@@ -6,7 +6,7 @@ import {Nodes} from './spec/Nodes';
 import {createSpec} from './spec/createSpec';
 import {d} from './spec/directory/d';
 import {f} from './spec/file/f';
-import {tpl} from './spec/template/tpl/tpl';
+import {t} from './spec/template/t';
 
 const packageJsonContent = packageJson`{
     "name": "testing"
@@ -45,12 +45,9 @@ generate(
   true
 );
 
+const bar = t`bar: ${t('bar')` ${t('baz')` baz`}`}, bar: ${() => refs.foo}`;
+const foo = t`foo: ${t('foo')``}, bar: ${() => refs.bar.baz}`;
+
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  d('src', [
-    f(
-      'bar.ts',
-      tpl`bar: ${tpl('bar')` ${tpl('baz')` baz`}`}, bar: ${() => refs.foo}`
-    ),
-    f('foo.ts', tpl`foo: ${tpl('foo')``}, bar: ${() => refs.bar.baz}`),
-  ]),
+  d('src', [f('bar.ts', bar), f('foo.ts', foo)]),
 ]);

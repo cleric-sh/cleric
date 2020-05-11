@@ -1,6 +1,6 @@
+import {ExportsOf} from '../ExportsOf';
 import {File} from '../file/File';
 import {Directory} from './Directory';
-import {ExportsOf} from './NodesExports';
 
 export type D = {
   <TNodes extends Array<Directory | File>>(
