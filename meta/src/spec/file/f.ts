@@ -3,9 +3,12 @@ import {Template} from '../template/Template';
 import {File} from './File';
 
 export type F = {
-  (name: string, content: MaybePromise<Template | string>): File;
+  <TExports = {}>(
+    name: string,
+    source: MaybePromise<Template<TExports> | string>
+  ): File<TExports>;
 };
 
-export const f: F = (name, content) => {
-  return {__type: 'file', content, name};
+export const f: F = (name, source) => {
+  return {__type: 'file', name, source};
 };

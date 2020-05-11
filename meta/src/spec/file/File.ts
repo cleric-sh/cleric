@@ -1,8 +1,8 @@
 import {MaybePromise} from '../../util/MaybePromise';
 import {Template} from '../template/Template';
 
-export type File = {
+export type File<TExports = {}> = {
   __type: 'file';
-  content: MaybePromise<Template | string>;
   name: string;
+  source: MaybePromise<Template<TExports> | string>;
 };

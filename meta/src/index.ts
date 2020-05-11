@@ -2,8 +2,8 @@ import {generate} from './generate';
 import {packageJson} from './generators/packageJson';
 import {tsconfigJson} from './generators/tsconfigJson';
 
-import {createSpec} from './createSpec';
 import {Nodes} from './spec/Nodes';
+import {createSpec} from './spec/createSpec';
 import {d} from './spec/directory/d';
 import {f} from './spec/file/f';
 import {tpl} from './spec/template/tpl/tpl';
@@ -46,6 +46,11 @@ generate(
 );
 
 const [_spec, refs] = createSpec((args: MyArgs) => [
-  tpl`foo: ${tpl('foo')``}, bar: ${() => refs[1].bar.baz}`,
-  tpl`bar: ${tpl('bar')` ${tpl('baz')` baz`}`}, bar: ${() => refs[0].foo}`,
+  d('src', [
+    f(
+      'bar.ts',
+      tpl`bar: ${tpl('bar')` ${tpl('baz')` baz`}`}, bar: ${() => refs.foo}`
+    ),
+    f('foo.ts', tpl`foo: ${tpl('foo')``}, bar: ${() => refs.bar.baz}`),
+  ]),
 ]);

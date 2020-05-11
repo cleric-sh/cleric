@@ -24,7 +24,8 @@ describe('jsonFile', () => {
   it('accepts tagged template literals, without schema', async () => {
     const template = await json(undefined)`{ "test": "value" }`;
     const generate = template.generate({
-      filePath: [],
+      basePath: '',
+      currentPath: '',
     });
     expect(await generate).toBe(formatted);
   });
@@ -32,7 +33,8 @@ describe('jsonFile', () => {
   it('fails on invalid json template literal, without schema', async () => {
     const template = await json(undefined)`rubbish`;
     const generate = template.generate({
-      filePath: [],
+      basePath: '',
+      currentPath: '',
     });
     await expect(generate).rejects.toThrow();
   });

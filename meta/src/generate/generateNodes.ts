@@ -24,7 +24,7 @@ export const generateNodes = async (
         break;
       }
       case 'file': {
-        await generateFile(ctx, node.name, node.content);
+        await generateFile(ctx, node.name, node.source);
         break;
       }
     }

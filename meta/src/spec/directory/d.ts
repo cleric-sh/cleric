@@ -1,8 +1,12 @@
 import {File} from '../file/File';
 import {Directory} from './Directory';
+import {ExportsOf} from './NodesExports';
 
 export type D = {
-  (name: string, nodes?: Array<Directory | File>): Directory;
+  <TNodes extends Array<Directory | File>>(
+    name: string,
+    nodes?: TNodes
+  ): Directory<ExportsOf<TNodes>>;
 };
 
 export const d: D = (name, nodes): Directory => {
