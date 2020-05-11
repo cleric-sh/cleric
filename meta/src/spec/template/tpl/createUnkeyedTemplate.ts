@@ -1,5 +1,8 @@
+import {Context} from '../Context';
 import {Placeholder} from '../Placeholder';
 import {UnkeyedTemplate} from '../UnkeyedTemplate';
+import {isTemplate} from '../isTemplate';
+import {handleLazyPlaceholder} from './handleLazyPlaceholder';
 
 export interface CreateUnkeyedTemplate {
   <TPlaceholders extends Placeholder[]>(
@@ -12,26 +15,31 @@ export const createUnkeyedTemplate: CreateUnkeyedTemplate = async (
   tsa,
   ...placeholders
 ) => {
-  const placeholderValues = await Promise.all(placeholders);
+  const generate = async (ctx: Context) => {
+    const placeholderValues = await Promise.all(placeholders);
 
-  // The order of phs is important, and must be preserved.
-  // We can't tell what kind of ph it is until the promise is completed.
-  // Unless we can annotate a promise
-
-  const generate = async () => {
     let result = '';
     // interleave the literals with the placeholders
-    for (let i = 0; i < placeholders.length; i++) {
+    for (let i = 0; i < placeholderValues.length; i++) {
       result += tsa[i];
-      result += placeholderValues[i];
+
+      const value = placeholderValues[i];
+
+      if (isTemplate(value)) {
+        result += await value.generate(ctx);
+      } else if (typeof value === 'function') {
+        result += await handleLazyPlaceholder(value);
+      } else if (typeof value === 'string') {
+        result += value;
+      } else throw 'Unrecognized placeholder value: ' + value;
     }
     // add the last literal
     result += tsa[tsa.length - 1];
-    return result; // Todo: Remove any, use correct return type.
+    return result;
   };
 
   return {
+    __type: 'Template',
     generate,
-    exports,
-  } as any;
+  };
 };

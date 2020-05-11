@@ -1,37 +1,52 @@
 import {validate} from 'jsonschema';
+import {Placeholder} from '../spec/template/Placeholder';
+import {GenerateFn} from '../spec/template/Template';
 import {CreateUnkeyedTemplate} from '../spec/template/tpl/createUnkeyedTemplate';
 import {tpl} from '../spec/template/tpl/tpl';
 import {ObjectWriter} from './ObjectWriter';
 import {StringWriter} from './StringWriter';
-import {file} from './file';
 import {isTemplateStringsArray} from './isTemplateStringsArray';
 
 export type Json = <T extends object>(
-  schema: undefined | object
-) => CreateUnkeyedTemplate | ObjectWriter<T> | StringWriter;
+  schema?: object
+) => CreateUnkeyedTemplate & ObjectWriter<T> & StringWriter;
 
-export const json: Json = schema => async (
-  value: unknown,
-  ...placeholders: string[]
-) => {
-  let input: undefined | object = undefined;
-
-  if (typeof value === 'string') {
-    input = JSON.parse(value);
-  } else if (isTemplateStringsArray(value)) {
-    const result = await tpl(value, ...placeholders);
-
-    input = JSON.parse(result);
-  } else if (value !== null && typeof value === 'object') {
-    input = value as object;
-  }
-
+const post = (value: object, schema?: object) => {
   if (schema) {
-    const validationResult = validate(input, schema);
-    if (validationResult.errors.length > 0) {
-      console.log(validationResult.errors);
+    const validation = validate(value, schema);
+    if (validation.errors.length > 0) {
+      console.log(validation.errors);
     }
   }
 
-  return JSON.stringify(input, null, 2);
+  return JSON.stringify(value, null, 2);
+};
+
+export const json: Json = schema => async (
+  value: TemplateStringsArray | object | string,
+  ...placeholders: Placeholder[]
+) => {
+  if (isTemplateStringsArray(value)) {
+    const template = await tpl(value, ...placeholders);
+
+    const generate: GenerateFn = async ctx => {
+      const _value = JSON.parse(await template.generate(ctx));
+      return post(_value, schema);
+    };
+
+    return {
+      __type: 'Template',
+      generate,
+    } as any;
+  }
+
+  if (typeof value === 'object' && value !== null) {
+    return post(value, schema);
+  }
+
+  if (typeof value === 'string') {
+    return post(JSON.parse(value), schema);
+  }
+
+  throw 'Input value not recognized.';
 };

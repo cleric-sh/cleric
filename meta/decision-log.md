@@ -33,3 +33,22 @@ handling the pre/post processing of different content types.
 'tpl' could allow passing a Template constructor as an argument, causing the function to curry, using the specified
 Template constructor instead of the default one. The extended Template could call super.generate and wrap the results
 as needed, possibly also augmenting the TemplateStringsArray and placeholders.
+
+---
+
+2020-05-11
+
+Prototyped a class-based Template approach, but it was extremely wordy. Typescript required that supers be called,
+which makes it awkward to 'shortcut' default behavior, such as for Json's object and string writing modes, where we
+don't want to call the base generate function, which requires a TemplateStringsArray.
+
+Also, handling the alternative object and string writer cases, required that those variables be stored in the class's
+state. It wasn't elegant how alternative constructors might be passed to 'tpl', it still would have required json to
+reimplement a lot of the overload logic in the json function, which then again would have been reimplemented in
+the Json Template class.
+
+Considering all of this, might as well just wrap the generate function in the json function, for the case that a 
+TemplateStringsArray is provided. 
+
+I tried this, and it looked neat and elegant, also easy to extend in the future. So I stuck with this.
+

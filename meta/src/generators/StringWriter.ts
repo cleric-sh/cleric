@@ -1,3 +1,5 @@
+import {MaybePromise} from '../util/MaybePromise';
+
 export type StringWriter = {
-  (value: string): Promise<string>;
+  (value: string): MaybePromise<string>;
 };

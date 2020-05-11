@@ -1,3 +1,5 @@
+import {MaybePromise} from '../util/MaybePromise';
+
 export type ObjectWriter<T extends object> = {
-  (value: T): Promise<string>;
+  (value: T): MaybePromise<string>;
 };
