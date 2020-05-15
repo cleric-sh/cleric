@@ -3,6 +3,7 @@
   "version": "0.0.9",
   "description": "Common stuff for cleric libraries",
   "main": "src/index.ts",
+  "local:main": "src/index.ts",
   "typings": "src/index.ts",
   "license": "UNLICENSED",
   "dependencies": {

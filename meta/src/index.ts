@@ -44,10 +44,3 @@ generate(
   ProjectSpec({numbers: [...Array(5).keys()].map(i => i + 1)}),
   true
 );
-
-const bar = t`bar: ${t('bar')` ${t('baz')` baz`}`}, bar: ${() => refs.foo}`;
-const foo = t`foo: ${t('foo')``}, bar: ${() => refs.bar.baz}`;
-
-const [_spec, refs] = createSpec((args: MyArgs) => [
-  d('src', [f('bar.ts', bar), f('foo.ts', foo)]),
-]);

@@ -14,14 +14,14 @@
     "@cleric/tsconfig": "^0.0.1",
     "@types/node": "^13.7.4",
     "@types/ramda": "^0.26.41",
+    "@types/rimraf": "^3.0.0",
     "concurrently": "^5.1.0",
-    "fuse-box": "^4.0.0-next.430",
+    "fuse-box": "^4.0.0-next.432",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2"
   },
   "dependencies": {
     "@cleric/common": "0.0.9",
-    "@types/rimraf": "^3.0.0",
     "jsonschema": "^1.2.5",
     "quicktype": "^15.0.210",
     "ramda": "^0.27.0",
