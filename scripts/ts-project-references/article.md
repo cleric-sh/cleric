@@ -1,0 +1,45 @@
+# How to generate ts project references from yarn workspaces
+
+If you're using yarn workspaces, you're probably not pleased that you need to 
+manually write project references for each tsconfig, even though yarn already
+knows where to find all of your code.
+
+In this article, we write a script that automatically configures your tsconfig
+files in workspaces that reference eachother. In this way, you can keep your
+`workspaces` and `package.json` dependencies as the single source of truth.
+
+## Enumerating all workspaces
+
+In yarn 1, we can get all workspaces by capturing the output of the 
+`yarn workspaces info` command, which returns a JSON object with workspaces
+as keys.
+
+There's no clear way to access yarn 1 programmatically from nodejs scripts 
+(https://github.com/yarnpkg/yarn/issues/906), so we'll have to use `execSync` 
+of `child_process`, which returns the output of the script you give it.
+
+We have to trim off the first and last lines because the output looks like this:
+```
+yarn workspaces v1.19.1
+{
+    ...
+}
+Done in 0.07s.
+```
+
+We can match the JSON object with the following regex:
+
+`const regex = /({.*})/gs;`
+
+### Notes on yarn 2
+
+In yarn 2, `yarn workspaces list --json` will return a list in NDJSON format.
+This is basically a list of JSON objects that is separated by `\n` characters.
+
+The upside, however, is that yarn 2 exposes yarn/core as a nodejs api out of the
+box, so we don't have to use `child_process`.
+
+I don't have yarn 2 installed yet, so I'll stick to yarn 1 for now.
+
+## Identifying the root of the monorepo
+
