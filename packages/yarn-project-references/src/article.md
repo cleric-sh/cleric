@@ -50,3 +50,21 @@ It's good practice that we don't assume the script will be run in the root of
 the repository. We can check whether the `process.cwd()` contains a yarn.lock, and if it
 doesn't progressively walk up through parents to find the root folder.
 
+## Iterating all typescript workspaces
+
+Using `getWorkspaces` we can get step through each workspace and check for a tsconfig.json.
+
+If it has a tsconfig, we can load it as JSON and get any existing project references that 
+might exist.
+
+Some tsconfigs are annotated with comments, or trailing commas, so for compatibility, we can use 
+the `json5` npm package to parse it, which has looser rules than `JSON.parse`.
+
+## Load the project's package dependencies
+
+Next, we need to know which workspace packages the project has referenced. We can compare the
+`dependencies` and `devDependencies` lists in `package.json` to the package names we have in
+our workspaces.
+
+We can use `json5` to load the `package.json` file too, and iterate each list of deps, checking
+for matches.

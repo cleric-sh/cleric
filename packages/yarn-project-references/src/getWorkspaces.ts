@@ -1,6 +1,16 @@
 import {execSync} from 'child_process';
 
-export const getWorkspaces = () => {
+export type Workspace = {
+  location: string;
+  mismatchedWorkspaceDependencies: string[];
+  workspaceDependencies: string[];
+};
+
+export type Workspaces = {
+  [pkg: string]: Workspace;
+};
+
+export const getWorkspaces = (): Workspaces => {
   const workspaces = execSync('yarn workspaces info', {encoding: 'utf8'});
   const regex = /({.*})/gs;
   const match = regex.exec(workspaces);

@@ -29,7 +29,7 @@
     "lerna": "^3.19.0",
     "lint-staged": "^10.0.9",
     "ts-jest": "^25.2.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   },
   "dependencies": {}
 }
