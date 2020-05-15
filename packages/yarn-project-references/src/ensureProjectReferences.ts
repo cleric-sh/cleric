@@ -54,7 +54,8 @@ export const ensureProjectReferences = () => {
           .map(ref => ref.path)
           .join('\n  - ')}`
       );
-      writeTsConfigJson(wsRoot, {...wsTsConfigJson, ...updatedReferences});
+      const content = {...wsTsConfigJson, references: updatedReferences};
+      writeTsConfigJson(wsRoot, content);
     }
   }
 };

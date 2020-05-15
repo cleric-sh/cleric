@@ -2,6 +2,7 @@ import {writeFileSync} from 'fs';
 import {stringify} from 'json5';
 import {join} from 'path';
 import {TSCONFIG_FILE_NAME, TsConfigJson} from './getTsConfigJson';
+
 export const writeTsConfigJson = (
   wsRoot: string,
   tsConfigJson: TsConfigJson

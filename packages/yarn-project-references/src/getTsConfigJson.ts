@@ -18,6 +18,7 @@ export const getTsConfigJson = (wsRoot: string) => {
   if (!existsSync(path)) return;
 
   const content = readFileSync(path, 'utf8');
+
   try {
     return parse(content) as TsConfigJson;
   } catch (error) {

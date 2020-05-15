@@ -7,7 +7,8 @@
     "ws": "run.env ./scripts/workspace.sh",
     "git:c": "run.env ./scripts/git-commit.sh",
     "git:cp": "run.env ./scripts/git-commit-and-push.sh",
-    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx . && sortier \"./**/*.{ts,tsx,js,jsx}\""
+    "lint:fix": "eslint --fix --ext .ts --ext .tsx --ext .js --ext .jsx . && sortier \"./**/*.{ts,tsx,js,jsx}\"",
+    "ref": "ts-node ./packages/yarn-project-references/src/index.ts"
   },
   "workspaces": {
     "packages": [
