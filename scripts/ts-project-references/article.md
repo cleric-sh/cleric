@@ -43,3 +43,10 @@ I don't have yarn 2 installed yet, so I'll stick to yarn 1 for now.
 
 ## Identifying the root of the monorepo
 
+In a yarn monorepo, there is only one yarn.lock file and it's located next to the
+root package.json, so this is a good marker to look for.
+
+It's good practice that we don't assume the script will be run in the root of
+the repository. We can check whether the `process.cwd()` contains a yarn.lock, and if it
+doesn't progressively walk up through parents to find the root folder.
+
