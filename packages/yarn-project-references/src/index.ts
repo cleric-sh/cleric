@@ -1,3 +1,3 @@
 import {ensureProjectReferences} from './ensureProjectReferences';
 
-ensureProjectReferences;
+ensureProjectReferences();
