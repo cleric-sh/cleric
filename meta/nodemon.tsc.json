@@ -1,0 +1,8 @@
+{
+    "watch": [
+        "./src/**",
+        "tsconfig.json"
+    ],
+    "exec": "tsc --build && node ./dist/index.js",
+    "inspect": "0.0.0.0:9229"
+}
