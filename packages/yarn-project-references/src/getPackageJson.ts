@@ -7,4 +7,7 @@ export type PackageDependencies = {
 export type PackageJson = {
   dependencies?: PackageDependencies;
   devDependencies?: PackageDependencies;
+  ['local:main']?: string;
+  main?: string;
+  types?: string;
 };

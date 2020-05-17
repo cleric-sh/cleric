@@ -6,10 +6,9 @@ import {TSCONFIG_FILE_NAME, TsConfigJson} from './getTsConfigJson';
 const _writeFile = promisify(writeFile);
 
 export const writeTsConfigJson = async (
-  wsRoot: string,
+  path: string,
   tsConfigJson: TsConfigJson
 ) => {
-  const path = join(wsRoot, TSCONFIG_FILE_NAME);
   const content = JSON.stringify(tsConfigJson, null, 2);
   await _writeFile(path, content);
 };
