@@ -6,7 +6,7 @@ export const ensureTsBuildInfoFile = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.tsBuildInfoFile) {
-    console.log(`    - Setting 'tsBuildInfoFile' to 'dist/.tsbuildinfo'`);
+    console.log(`  - Setting 'tsBuildInfoFile' to 'dist/.tsbuildinfo'`);
     set(
       missingSettings,
       'compilerOptions.tsBuildInfoFile',

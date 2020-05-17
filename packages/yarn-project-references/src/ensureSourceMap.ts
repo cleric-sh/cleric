@@ -6,7 +6,7 @@ export const ensureSourceMap = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.sourceMap) {
-    console.log(`    - Setting 'sourceMap' to true`);
+    console.log(`  - Setting 'sourceMap' to true`);
     set(missingSettings, 'compilerOptions.sourceMap', true);
   }
 };

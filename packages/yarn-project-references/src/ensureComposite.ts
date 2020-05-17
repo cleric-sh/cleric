@@ -6,7 +6,7 @@ export const ensureComposite = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.composite) {
-    console.log(`    - Setting 'composite' to true`);
+    console.log(`  - Setting 'composite' to true`);
     set(missingSettings, 'compilerOptions.composite', true);
   }
 };

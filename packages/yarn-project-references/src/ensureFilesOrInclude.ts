@@ -13,10 +13,10 @@ export const ensureFilesOrInclude = (
     const srcExists = existsSync(srcPath);
 
     if (srcExists) {
-      console.log(`    - Including '/src/**/*.ts' by default`);
+      console.log(`  - Including '/src/**/*.ts' by default`);
       missingSettings.include = ['src/**/*'];
     } else {
-      console.log(`    - Including '**/*' by default`);
+      console.log(`  - Including '**/*' by default`);
       missingSettings.include = ['**/*'];
     }
   }

@@ -6,7 +6,7 @@ export const ensureDeclaration = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.declaration) {
-    console.log(`    - Setting 'declaration' to true`);
+    console.log(`  - Setting 'declaration' to true`);
     set(missingSettings, 'compilerOptions.declaration', true);
   }
 };

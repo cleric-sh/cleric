@@ -6,7 +6,7 @@ export const ensureOutDir = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.outDir) {
-    console.log(`    - Setting 'outDir' to 'dist'`);
+    console.log(`  - Setting 'outDir' to 'dist'`);
     set(missingSettings, 'compilerOptions.outDir', 'dist');
   }
 };

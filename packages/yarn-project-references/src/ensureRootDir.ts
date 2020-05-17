@@ -14,10 +14,10 @@ export const ensureRootDir = (
     const srcExists = existsSync(srcPath);
 
     if (srcExists) {
-      console.log(`    - Setting 'rootDir' to 'src'`);
+      console.log(`  - Setting 'rootDir' to 'src'`);
       set(missingSettings, 'compilerOptions.rootDir', 'src');
     } else {
-      console.log(`    - Skipping 'rootDir' (no /src, defaults to .)`);
+      console.log(`  - Skipping 'rootDir' (no /src, defaults to .)`);
     }
   }
 };

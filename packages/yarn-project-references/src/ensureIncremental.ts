@@ -6,7 +6,7 @@ export const ensureIncremental = (
   missingSettings: TsConfigJson
 ) => {
   if (!wsTsConfigJson.compilerOptions?.incremental) {
-    console.log(`    - Setting 'incremental' to true`);
+    console.log(`  - Setting 'incremental' to true`);
     set(missingSettings, 'compilerOptions.incremental', true);
   }
 };
