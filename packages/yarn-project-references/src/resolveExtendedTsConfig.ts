@@ -1,3 +1,4 @@
+import {merge} from 'lodash';
 import {dirname, resolve} from 'path';
 import {getJson} from './getJson';
 import {TsConfigJson} from './getTsConfigJson';
@@ -22,8 +23,5 @@ export const resolveExtendedTsConfig = async (
 
   const resolvedBase = await resolveExtendedTsConfig(base, dirname(pathToBase));
 
-  return {
-    ...resolvedBase,
-    ...wsTsConfigJson,
-  };
+  return merge({}, resolvedBase, wsTsConfigJson);
 };
