@@ -10,7 +10,6 @@ export const resolveExtendedTsConfig = async (
   if (!wsTsConfigJson.extends) return wsTsConfigJson;
 
   let pathToBase = resolve(wsRoot, wsTsConfigJson.extends);
-  console.log(pathToBase);
   let base = await getJson<TsConfigJson>('', pathToBase);
 
   if (!base) {
