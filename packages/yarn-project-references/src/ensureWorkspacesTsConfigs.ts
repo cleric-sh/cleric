@@ -34,7 +34,13 @@ export const ensureWorkspacesTsConfigs = async () => {
 
     const missingSettings: TsConfigJson = {};
 
-    console.log(`Checking tsconfig setting for ${wsPackageName}:`);
+    const isDependency = referencedWorkspaces.has(wsPackageName);
+
+    console.log(
+      `Checking tsconfig setting for ${wsPackageName}: ${
+        isDependency ? `(Dependency)` : ``
+      }`
+    );
 
     await ensureReferences(
       resolvedTsConfig,
@@ -45,15 +51,13 @@ export const ensureWorkspacesTsConfigs = async () => {
       ws
     );
 
-    if (referencedWorkspaces.has(wsPackageName)) {
-      console.log(`  - workspace is a dependency.`);
-
+    if (isDependency) {
       ensureComposite(resolvedTsConfig, missingSettings);
       ensureFilesOrInclude(resolvedTsConfig, wsRoot, missingSettings);
       ensureDeclaration(resolvedTsConfig, missingSettings);
     }
 
-    if (missingSettings === {}) {
+    if (Object.keys(missingSettings).length === 0) {
       console.log('  - all settings ok!');
       return;
     }
