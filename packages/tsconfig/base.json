@@ -18,10 +18,10 @@
         "stripInternal": true,
         "skipLibCheck": true,
         "noErrorTruncation": true,
-        "composite": true,
-        "incremental": true,
         "declaration": true,
         "declarationMap": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "composite": true,
+        "incremental": true
     }
 }

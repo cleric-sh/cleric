@@ -1,6 +1,5 @@
 import {readFile} from 'fs';
 import {promisify} from 'util';
-import {getJson} from './getJson';
 
 export const _readFile = promisify(readFile);
 

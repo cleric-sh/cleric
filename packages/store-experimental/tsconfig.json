@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@cleric/tsconfig/base.json",
   "exclude": [
     "**/*.spec.ts",
     "src/configs/test"

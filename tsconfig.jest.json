@@ -1,12 +1,5 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    // Required for ts compatibility. See sanity/testing/jest.md
-    "noEmitOnError": false,
-    // Required for ts/yarn ws/monorepo compatibility. See sanity/testing/jest.md
-    "preserveSymlinks": true,
-    "noEmitHelpers": false
-  },
+  "extends": "@cleric/tsconfig/jest.json",
   "include": [
     "packages/**/*.spec.{ts,tsx}"
   ]

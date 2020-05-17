@@ -4,14 +4,17 @@
     "description": "Shared typescript configuration for typescript projects",
     "license": "MIT",
     "author": "Sebastian Nemeth",
-    "main": "tsconfig.json",
+    "main": "dist/index.js",
     "files": [
-        "tsconfig.json",
+        "tsconfig.base.json",
+        "tsconfig.jest.json",
+        "tsconfig.watch.json",
         ".eslintrc.js",
         ".prettierrc.js"
     ],
     "dependencies": {
         "gts": "^2.0.0-alpha.8",
         "eslint-plugin-jest": "^23.8.2"
-    }
+    },
+    "types": "dist/index.ts"
 }

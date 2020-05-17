@@ -1,4 +1,5 @@
-import {join, merge} from 'lodash';
+import {merge} from 'lodash';
+import {join} from 'path';
 import {ensureComposite} from './ensureComposite';
 import {ensureDeclaration} from './ensureDeclaration';
 import {ensureDeclarationMap} from './ensureDeclarationMap';
@@ -10,10 +11,12 @@ import {ensureReferences} from './ensureReferences';
 import {ensureRootDir} from './ensureRootDir';
 import {ensureSourceMap} from './ensureSourceMap';
 import {ensureTsBuildInfoFile} from './ensureTsBuildInfoFile';
+import {getJson} from './getJson';
 import {PackageJson} from './getPackageJson';
 import {getRootInfo} from './getRootInfo';
 import {TSCONFIG_FILE_NAME, TsConfigJson} from './getTsConfigJson';
 import {getWorkspaceInfo} from './getWorkspaceInfo';
+import {writeSolutionFile} from './writeSolutionFile';
 import {writeJson} from './writeTsConfigJson';
 
 export const SRC_NAME = 'src';
@@ -77,4 +80,6 @@ export const ensureWorkspacesTsConfigs = async () => {
     await writeJson(ws.packageJsonPath, packageJsonContent);
   }
   console.log('');
+
+  // await writeSolutionFile(root);
 };
