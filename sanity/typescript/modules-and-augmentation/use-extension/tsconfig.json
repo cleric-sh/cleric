@@ -1,3 +1,14 @@
 {
-    "extends": "@cleric/tsconfig/tsconfig.base.json"
+  "extends": "@cleric/tsconfig/tsconfig.base.json",
+  "references": [
+    {
+      "path": "../../../../packages/common"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../extension"
+    }
+  ]
 }

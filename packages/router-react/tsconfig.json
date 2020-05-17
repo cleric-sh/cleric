@@ -1,3 +1,14 @@
 {
-    "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../router"
+    },
+    {
+      "path": "../store"
+    },
+    {
+      "path": "../store-react"
+    }
+  ]
 }

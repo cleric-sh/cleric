@@ -1,7 +1,23 @@
 {
-    "extends": "../../tsconfig.json",
-    "exclude": [
-        "**/*.spec.ts",
-        "src/configs/test"
-    ]
+  "extends": "../../tsconfig.json",
+  "exclude": [
+    "**/*.spec.ts",
+    "src/configs/test"
+  ],
+  "references": [
+    {
+      "path": "../common"
+    }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "rootDir": "src",
+    "declarationMap": true,
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

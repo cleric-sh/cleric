@@ -1,3 +1,22 @@
 {
-    "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "references": [
+    {
+      "path": "../common"
+    },
+    {
+      "path": "../hash"
+    }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "rootDir": "src",
+    "declarationMap": true,
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
