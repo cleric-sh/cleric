@@ -15,7 +15,8 @@ export const resolveExtendedTsConfig = async (
   let base = await getJson<TsConfigJson>('', pathToBase);
 
   if (!base) {
-    base = json5.parse(require.resolve(wsTsConfigJson.extends)) as TsConfigJson;
+    const resolvedPathToBase = require.resolve(wsTsConfigJson.extends);
+    base = await getJson<TsConfigJson>('', resolvedPathToBase);
 
     if (!base) {
       throw `'tsconfig.json' at ${wsRoot} extends ${wsTsConfigJson.extends}, but it doesn't exist.`;
