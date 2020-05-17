@@ -2,8 +2,14 @@ import {flatMap} from 'lodash';
 import {join} from 'path';
 import {ensureComposite} from './ensureComposite';
 import {ensureDeclaration} from './ensureDeclaration';
+import {ensureDeclarationMap} from './ensureDeclarationMap';
 import {ensureFilesOrInclude} from './ensureFilesOrInclude';
+import {ensureIncremental} from './ensureIncremental';
+import {ensureOutDir} from './ensureOutDir';
 import {ensureReferences} from './ensureReferences';
+import {ensureRootDir} from './ensureRootDir';
+import {ensureSourceMap} from './ensureSourceMap';
+import {ensureTsBuildInfoFile} from './ensureTsBuildInfoFile';
 import {TsConfigJson, getTsConfigJson} from './getTsConfigJson';
 import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
@@ -61,8 +67,14 @@ export const ensureWorkspacesTsConfigs = async () => {
 
     if (isDependency) {
       ensureComposite(resolvedTsConfig, missingSettings);
-      ensureFilesOrInclude(resolvedTsConfig, wsRoot, missingSettings);
+      ensureIncremental(resolvedTsConfig, missingSettings);
+      ensureFilesOrInclude(resolvedTsConfig, missingSettings, wsRoot);
+      ensureRootDir(resolvedTsConfig, missingSettings, wsRoot);
       ensureDeclaration(resolvedTsConfig, missingSettings);
+      ensureDeclarationMap(resolvedTsConfig, missingSettings);
+      ensureSourceMap(resolvedTsConfig, missingSettings);
+      ensureOutDir(resolvedTsConfig, missingSettings);
+      ensureTsBuildInfoFile(resolvedTsConfig, missingSettings);
     }
 
     if (Object.keys(missingSettings).length === 0) {

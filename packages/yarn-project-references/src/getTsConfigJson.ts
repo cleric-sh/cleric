@@ -14,6 +14,12 @@ export type TsConfigJson = {
   compilerOptions?: {
     composite?: boolean;
     declaration?: boolean;
+    declarationMap?: boolean;
+    incremental?: boolean;
+    outDir?: string;
+    rootDir?: string;
+    sourceMap?: boolean;
+    tsBuildInfoFile?: string;
   };
   extends?: string;
   files?: string[];
