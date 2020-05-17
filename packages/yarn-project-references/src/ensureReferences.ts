@@ -5,6 +5,7 @@ import {getWorkspaceDependencies} from './getWorkspaceDependencies';
 import {Workspace, Workspaces} from './getWorkspaces';
 
 export const ensureReferences = async (
+  root: string,
   wsTsConfigJson: TsConfigJson,
   missingSettings: TsConfigJson,
   wsRoot: string,
@@ -22,7 +23,7 @@ export const ensureReferences = async (
       `Unable to find package.json in workspace ${wsPackageName} at ` + wsRoot
     );
 
-  const refWorkspaces = getWorkspaceDependencies(workspaces, packageJson);
+  const refWorkspaces = getWorkspaceDependencies(root, workspaces, packageJson);
 
   const missingReferences = getMissingReferences(
     refWorkspaces,

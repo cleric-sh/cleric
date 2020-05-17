@@ -3,12 +3,17 @@ import {PackageJson} from './getPackageJson';
 import {Workspaces} from './getWorkspaces';
 
 export const getWorkspaceDependencies = (
+  root: string,
   workspaces: Workspaces,
   packageJson: PackageJson
 ) => {
-  const wsDeps = getDependencies(workspaces, packageJson.dependencies);
+  const wsDeps = getDependencies(root, workspaces, packageJson.dependencies);
 
-  const wsDevDeps = getDependencies(workspaces, packageJson.devDependencies);
+  const wsDevDeps = getDependencies(
+    root,
+    workspaces,
+    packageJson.devDependencies
+  );
   // Get unique workspaces.
   const set = new Set([...wsDeps, ...wsDevDeps]);
 

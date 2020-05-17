@@ -27,23 +27,26 @@ export const ensureWorkspacesTsConfigs = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
 
-  const packageNames = Object.keys(workspaces).filter(pkg => {
+  const tsPackageNames = Object.keys(workspaces).filter(pkg => {
     const ws = workspaces[pkg];
     const path = join(root, ws.location, TSCONFIG_FILE_NAME);
     return existsSync(path);
   });
 
-  const referencedWorkspaces = new Set(
-    flatMap(packageNames, pkg => workspaces[pkg].workspaceDependencies)
+  console.log(tsPackageNames);
+
+  const referencedPackages = new Set(
+    flatMap(tsPackageNames, pkg => workspaces[pkg].workspaceDependencies)
   );
 
   console.log(
     'Configuring typescript project references from yarn workspaces...'
   );
 
-  for (const wsPackageName in workspaces) {
+  for (const wsPackageName of tsPackageNames) {
     console.log('');
     const ws = workspaces[wsPackageName];
+
     const wsRoot = join(root, ws.location);
 
     const tsConfig = await getTsConfigJson(wsRoot);
@@ -56,7 +59,7 @@ export const ensureWorkspacesTsConfigs = async () => {
 
     const missingSettings: TsConfigJson = {};
 
-    const isDependency = referencedWorkspaces.has(wsPackageName);
+    const isDependency = referencedPackages.has(wsPackageName);
 
     console.log(
       `${wsPackageName} - Checking tsconfig settings: ${
@@ -65,6 +68,7 @@ export const ensureWorkspacesTsConfigs = async () => {
     );
 
     await ensureReferences(
+      root,
       resolvedTsConfig,
       missingSettings,
       wsRoot,
