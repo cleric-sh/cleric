@@ -1,7 +1,9 @@
-import {join, relative} from 'path';
+import {flatMap} from 'lodash';
+import {join} from 'path';
+import {getMissingReferences} from './getMissingReferences';
 import {getPackageJson} from './getPackageJson';
-import {Reference, getTsConfigJson} from './getTsConfigJson';
-import {getUniqueWorkspaceDependencies} from './getUniqueWorkspaceDependencies';
+import {getReferencedWorkspaces} from './getReferencedWorkspaces';
+import {TsConfigJson, getTsConfigJson} from './getTsConfigJson';
 import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
 import {writeTsConfigJson} from './writeTsConfigJson';
@@ -9,6 +11,13 @@ import {writeTsConfigJson} from './writeTsConfigJson';
 export const ensureProjectReferences = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
+
+  const referencedWorkspaces = new Set(
+    flatMap(
+      Object.keys(workspaces),
+      pkg => workspaces[pkg].workspaceDependencies
+    )
+  );
 
   for (const wsPackageName in workspaces) {
     const ws = workspaces[wsPackageName];
@@ -27,24 +36,12 @@ export const ensureProjectReferences = async () => {
         `Unable to find package.json in workspace ${wsPackageName} at ` + wsRoot
       );
 
-    const refWorkspaces = getUniqueWorkspaceDependencies(
-      workspaces,
-      packageJson
-    );
+    const refWorkspaces = getReferencedWorkspaces(workspaces, packageJson);
 
-    const relativePaths = refWorkspaces.map(refWs =>
-      relative(ws.location, refWs.location)
-    );
-
-    const requiredReferences = relativePaths.map(
-      rel =>
-        ({
-          path: rel,
-        } as Reference)
-    );
-
-    const missingReferences = requiredReferences.filter(
-      ref => !existingRefs.has(ref.path)
+    const missingReferences = getMissingReferences(
+      refWorkspaces,
+      ws,
+      existingRefs
     );
 
     if (missingReferences.length > 0) {
@@ -55,7 +52,19 @@ export const ensureProjectReferences = async () => {
           .map(ref => ref.path)
           .join('\n  - ')}`
       );
-      const content = {...wsTsConfigJson, references: updatedReferences};
+
+      const missingSettings: TsConfigJson = {
+        references: updatedReferences,
+      };
+
+      if (referencedWorkspaces[wsPackageName]) {
+        if (!wsTsConfigJson.composite) {
+          console.log(`  - Setting 'composite' to true`);
+          missingSettings.composite = true;
+        }
+      }
+
+      const content = {...wsTsConfigJson, ...missingSettings};
       await writeTsConfigJson(wsRoot, content);
     }
   }

@@ -2,7 +2,7 @@ import {PackageJson} from './getPackageJson';
 import {getWorkspaceDependencies} from './getWorkspaceDependencies';
 import {Workspaces} from './getWorkspaces';
 
-export const getUniqueWorkspaceDependencies = (
+export const getReferencedWorkspaces = (
   workspaces: Workspaces,
   packageJson: PackageJson
 ) => {
