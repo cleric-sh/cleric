@@ -1,6 +1,6 @@
 import {existsSync} from 'fs';
 import {join} from 'path';
-import {SRC_NAME} from './ensureWorkspacesConfigured';
+import {SRC_NAME} from './ensureWorkspacesTsConfigs';
 import {TsConfigJson} from './getTsConfigJson';
 export const ensureFilesOrInclude = (
   wsTsConfigJson: TsConfigJson,

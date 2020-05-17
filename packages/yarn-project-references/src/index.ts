@@ -1,3 +1,3 @@
-import {ensureWorkspacesConfigured} from './ensureWorkspacesConfigured';
+import {ensureWorkspacesTsConfigs} from './ensureWorkspacesTsConfigs';
 
-ensureWorkspacesConfigured();
+ensureWorkspacesTsConfigs();

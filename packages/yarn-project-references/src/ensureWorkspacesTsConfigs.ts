@@ -12,7 +12,7 @@ import {writeTsConfigJson} from './writeTsConfigJson';
 
 export const SRC_NAME = 'src';
 
-export const ensureWorkspacesConfigured = async () => {
+export const ensureWorkspacesTsConfigs = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
 
@@ -46,7 +46,7 @@ export const ensureWorkspacesConfigured = async () => {
     );
 
     if (referencedWorkspaces.has(wsPackageName)) {
-      console.log(`  - workspace is referenced, checking required settings:`);
+      console.log(`  - workspace is a dependency.`);
 
       ensureComposite(resolvedTsConfig, missingSettings);
       ensureFilesOrInclude(resolvedTsConfig, wsRoot, missingSettings);
@@ -54,7 +54,7 @@ export const ensureWorkspacesConfigured = async () => {
     }
 
     if (missingSettings === {}) {
-      console.log('  - Ok!');
+      console.log('  - all settings ok!');
       return;
     }
 
