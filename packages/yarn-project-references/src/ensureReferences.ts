@@ -30,11 +30,9 @@ export const ensureReferences = async (
   );
 
   if (missingReferences.length > 0) {
-    console.log(
-      `Adding references to ${wsPackageName}:\n  - ${missingReferences
-        .map(ref => ref.path)
-        .join('\n  - ')}`
-    );
+    console.log(`  - adding project references:`);
+    missingReferences.forEach(ref => console.log(`    - ${ref.path}`));
+
     missingSettings.references = [
       ...(wsReferences || []),
       ...missingReferences,

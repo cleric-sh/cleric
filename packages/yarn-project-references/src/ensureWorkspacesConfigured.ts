@@ -12,7 +12,7 @@ import {writeTsConfigJson} from './writeTsConfigJson';
 
 export const SRC_NAME = 'src';
 
-export const ensureProjectReferences = async () => {
+export const ensureWorkspacesConfigured = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
 
@@ -34,6 +34,8 @@ export const ensureProjectReferences = async () => {
 
     const missingSettings: TsConfigJson = {};
 
+    console.log(`Checking tsconfig setting for ${wsPackageName}:`);
+
     await ensureReferences(
       resolvedTsConfig,
       missingSettings,
@@ -49,6 +51,11 @@ export const ensureProjectReferences = async () => {
       ensureComposite(resolvedTsConfig, missingSettings);
       ensureFilesOrInclude(resolvedTsConfig, wsRoot, missingSettings);
       ensureDeclaration(resolvedTsConfig, missingSettings);
+    }
+
+    if (missingSettings === {}) {
+      console.log('  - Ok!');
+      return;
     }
 
     const content = {...tsConfig, ...missingSettings};

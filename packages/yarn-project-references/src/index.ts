@@ -1,3 +1,3 @@
-import {ensureProjectReferences} from './ensureProjectReferences';
+import {ensureWorkspacesConfigured} from './ensureWorkspacesConfigured';
 
-ensureProjectReferences();
+ensureWorkspacesConfigured();
