@@ -23,12 +23,20 @@ export const ensureWorkspacesTsConfigs = async () => {
     )
   );
 
+  console.log(
+    'Configuring typescript project references from yarn workspaces...'
+  );
+
   for (const wsPackageName in workspaces) {
+    console.log('');
     const ws = workspaces[wsPackageName];
     const wsRoot = join(root, ws.location);
 
     const tsConfig = await getTsConfigJson(wsRoot);
-    if (!tsConfig) continue;
+    if (!tsConfig) {
+      console.log(`${wsPackageName} - No tsconfig.json found, skipping...`);
+      continue;
+    }
 
     const resolvedTsConfig = await resolveExtendedTsConfig(tsConfig, wsRoot);
 
@@ -37,7 +45,7 @@ export const ensureWorkspacesTsConfigs = async () => {
     const isDependency = referencedWorkspaces.has(wsPackageName);
 
     console.log(
-      `Checking tsconfig setting for ${wsPackageName}: ${
+      `${wsPackageName} - Checking tsconfig settings: ${
         isDependency ? `(Dependency)` : ``
       }`
     );
@@ -59,11 +67,12 @@ export const ensureWorkspacesTsConfigs = async () => {
 
     if (Object.keys(missingSettings).length === 0) {
       console.log('  - all settings ok!');
-      return;
+      continue;
     }
 
     const content = {...tsConfig, ...missingSettings};
 
     await writeTsConfigJson(wsRoot, content);
   }
+  console.log('');
 };

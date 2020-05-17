@@ -1,10 +1,12 @@
+import {set} from 'lodash';
 import {TsConfigJson} from './getTsConfigJson';
+
 export const ensureComposite = (
   wsTsConfigJson: TsConfigJson,
   missingSettings: TsConfigJson
 ) => {
-  if (!wsTsConfigJson.composite) {
+  if (!wsTsConfigJson.compilerOptions?.composite) {
     console.log(`    - Setting 'composite' to true`);
-    missingSettings.composite = true;
+    set(missingSettings, 'compilerOptions.composite', true);
   }
 };

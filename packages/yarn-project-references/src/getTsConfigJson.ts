@@ -12,9 +12,9 @@ export type Reference = {
 
 export type TsConfigJson = {
   compilerOptions?: {
+    composite?: boolean;
     declaration?: boolean;
   };
-  composite?: boolean;
   extends?: string;
   files?: string[];
   include?: string[];
