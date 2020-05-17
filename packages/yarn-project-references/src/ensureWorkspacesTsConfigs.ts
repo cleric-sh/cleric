@@ -1,3 +1,4 @@
+import {existsSync} from 'fs';
 import {flatMap, merge} from 'lodash';
 import {join} from 'path';
 import {ensureComposite} from './ensureComposite';
@@ -10,7 +11,11 @@ import {ensureReferences} from './ensureReferences';
 import {ensureRootDir} from './ensureRootDir';
 import {ensureSourceMap} from './ensureSourceMap';
 import {ensureTsBuildInfoFile} from './ensureTsBuildInfoFile';
-import {TsConfigJson, getTsConfigJson} from './getTsConfigJson';
+import {
+  TSCONFIG_FILE_NAME,
+  TsConfigJson,
+  getTsConfigJson,
+} from './getTsConfigJson';
 import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
 import {resolveExtendedTsConfig} from './resolveExtendedTsConfig';
@@ -22,11 +27,14 @@ export const ensureWorkspacesTsConfigs = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
 
+  const packageNames = Object.keys(workspaces).filter(pkg => {
+    const ws = workspaces[pkg];
+    const path = join(root, ws.location, TSCONFIG_FILE_NAME);
+    return existsSync(path);
+  });
+
   const referencedWorkspaces = new Set(
-    flatMap(
-      Object.keys(workspaces),
-      pkg => workspaces[pkg].workspaceDependencies
-    )
+    flatMap(packageNames, pkg => workspaces[pkg].workspaceDependencies)
   );
 
   console.log(
