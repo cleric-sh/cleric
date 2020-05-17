@@ -1,4 +1,4 @@
-import {flatMap} from 'lodash';
+import {flatMap, merge} from 'lodash';
 import {join} from 'path';
 import {ensureComposite} from './ensureComposite';
 import {ensureDeclaration} from './ensureDeclaration';
@@ -82,7 +82,7 @@ export const ensureWorkspacesTsConfigs = async () => {
       continue;
     }
 
-    const content = {...tsConfig, ...missingSettings};
+    const content = merge({}, tsConfig, missingSettings);
 
     await writeTsConfigJson(wsRoot, content);
   }
