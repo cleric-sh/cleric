@@ -10,12 +10,7 @@
     }
   ],
   "compilerOptions": {
-    "composite": true,
-    "incremental": true,
     "rootDir": "src",
-    "declarationMap": true,
-    "outDir": "dist",
-    "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
   "include": [
     "src/**/*"

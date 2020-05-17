@@ -4,5 +4,11 @@
     {
       "path": "../../../../packages/common"
     }
-  ]
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "rootDir": "src"
+  }
 }

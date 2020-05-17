@@ -10,5 +10,11 @@
     {
       "path": "../store-react"
     }
-  ]
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "rootDir": "src"
+  }
 }

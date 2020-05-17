@@ -2,12 +2,7 @@
   "extends": "@cleric/tsconfig/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "src/",
-    "composite": true,
-    "incremental": true,
     "rootDir": "src",
-    "declarationMap": true,
-    "outDir": "dist",
-    "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
   "references": [
     {
