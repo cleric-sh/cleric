@@ -57,7 +57,7 @@ export const ensureProjectReferences = async () => {
         references: updatedReferences,
       };
 
-      if (referencedWorkspaces[wsPackageName]) {
+      if (referencedWorkspaces.has(wsPackageName)) {
         if (!wsTsConfigJson.composite) {
           console.log(`  - Setting 'composite' to true`);
           missingSettings.composite = true;
