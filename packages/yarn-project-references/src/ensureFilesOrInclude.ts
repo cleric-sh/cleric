@@ -1,6 +1,5 @@
 import {existsSync} from 'fs';
 import {join} from 'path';
-import {ensureRootDir} from './ensureRootDir';
 import {SRC_NAME} from './ensureWorkspacesTsConfigs';
 import {TsConfigJson} from './getTsConfigJson';
 
