@@ -6,9 +6,15 @@
     }
   ],
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/**/*.json",
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
   ],
   "compilerOptions": {
-    "rootDir": "src"
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
   }
 }

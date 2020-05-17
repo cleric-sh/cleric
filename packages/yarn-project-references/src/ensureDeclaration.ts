@@ -1,11 +1,12 @@
 import {set} from 'lodash';
 import {TsConfigJson} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
 
 export const ensureDeclaration = (
-  wsTsConfigJson: TsConfigJson,
+  ws: WorkspaceInfo,
   missingSettings: TsConfigJson
 ) => {
-  if (!wsTsConfigJson.compilerOptions?.declaration) {
+  if (!ws.tsConfigJson.effective.compilerOptions?.declaration) {
     console.log(`  - Setting 'declaration' to true`);
     set(missingSettings, 'compilerOptions.declaration', true);
   }

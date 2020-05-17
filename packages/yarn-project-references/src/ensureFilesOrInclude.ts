@@ -2,14 +2,17 @@ import {existsSync} from 'fs';
 import {join} from 'path';
 import {SRC_NAME} from './ensureWorkspacesTsConfigs';
 import {TsConfigJson} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
+import {warnNoBaseFilesIncludeExclude} from './warnNoBaseFilesIncludeExclude';
 
 export const ensureFilesOrInclude = (
-  wsTsConfigJson: TsConfigJson,
-  missingSettings: TsConfigJson,
-  wsRoot: string
+  ws: WorkspaceInfo,
+  missingSettings: TsConfigJson
 ) => {
-  if (!(wsTsConfigJson.files || wsTsConfigJson.include)) {
-    const srcPath = join(wsRoot, SRC_NAME);
+  warnNoBaseFilesIncludeExclude(ws);
+
+  if (!(ws.tsConfigJson.effective.files || ws.tsConfigJson.effective.include)) {
+    const srcPath = join(ws.path, SRC_NAME);
     const srcExists = existsSync(srcPath);
 
     if (srcExists) {

@@ -1,14 +1,15 @@
 import {relative} from 'path';
 import {Reference} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
 import {Workspace} from './getWorkspaces';
 
 export const getMissingReferences = (
   refWorkspaces: Workspace[],
-  ws: Workspace,
+  ws: WorkspaceInfo,
   existingRefs: Set<string>
 ) => {
   const relativePaths = refWorkspaces.map(refWs =>
-    relative(ws.location, refWs.location)
+    relative(ws.workspace.location, refWs.location)
   );
 
   const requiredReferences = relativePaths.map(

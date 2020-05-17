@@ -20,11 +20,6 @@
         "noErrorTruncation": true,
         "composite": true,
         "incremental": true,
-        "declarationMap": true,
-        "outDir": "dist",
-        "tsBuildInfoFile": "dist/.tsbuildinfo"
-    },
-    "exclude": [
-        "**/*.spec.ts"
-    ]
+        "declarationMap": true
+    }
 }

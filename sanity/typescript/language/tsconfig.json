@@ -9,6 +9,8 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "rootDir": "src"
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
   }
 }

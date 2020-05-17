@@ -21,11 +21,9 @@ export type TsConfigJson = {
     sourceMap?: boolean;
     tsBuildInfoFile?: string;
   };
+  exclude?: string[];
   extends?: string;
   files?: string[];
   include?: string[];
   references?: Reference[];
 };
-
-export const getTsConfigJson = (wsRoot: string) =>
-  getJson<TsConfigJson>(wsRoot, TSCONFIG_FILE_NAME);

@@ -1,11 +1,12 @@
 import {set} from 'lodash';
 import {TsConfigJson} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
 
 export const ensureComposite = (
-  wsTsConfigJson: TsConfigJson,
+  ws: WorkspaceInfo,
   missingSettings: TsConfigJson
 ) => {
-  if (!wsTsConfigJson.compilerOptions?.composite) {
+  if (!ws.tsConfigJson.effective.compilerOptions?.composite) {
     console.log(`  - Setting 'composite' to true`);
     set(missingSettings, 'compilerOptions.composite', true);
   }

@@ -1,19 +1,12 @@
-import {getDependencies} from './getDependencies';
-import {PackageJson} from './getPackageJson';
-import {Workspaces} from './getWorkspaces';
+import {WorkspaceInfo} from './getWorkspaceInfo';
+import {resolveDependencies} from './resolveDependencies';
 
-export const getWorkspaceDependencies = (
-  root: string,
-  workspaces: Workspaces,
-  packageJson: PackageJson
-) => {
-  const wsDeps = getDependencies(root, workspaces, packageJson.dependencies);
+export const getWorkspaceDependencies = (ws: WorkspaceInfo) => {
+  const {packageJson, root} = ws;
 
-  const wsDevDeps = getDependencies(
-    root,
-    workspaces,
-    packageJson.devDependencies
-  );
+  const wsDeps = resolveDependencies(root, packageJson.dependencies);
+  const wsDevDeps = resolveDependencies(root, packageJson.devDependencies);
+
   // Get unique workspaces.
   const set = new Set([...wsDeps, ...wsDevDeps]);
 

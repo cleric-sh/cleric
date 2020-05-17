@@ -1,11 +1,12 @@
 import {set} from 'lodash';
 import {TsConfigJson} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
 
 export const ensureIncremental = (
-  wsTsConfigJson: TsConfigJson,
+  ws: WorkspaceInfo,
   missingSettings: TsConfigJson
 ) => {
-  if (!wsTsConfigJson.compilerOptions?.incremental) {
+  if (!ws.tsConfigJson.effective.compilerOptions?.incremental) {
     console.log(`  - Setting 'incremental' to true`);
     set(missingSettings, 'compilerOptions.incremental', true);
   }

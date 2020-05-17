@@ -1,29 +1,18 @@
 import {getMissingReferences} from './getMissingReferences';
-import {getPackageJson} from './getPackageJson';
 import {TsConfigJson} from './getTsConfigJson';
 import {getWorkspaceDependencies} from './getWorkspaceDependencies';
-import {Workspace, Workspaces} from './getWorkspaces';
+import {WorkspaceInfo} from './getWorkspaceInfo';
 
 export const ensureReferences = async (
-  root: string,
-  wsTsConfigJson: TsConfigJson,
-  missingSettings: TsConfigJson,
-  wsRoot: string,
-  wsPackageName: string,
-  workspaces: Workspaces,
-  ws: Workspace
+  ws: WorkspaceInfo,
+  missingSettings: TsConfigJson
 ) => {
-  const wsReferences = wsTsConfigJson.references;
+  const tsConfig = ws.tsConfigJson.effective;
+
+  const wsReferences = tsConfig.references;
   const existingRefs = new Set(wsReferences?.map(ref => ref.path) || []);
 
-  const packageJson = await getPackageJson(wsRoot);
-
-  if (!packageJson)
-    throw (
-      `Unable to find package.json in workspace ${wsPackageName} at ` + wsRoot
-    );
-
-  const refWorkspaces = getWorkspaceDependencies(root, workspaces, packageJson);
+  const refWorkspaces = getWorkspaceDependencies(ws);
 
   const missingReferences = getMissingReferences(
     refWorkspaces,

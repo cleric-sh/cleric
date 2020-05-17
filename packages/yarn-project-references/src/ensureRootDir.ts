@@ -3,14 +3,17 @@ import {set} from 'lodash';
 import {join} from 'path';
 import {SRC_NAME} from './ensureWorkspacesTsConfigs';
 import {TsConfigJson} from './getTsConfigJson';
+import {WorkspaceInfo} from './getWorkspaceInfo';
+import {warnNoBaseRootDir} from './warnNoBaseRootDir';
 
 export const ensureRootDir = (
-  wsTsConfigJson: TsConfigJson,
-  missingSettings: TsConfigJson,
-  wsRoot: string
+  ws: WorkspaceInfo,
+  missingSettings: TsConfigJson
 ) => {
-  if (!wsTsConfigJson.compilerOptions?.rootDir) {
-    const srcPath = join(wsRoot, SRC_NAME);
+  warnNoBaseRootDir(ws);
+
+  if (!ws.tsConfigJson.effective.compilerOptions?.rootDir) {
+    const srcPath = join(ws.path, SRC_NAME);
     const srcExists = existsSync(srcPath);
 
     if (srcExists) {
