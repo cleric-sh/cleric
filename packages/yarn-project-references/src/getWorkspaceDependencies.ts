@@ -1,12 +1,16 @@
-import {PackageDependencies} from './getPackageJson';
+import {getDependencies} from './getDependencies';
+import {PackageJson} from './getPackageJson';
 import {Workspaces} from './getWorkspaces';
 
 export const getWorkspaceDependencies = (
   workspaces: Workspaces,
-  dependencies?: PackageDependencies
+  packageJson: PackageJson
 ) => {
-  if (!dependencies) return [];
-  return Object.keys(dependencies)
-    .map(dep => workspaces[dep])
-    .filter(ws => !!ws);
+  const wsDeps = getDependencies(workspaces, packageJson.dependencies);
+
+  const wsDevDeps = getDependencies(workspaces, packageJson.devDependencies);
+  // Get unique workspaces.
+  const set = new Set([...wsDeps, ...wsDevDeps]);
+
+  return [...set];
 };

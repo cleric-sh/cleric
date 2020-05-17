@@ -15,6 +15,7 @@ export type TsConfigJson = {
     declaration?: boolean;
   };
   composite?: boolean;
+  extends?: string;
   files?: string[];
   include?: string[];
   references?: Reference[];
