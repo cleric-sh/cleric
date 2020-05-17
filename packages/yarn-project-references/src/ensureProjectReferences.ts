@@ -76,7 +76,15 @@ export const ensureProjectReferences = async () => {
             missingSettings.include = ['src/**/*'];
           } else {
             console.log(`    - Including '**/*' by default`);
+            missingSettings.include = ['**/*'];
           }
+        }
+
+        if (!wsTsConfigJson.compilerOptions?.declaration) {
+          console.log(`    - Setting 'declaration' to true`);
+          missingSettings.compilerOptions = {
+            declaration: true,
+          };
         }
       }
 
