@@ -77,17 +77,15 @@ export const ensureWorkspacesTsConfigs = async () => {
       ws
     );
 
-    if (isDependency) {
-      ensureComposite(resolvedTsConfig, missingSettings);
-      ensureIncremental(resolvedTsConfig, missingSettings);
-      ensureFilesOrInclude(resolvedTsConfig, missingSettings, wsRoot);
-      ensureRootDir(resolvedTsConfig, missingSettings, wsRoot);
-      ensureDeclaration(resolvedTsConfig, missingSettings);
-      ensureDeclarationMap(resolvedTsConfig, missingSettings);
-      ensureSourceMap(resolvedTsConfig, missingSettings);
-      ensureOutDir(resolvedTsConfig, missingSettings);
-      ensureTsBuildInfoFile(resolvedTsConfig, missingSettings);
-    }
+    ensureComposite(resolvedTsConfig, missingSettings);
+    ensureIncremental(resolvedTsConfig, missingSettings);
+    ensureFilesOrInclude(resolvedTsConfig, missingSettings, wsRoot);
+    ensureRootDir(resolvedTsConfig, missingSettings, wsRoot);
+    ensureDeclaration(resolvedTsConfig, missingSettings);
+    ensureDeclarationMap(resolvedTsConfig, missingSettings);
+    ensureSourceMap(resolvedTsConfig, missingSettings);
+    ensureOutDir(resolvedTsConfig, missingSettings);
+    ensureTsBuildInfoFile(resolvedTsConfig, missingSettings);
 
     if (Object.keys(missingSettings).length === 0) {
       console.log('  - all settings ok!');

@@ -17,6 +17,15 @@
         "newLine": "lf",
         "stripInternal": true,
         "skipLibCheck": true,
-        "noErrorTruncation": true
+        "noErrorTruncation": true,
+        "composite": true,
+        "incremental": true,
+        "rootDir": "src",
+        "declarationMap": true,
+        "outDir": "dist",
+        "tsBuildInfoFile": "dist/.tsbuildinfo"
     },
+    "exclude": [
+        "**/*.spec.ts"
+    ]
 }
