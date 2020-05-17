@@ -14,7 +14,7 @@ import {PackageJson} from './getPackageJson';
 import {getRootInfo} from './getRootInfo';
 import {TSCONFIG_FILE_NAME, TsConfigJson} from './getTsConfigJson';
 import {getWorkspaceInfo} from './getWorkspaceInfo';
-import {writeTsConfigJson} from './writeTsConfigJson';
+import {writeJson} from './writeTsConfigJson';
 
 export const SRC_NAME = 'src';
 
@@ -54,17 +54,27 @@ export const ensureWorkspacesTsConfigs = async () => {
     ensureTsBuildInfoFile(ws, newTsConfigJsonSettings);
     ensurePackageJsonEntry(ws, newPackageJsonSettings);
 
-    if (Object.keys(newTsConfigJsonSettings).length === 0) {
+    if (
+      Object.keys(newTsConfigJsonSettings).length === 0 &&
+      Object.keys(newPackageJsonSettings).length === 0
+    ) {
       console.log('  - all settings ok!');
       continue;
     }
 
-    const content = merge(
+    const tsConfigJsonContent = merge(
       {},
       ws.tsConfigJson.immediate,
       newTsConfigJsonSettings
     );
-    await writeTsConfigJson(ws.tsConfigJson.immediatePath, content);
+    await writeJson(ws.tsConfigJson.immediatePath, tsConfigJsonContent);
+
+    const packageJsonContent = merge(
+      {},
+      ws.packageJson,
+      newPackageJsonSettings
+    );
+    await writeJson(ws.packageJsonPath, packageJsonContent);
   }
   console.log('');
 };

@@ -10,6 +10,7 @@ import {Workspace} from './getWorkspaces';
 export type WorkspaceInfo = {
   isDependency: boolean;
   packageJson: PackageJson;
+  packageJsonPath: string;
   path: string;
   root: RootInfo;
   tsConfigJson: {
@@ -28,8 +29,9 @@ export const getWorkspaceInfo = async (
 ): Promise<WorkspaceInfo | undefined> => {
   const workspace = root.workspaces[packageName];
   const path = join(root.path, workspace.location);
-  const packagePath = join(path, PACKAGE_JSON_FILE_NAME);
-  const packageJson = await getJson<PackageJson>(packagePath);
+
+  const packageJsonPath = join(path, PACKAGE_JSON_FILE_NAME);
+  const packageJson = await getJson<PackageJson>(packageJsonPath);
 
   if (!packageJson) throw `Unable to find'package.json' at workspace: ${path}`;
 
@@ -46,6 +48,7 @@ export const getWorkspaceInfo = async (
   return {
     isDependency,
     packageJson,
+    packageJsonPath,
     path,
     root,
     tsConfigJson: {
