@@ -1,6 +1,8 @@
-import {existsSync} from 'fs';
 import {flatMap} from 'lodash';
 import {join} from 'path';
+import {ensureComposite} from './ensureComposite';
+import {ensureDeclaration} from './ensureDeclaration';
+import {ensureFilesOrInclude} from './ensureFilesOrInclude';
 import {getMissingReferences} from './getMissingReferences';
 import {getPackageJson} from './getPackageJson';
 import {getReferencedWorkspaces} from './getReferencedWorkspaces';
@@ -9,7 +11,7 @@ import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
 import {writeTsConfigJson} from './writeTsConfigJson';
 
-const SRC_NAME = 'src';
+export const SRC_NAME = 'src';
 export const ensureProjectReferences = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
@@ -47,8 +49,6 @@ export const ensureProjectReferences = async () => {
     );
 
     if (missingReferences.length > 0) {
-      const updatedReferences = [...(wsReferences || []), ...missingReferences];
-
       console.log(
         `Adding references to ${wsPackageName}:\n  - ${missingReferences
           .map(ref => ref.path)
@@ -56,36 +56,15 @@ export const ensureProjectReferences = async () => {
       );
 
       const missingSettings: TsConfigJson = {
-        references: updatedReferences,
+        references: [...(wsReferences || []), ...missingReferences],
       };
 
       if (referencedWorkspaces.has(wsPackageName)) {
         console.log(`  - workspace is referenced, checking required settings:`);
 
-        if (!wsTsConfigJson.composite) {
-          console.log(`    - Setting 'composite' to true`);
-          missingSettings.composite = true;
-        }
-
-        if (!(wsTsConfigJson.files || wsTsConfigJson.include)) {
-          const srcPath = join(wsRoot, SRC_NAME);
-          const srcExists = existsSync(srcPath);
-
-          if (srcExists) {
-            console.log(`    - Including '/src/**/*.ts' by default`);
-            missingSettings.include = ['src/**/*'];
-          } else {
-            console.log(`    - Including '**/*' by default`);
-            missingSettings.include = ['**/*'];
-          }
-        }
-
-        if (!wsTsConfigJson.compilerOptions?.declaration) {
-          console.log(`    - Setting 'declaration' to true`);
-          missingSettings.compilerOptions = {
-            declaration: true,
-          };
-        }
+        ensureComposite(wsTsConfigJson, missingSettings);
+        ensureFilesOrInclude(wsTsConfigJson, wsRoot, missingSettings);
+        ensureDeclaration(wsTsConfigJson, missingSettings);
       }
 
       const content = {...wsTsConfigJson, ...missingSettings};
