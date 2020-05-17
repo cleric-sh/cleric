@@ -1,6 +1,4 @@
-import {existsSync, readFileSync} from 'fs';
-import {parse} from 'json5';
-import {join} from 'path';
+import {getJson} from './getJson';
 
 const PACKAGE_JSON_FILE_NAME = 'package.json';
 
@@ -13,16 +11,5 @@ export type PackageJson = {
   devDependencies?: PackageDependencies;
 };
 
-export const getPackageJson = (wsRoot: string) => {
-  const path = join(wsRoot, PACKAGE_JSON_FILE_NAME);
-  if (!existsSync(path)) return;
-
-  const content = readFileSync(path, 'utf8');
-
-  try {
-    return parse(content) as PackageJson;
-  } catch (error) {
-    console.log(`Syntax error in tsconfig at: ${path}`, error);
-    return;
-  }
-};
+export const getPackageJson = (wsRoot: string) =>
+  getJson<PackageJson>(wsRoot, PACKAGE_JSON_FILE_NAME);

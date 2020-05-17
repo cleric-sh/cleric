@@ -6,7 +6,7 @@ import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
 import {writeTsConfigJson} from './writeTsConfigJson';
 
-export const ensureProjectReferences = () => {
+export const ensureProjectReferences = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
 
@@ -14,13 +14,14 @@ export const ensureProjectReferences = () => {
     const ws = workspaces[wsPackageName];
     const wsRoot = join(root, ws.location);
 
-    const wsTsConfigJson = getTsConfigJson(wsRoot);
+    const wsTsConfigJson = await getTsConfigJson(wsRoot);
     if (!wsTsConfigJson) continue;
 
     const wsReferences = wsTsConfigJson.references;
     const existingRefs = new Set(wsReferences?.map(ref => ref.path) || []);
 
-    const packageJson = getPackageJson(wsRoot);
+    const packageJson = await getPackageJson(wsRoot);
+
     if (!packageJson)
       throw (
         `Unable to find package.json in workspace ${wsPackageName} at ` + wsRoot
@@ -55,7 +56,7 @@ export const ensureProjectReferences = () => {
           .join('\n  - ')}`
       );
       const content = {...wsTsConfigJson, references: updatedReferences};
-      writeTsConfigJson(wsRoot, content);
+      await writeTsConfigJson(wsRoot, content);
     }
   }
 };

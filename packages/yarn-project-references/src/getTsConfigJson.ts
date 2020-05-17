@@ -1,6 +1,8 @@
-import {existsSync, readFileSync} from 'fs';
-import {parse} from 'json5';
-import {join} from 'path';
+import {readFile} from 'fs';
+import {promisify} from 'util';
+import {getJson} from './getJson';
+
+export const _readFile = promisify(readFile);
 
 export const TSCONFIG_FILE_NAME = 'tsconfig.json';
 
@@ -13,16 +15,5 @@ export type TsConfigJson = {
   references?: Reference[];
 };
 
-export const getTsConfigJson = (wsRoot: string) => {
-  const path = join(wsRoot, TSCONFIG_FILE_NAME);
-  if (!existsSync(path)) return;
-
-  const content = readFileSync(path, 'utf8');
-
-  try {
-    return parse(content) as TsConfigJson;
-  } catch (error) {
-    console.log(`Syntax error in  at: ${path}`, error);
-    return;
-  }
-};
+export const getTsConfigJson = (wsRoot: string) =>
+  getJson<TsConfigJson>(wsRoot, TSCONFIG_FILE_NAME);
