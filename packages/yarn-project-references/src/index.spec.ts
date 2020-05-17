@@ -1,7 +1,7 @@
 import {ensureWorkspacesTsConfigs} from './ensureWorkspacesTsConfigs';
 
 describe('yarn-project-references', () => {
-  it.only('should do stuff', () => {
-    ensureWorkspacesTsConfigs();
+  it.skip('should do stuff', async () => {
+    await ensureWorkspacesTsConfigs();
   });
 });
