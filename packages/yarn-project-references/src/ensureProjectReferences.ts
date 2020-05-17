@@ -1,3 +1,4 @@
+import {existsSync} from 'fs';
 import {flatMap} from 'lodash';
 import {join} from 'path';
 import {getMissingReferences} from './getMissingReferences';
@@ -8,6 +9,7 @@ import {getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
 import {writeTsConfigJson} from './writeTsConfigJson';
 
+const SRC_NAME = 'src';
 export const ensureProjectReferences = async () => {
   const root = getYarnLockFilePath();
   const workspaces = getWorkspaces();
@@ -58,9 +60,23 @@ export const ensureProjectReferences = async () => {
       };
 
       if (referencedWorkspaces.has(wsPackageName)) {
+        console.log(`  - workspace is referenced, checking required settings:`);
+
         if (!wsTsConfigJson.composite) {
-          console.log(`  - Setting 'composite' to true`);
+          console.log(`    - Setting 'composite' to true`);
           missingSettings.composite = true;
+        }
+
+        if (!(wsTsConfigJson.files || wsTsConfigJson.include)) {
+          const srcPath = join(wsRoot, SRC_NAME);
+          const srcExists = existsSync(srcPath);
+
+          if (srcExists) {
+            console.log(`    - Including '/src/**/*.ts' by default`);
+            missingSettings.include = ['src/**/*'];
+          } else {
+            console.log(`    - Including '**/*' by default`);
+          }
         }
       }
 

@@ -11,7 +11,12 @@ export type Reference = {
 };
 
 export type TsConfigJson = {
+  compilerOptions?: {
+    declaration?: boolean;
+  };
   composite?: boolean;
+  files?: string[];
+  include?: string[];
   references?: Reference[];
 };
 
