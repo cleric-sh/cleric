@@ -1,16 +1,17 @@
 {
-    "name": "@sanity/io-ts",
-    "version": "0.0.1",
-    "description": "A playground for asserting typescript knowledge.",
-    "main": "src/index.spec.ts",
-    "author": "Sebastian Nemeth",
-    "license": "MIT",
-    "engines": {
-        "node": ">8.5.0"
-    },
-    "devDependencies": {},
-    "dependencies": {
-        "@cleric/common": "^0.0.9",
-        "io-ts": "^2.1.2"
-    }
+  "name": "@sanity/io-ts",
+  "version": "0.0.1",
+  "description": "A playground for asserting typescript knowledge.",
+  "main": "dist/index.js",
+  "author": "Sebastian Nemeth",
+  "license": "MIT",
+  "engines": {
+    "node": ">8.5.0"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@cleric/common": "^0.0.9",
+    "io-ts": "^2.1.2"
+  },
+  "types": "dist/index.ts"
 }

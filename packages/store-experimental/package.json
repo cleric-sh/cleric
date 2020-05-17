@@ -1,25 +1,26 @@
 {
-    "name": "@cleric/store-experimental",
-    "version": "0.0.1",
-    "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
-    "main": "src/index.ts",
-    "author": "Sebastian Nemeth",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/jest": "^25.1.2",
-        "@types/lodash": "^4.14.149",
-        "jest": "^25.1.0",
-        "rxjs-marbles": "^5.0.4",
-        "ts-jest": "^25.2.0"
-    },
-    "dependencies": {
-        "@cleric/common": "^0.0.9",
-        "@sindresorhus/fnv1a": "^2.0.0",
-        "io-ts": "^2.1.2",
-        "lodash": "^4.17.5",
-        "monolite": "0.8.0",
-        "rxjs": "^6.3.2",
-        "ts-toolbelt": "^6.3.11",
-        "utility-types": "^3.10.0"
-    }
+  "name": "@cleric/store-experimental",
+  "version": "0.0.1",
+  "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
+  "main": "dist/index.js",
+  "author": "Sebastian Nemeth",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/lodash": "^4.14.149",
+    "jest": "^25.1.0",
+    "rxjs-marbles": "^5.0.4",
+    "ts-jest": "^25.2.0"
+  },
+  "dependencies": {
+    "@cleric/common": "^0.0.9",
+    "@sindresorhus/fnv1a": "^2.0.0",
+    "io-ts": "^2.1.2",
+    "lodash": "^4.17.5",
+    "monolite": "0.8.0",
+    "rxjs": "^6.3.2",
+    "ts-toolbelt": "^6.3.11",
+    "utility-types": "^3.10.0"
+  },
+  "types": "dist/index.ts"
 }

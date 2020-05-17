@@ -1,22 +1,23 @@
 {
-    "name": "@cleric/store-performance",
-    "version": "0.0.1",
-    "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
-    "main": "src/index.ts",
-    "author": "Sebastian Nemeth",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/jest": "^25.1.2",
-        "@types/lodash": "^4.14.149",
-        "jest": "^25.1.0",
-        "rxjs-marbles": "^5.0.4",
-        "ts-jest": "^25.2.0"
-    },
-    "dependencies": {
-        "@cleric/common": "^0.0.9",
-        "@cleric/store-experimental": "^0.0.1",
-        "io-ts": "^2.1.2",
-        "rxjs": "^6.3.2",
-        "ts-toolbelt": "^6.3.11"
-    }
+  "name": "@cleric/store-performance",
+  "version": "0.0.1",
+  "description": "A typescript-first, reactive, immutable and change-detecting object store that doesn't impose any style or structure.",
+  "main": "dist/index.js",
+  "author": "Sebastian Nemeth",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/lodash": "^4.14.149",
+    "jest": "^25.1.0",
+    "rxjs-marbles": "^5.0.4",
+    "ts-jest": "^25.2.0"
+  },
+  "dependencies": {
+    "@cleric/common": "^0.0.9",
+    "@cleric/store-experimental": "^0.0.1",
+    "io-ts": "^2.1.2",
+    "rxjs": "^6.3.2",
+    "ts-toolbelt": "^6.3.11"
+  },
+  "types": "dist/index.ts"
 }

@@ -1,11 +1,12 @@
 {
-    "name": "@sanity/use-none",
-    "version": "0.0.1",
-    "main": "index.spec.ts",
-    "typings": "index.spec.ts",
-    "license": "UNLICENSED",
-    "dependencies": {
-        "@cleric/common": "0.0.9",
-        "@sanity/core": "0.0.1"
-    }
+  "name": "@sanity/use-none",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "typings": "index.spec.ts",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@cleric/common": "0.0.9",
+    "@sanity/core": "0.0.1"
+  },
+  "types": "dist/index.ts"
 }

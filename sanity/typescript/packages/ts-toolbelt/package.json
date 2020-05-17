@@ -1,15 +1,16 @@
 {
-    "name": "@sanity/ts-toolbelt",
-    "version": "0.0.1",
-    "description": "A playground for asserting ts-toolbelt knowledge.",
-    "main": "src/List.spec.ts",
-    "author": "Sebastian Nemeth",
-    "license": "MIT",
-    "engines": {
-        "node": ">8.5.0"
-    },
-    "dependencies": {
-        "@cleric/common": "^0.0.9",
-        "ts-toolbelt": "^6.3.5"
-    }
+  "name": "@sanity/ts-toolbelt",
+  "version": "0.0.1",
+  "description": "A playground for asserting ts-toolbelt knowledge.",
+  "main": "dist/index.js",
+  "author": "Sebastian Nemeth",
+  "license": "MIT",
+  "engines": {
+    "node": ">8.5.0"
+  },
+  "dependencies": {
+    "@cleric/common": "^0.0.9",
+    "ts-toolbelt": "^6.3.5"
+  },
+  "types": "dist/index.ts"
 }

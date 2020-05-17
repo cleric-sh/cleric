@@ -1,18 +1,19 @@
 {
-    "name": "@sanity/rxjs",
-    "version": "0.0.1",
-    "description": "A playground for asserting typescript knowledge.",
-    "main": "src/index.ts",
-    "author": "Sebastian Nemeth",
-    "license": "MIT",
-    "engines": {
-        "node": ">8.5.0"
-    },
-    "devDependencies": {
-        "rxjs-marbles": "^5.0.4"
-    },
-    "dependencies": {
-        "@cleric/common": "^0.0.9",
-        "rxjs": "^6.3.2"
-    }
+  "name": "@sanity/rxjs",
+  "version": "0.0.1",
+  "description": "A playground for asserting typescript knowledge.",
+  "main": "dist/index.js",
+  "author": "Sebastian Nemeth",
+  "license": "MIT",
+  "engines": {
+    "node": ">8.5.0"
+  },
+  "devDependencies": {
+    "rxjs-marbles": "^5.0.4"
+  },
+  "dependencies": {
+    "@cleric/common": "^0.0.9",
+    "rxjs": "^6.3.2"
+  },
+  "types": "dist/index.ts"
 }

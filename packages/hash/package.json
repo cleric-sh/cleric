@@ -2,7 +2,7 @@
   "name": "@cleric/hash",
   "version": "0.0.9",
   "description": "Fast in-memory object hashing, that can be incrementally updated.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "author": "Sebastian Nemeth",
   "license": "MIT",
   "engines": {
@@ -15,5 +15,6 @@
     "@cleric/common": "0.0.9",
     "@sindresorhus/fnv1a": "^2.0.0",
     "ts-toolbelt": "^6.3.6"
-  }
+  },
+  "types": "dist/index.ts"
 }

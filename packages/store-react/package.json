@@ -2,7 +2,7 @@
   "name": "@cleric/store-react",
   "version": "0.0.9",
   "description": "Connect the cleric store to react components.",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "local:main": "src/index.ts",
   "author": "Sebastian Nemeth",
   "license": "MIT",
@@ -17,5 +17,6 @@
   "devDependencies": {
     "@types/react": "^16.9.19",
     "rxjs-marbles": "^5.0.4"
-  }
+  },
+  "types": "dist/index.ts"
 }
