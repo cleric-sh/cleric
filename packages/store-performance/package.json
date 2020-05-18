@@ -19,5 +19,5 @@
     "rxjs": "^6.3.2",
     "ts-toolbelt": "^6.3.11"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

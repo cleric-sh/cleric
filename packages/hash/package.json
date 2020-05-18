@@ -16,5 +16,5 @@
     "@sindresorhus/fnv1a": "^2.0.0",
     "ts-toolbelt": "^6.3.6"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

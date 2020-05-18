@@ -13,5 +13,5 @@
     "@cleric/common": "^0.0.9",
     "io-ts": "^2.1.2"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

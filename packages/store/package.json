@@ -25,5 +25,5 @@
     "@cleric/common": "0.0.9",
     "@cleric/hash": "0.0.9"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

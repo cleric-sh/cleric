@@ -8,5 +8,5 @@
     "@cleric/common": "0.0.9",
     "@sanity/core": "0.0.1"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

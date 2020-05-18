@@ -25,5 +25,5 @@
     "ts-toolbelt": "^6.3.5",
     "utility-types": "^3.10.0"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

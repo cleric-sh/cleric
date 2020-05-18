@@ -15,5 +15,5 @@
     "@cleric/common": "^0.0.9",
     "rxjs": "^6.3.2"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

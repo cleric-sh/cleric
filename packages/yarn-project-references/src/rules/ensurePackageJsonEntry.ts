@@ -8,22 +8,21 @@ export const ensurePackageJsonEntry = (
 ) => {
   const outDir = ws.tsConfigJson.effective.compilerOptions?.outDir || 'dist';
 
+  const main = `${outDir}/index.js`;
+
   if (
     !ws.packageJson.main ||
     !trimStart(ws.packageJson.main, './').startsWith(outDir)
   ) {
-    console.log(`  - Setting 'main' in 'package.json' to '${outDir}/index.js'`);
-    set(newPackgeJsonSettings, 'main', `${outDir}/index.js`);
+    console.log(`  - Setting 'main' in 'package.json' to '${main}'`);
+    set(newPackgeJsonSettings, 'main', `${main}`);
   }
 
-  if (
-    !ws.packageJson.types ||
-    !trimStart(ws.packageJson.types, './').startsWith(outDir)
-  ) {
-    console.log(
-      `  - Setting 'types' in 'package.json' to '${outDir}/index.ts'`
-    );
-    set(newPackgeJsonSettings, 'types', `${outDir}/index.ts`);
+  const types = main.replace('.js', '.d.ts');
+
+  if (ws.packageJson.types !== types) {
+    console.log(`  - Setting 'types' in 'package.json' to '${types}'`);
+    set(newPackgeJsonSettings, 'types', `${types}`);
   }
 
   if (ws.packageJson['local:main']) {

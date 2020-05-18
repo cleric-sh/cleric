@@ -9,5 +9,5 @@
     "@sanity/core": "0.0.1",
     "@sanity/extension": "0.0.1"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

@@ -11,5 +11,5 @@
     "@cleric/store-react": "^0.0.9",
     "react": "^16.13.0"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

@@ -18,5 +18,5 @@
   "devDependencies": {
     "@types/lodash": "^4.14.149"
   },
-  "types": "dist/index.ts"
+  "types": "dist/index.d.ts"
 }

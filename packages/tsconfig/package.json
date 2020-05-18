@@ -1,20 +1,20 @@
 {
-    "name": "@cleric/tsconfig",
-    "version": "0.0.1",
-    "description": "Shared typescript configuration for typescript projects",
-    "license": "MIT",
-    "author": "Sebastian Nemeth",
-    "main": "dist/index.js",
-    "files": [
-        "tsconfig.base.json",
-        "tsconfig.jest.json",
-        "tsconfig.watch.json",
-        ".eslintrc.js",
-        ".prettierrc.js"
-    ],
-    "dependencies": {
-        "gts": "^2.0.0-alpha.8",
-        "eslint-plugin-jest": "^23.8.2"
-    },
-    "types": "dist/index.ts"
+  "name": "@cleric/tsconfig",
+  "version": "0.0.1",
+  "description": "Shared typescript configuration for typescript projects",
+  "license": "MIT",
+  "author": "Sebastian Nemeth",
+  "main": "dist/index.js",
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.jest.json",
+    "tsconfig.watch.json",
+    ".eslintrc.js",
+    ".prettierrc.js"
+  ],
+  "dependencies": {
+    "gts": "^2.0.0-alpha.8",
+    "eslint-plugin-jest": "^23.8.2"
+  },
+  "types": "dist/index.d.ts"
 }
