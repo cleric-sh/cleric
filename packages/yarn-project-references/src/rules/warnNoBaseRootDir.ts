@@ -1,4 +1,4 @@
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 
 export const warnNoBaseRootDir = (ws: WorkspaceInfo) => {
   const baseCompilerOptions = ws.tsConfigJson.base?.compilerOptions;

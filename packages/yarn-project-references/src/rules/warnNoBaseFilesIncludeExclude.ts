@@ -1,4 +1,4 @@
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 
 export const warnNoBaseFilesIncludeExclude = (ws: WorkspaceInfo) => {
   const base = ws.tsConfigJson.base;

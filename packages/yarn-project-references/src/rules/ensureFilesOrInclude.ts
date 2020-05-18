@@ -1,8 +1,8 @@
 import {existsSync} from 'fs';
 import {join} from 'path';
-import {SRC_NAME} from './ensureWorkspacesTsConfigs';
-import {TsConfigJson} from './getTsConfigJson';
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {SRC_NAME} from '../ensureWorkspacesTsConfigs';
+import {TsConfigJson} from '../getTsConfigJson';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 import {warnNoBaseFilesIncludeExclude} from './warnNoBaseFilesIncludeExclude';
 
 export const ensureFilesOrInclude = (

@@ -1,7 +1,7 @@
-import {getMissingReferences} from './getMissingReferences';
-import {TsConfigJson} from './getTsConfigJson';
-import {getWorkspaceDependencies} from './getWorkspaceDependencies';
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {getMissingReferences} from '../getMissingReferences';
+import {TsConfigJson} from '../getTsConfigJson';
+import {getWorkspaceDependencies} from '../getWorkspaceDependencies';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 
 export const ensureReferences = async (
   ws: WorkspaceInfo,

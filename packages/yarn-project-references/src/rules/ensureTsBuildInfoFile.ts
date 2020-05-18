@@ -1,6 +1,6 @@
 import {set} from 'lodash';
-import {TsConfigJson} from './getTsConfigJson';
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {TsConfigJson} from '../getTsConfigJson';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 import {warnNoBaseTsBuildInfoFile} from './warnNoBaseTsBuildInfoFile';
 
 export const ensureTsBuildInfoFile = (

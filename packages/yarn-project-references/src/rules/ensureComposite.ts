@@ -1,6 +1,6 @@
 import {set} from 'lodash';
-import {TsConfigJson} from './getTsConfigJson';
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {TsConfigJson} from '../getTsConfigJson';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 
 export const ensureComposite = (
   ws: WorkspaceInfo,

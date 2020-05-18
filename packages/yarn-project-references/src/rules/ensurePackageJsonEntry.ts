@@ -1,6 +1,6 @@
 import {set, trimStart, unset} from 'lodash';
-import {PackageJson} from './getPackageJson';
-import {WorkspaceInfo} from './getWorkspaceInfo';
+import {PackageJson} from '../getPackageJson';
+import {WorkspaceInfo} from '../getWorkspaceInfo';
 
 export const ensurePackageJsonEntry = (
   ws: WorkspaceInfo,
