@@ -1,12 +1,12 @@
 {
-  "name": "@cleric/tsconfig",
+  "name": "@cleric/base",
   "version": "0.0.1",
-  "description": "Shared typescript configuration for typescript projects",
+  "description": "Shared base configuration files for typescript projects",
   "license": "MIT",
   "author": "Sebastian Nemeth",
-  "main": "tsconfig.base.json",
+  "main": "tsconfig.json",
   "files": [
-    "tsconfig.base.json",
+    "tsconfig.json",
     "tsconfig.jest.json",
     "tsconfig.watch.json",
     ".eslintrc.js",

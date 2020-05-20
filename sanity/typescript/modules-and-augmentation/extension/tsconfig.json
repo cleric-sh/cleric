@@ -1,5 +1,5 @@
 {
-  "extends": "@cleric/tsconfig/tsconfig.base.json",
+  "extends": "@cleric/base/tsconfig",
   "references": [
     {
       "path": "../core"

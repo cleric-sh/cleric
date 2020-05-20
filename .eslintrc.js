@@ -1,4 +1,4 @@
 module.exports = {
-  extends: './node_modules/@cleric/tsconfig/.eslintrc.js',
+  extends: require.resolve('@cleric/base/.eslintrc.js'),
   root: true
 }

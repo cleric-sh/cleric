@@ -16,7 +16,7 @@
     "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
-    "@cleric/tsconfig": "^0.0.1",
+    "@cleric/base": "^0.0.1",
     "@types/node": "^13.7.4",
     "@types/ramda": "^0.26.41",
     "@types/rimraf": "^3.0.0",

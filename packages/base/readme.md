@@ -8,7 +8,7 @@ Idea based on https://github.com/sindresorhus/tsconfig
 ## Install
 
 ```
-$ yarn add --dev @cleric/tsconfig
+$ yarn add --dev @cleric/base
 ```
 
 
@@ -18,7 +18,7 @@ $ yarn add --dev @cleric/tsconfig
 
 ```json
 {
-    "extends": "@cleric/tsconfig/tsconfig.base.config",
+    "extends": "@cleric/base/tsconfig",
 	"compilerOptions": {
 		// Override base settings here...
 	}
