@@ -4010,10 +4010,10 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-fuse-box@^4.0.0-next.432:
-  version "4.0.0-next.432"
-  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-4.0.0-next.432.tgz#a4fb82e5e1f97adc41473777637291ed6b39a614"
-  integrity sha512-HhSbvnwhsiGz2uzH/qsTh4Usdt80wDN9W7HDx9hg97qenAtKH3ojAOgJIgLM69HvOj/ml+G3CNI7zVE/QDYSfQ==
+fuse-box@^4.0.0-next.434:
+  version "4.0.0-next.434"
+  resolved "https://registry.yarnpkg.com/fuse-box/-/fuse-box-4.0.0-next.434.tgz#e277fde67704833f2b9941fee77ad309ff4a85b1"
+  integrity sha512-Wj3CAkQhLbrlZVto7vo+RrmIQYhZhzWgNE4HOby8n1mH9TK36+YBo4gveacJRlUEHW0lZNPoncGIC8IzNOQymA==
   dependencies:
     "@typescript-eslint/typescript-estree" "^2.32.0"
     app-root-path "^3.0.0"
@@ -4031,6 +4031,7 @@ fuse-box@^4.0.0-next.432:
     http-proxy-middleware "^0.20.0"
     ieee754 "^1.1.13"
     lego-api "^1.0.8"
+    lodash.merge "^4.6.2"
     meriyah "1.9.8"
     offset-sourcemap-lines "^1.0.1"
     open "^7.0.0"
@@ -5957,6 +5958,11 @@ lodash.memoize@4.x:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.merge@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
 lodash.padend@^4.6.1:
   version "4.6.1"

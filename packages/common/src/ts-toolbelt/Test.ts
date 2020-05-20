@@ -1,6 +1,10 @@
 import {Compute, Equals, Extends} from 'Any/_api';
 import * as TT from 'ts-toolbelt';
-import {Test} from 'ts-toolbelt';
+
+const Test = {
+  check: () => 1 as 1,
+  checks: () => 1,
+};
 
 /**
  * Install dummy function implementations for checks and check, since
@@ -8,15 +12,14 @@ import {Test} from 'ts-toolbelt';
  * mix type-level and runtime tests.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-(TT as any).default.Test = {
-  check: () => 1 as 1,
-  checks: () => 1,
+(TT as any).default = {
+  Test,
 };
 
 const checks = Test.checks;
 const _check = Test.check;
-type Pass = Test.Pass;
-type Fail = Test.Fail;
+type Pass = TT.Test.Pass;
+type Fail = TT.Test.Fail;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function checkExtends<Sub, Super, Outcome extends Pass | Fail>(

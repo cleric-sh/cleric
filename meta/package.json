@@ -8,9 +8,11 @@
   "private": false,
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node dist/index.js\" --build",
-    "dev-fuse": "rm -rf dist/ && concurrently \"nodemon --config nodemon.fuse.json\" \"nodemon --config nodemon.generate.json\"",
+    "dev:fuse": "rm -rf dist/ && concurrently \"nodemon --config nodemon.fuse.json\" \"nodemon --config nodemon.generate.json\"",
     "build": "tsc --build --watch",
+    "fuse": "ts-node -T ./fuse.ts",
     "generate": "node ./dist/index.js",
+    "generate:fuse": "node ./dist/app.js",
     "schema:get": "./scripts/get-json-schema.sh"
   },
   "devDependencies": {
@@ -19,7 +21,7 @@
     "@types/ramda": "^0.26.41",
     "@types/rimraf": "^3.0.0",
     "concurrently": "^5.1.0",
-    "fuse-box": "^4.0.0-next.432",
+    "fuse-box": "^4.0.0-next.434",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2",
     "tsc-watch": "^4.2.5"

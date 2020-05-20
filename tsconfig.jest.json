@@ -1,5 +1,5 @@
 {
-  "extends": "@cleric/tsconfig/jest.json",
+  "extends": "@cleric/tsconfig/tsconfig.jest.json",
   "include": [
     "packages/**/*.spec.{ts,tsx}"
   ]

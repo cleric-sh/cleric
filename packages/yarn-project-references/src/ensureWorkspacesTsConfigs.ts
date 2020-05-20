@@ -14,6 +14,7 @@ import {ensureReferences} from './rules/ensureReferences';
 import {ensureRootDir} from './rules/ensureRootDir';
 import {ensureSourceMap} from './rules/ensureSourceMap';
 import {ensureTsBuildInfoFile} from './rules/ensureTsBuildInfoFile';
+import {writeSolutionFile} from './writeSolutionFile';
 import {writeJson} from './writeTsConfigJson';
 
 export const SRC_NAME = 'src';

@@ -18,7 +18,7 @@ $ yarn add --dev @cleric/tsconfig
 
 ```json
 {
-    "extends": "@cleric/tsconfig",
+    "extends": "@cleric/tsconfig/tsconfig.base.config",
 	"compilerOptions": {
 		// Override base settings here...
 	}

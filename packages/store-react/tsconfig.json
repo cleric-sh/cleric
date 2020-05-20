@@ -1,5 +1,5 @@
 {
-  "extends": "@cleric/tsconfig/base.json",
+  "extends": "@cleric/tsconfig/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",

@@ -1,10 +1,10 @@
 {
-  "extends": "./base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
     "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
-  "include": [
-    "**/*"
+  "files": [
+    "index.ts"
   ]
 }

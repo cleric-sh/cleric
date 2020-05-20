@@ -6,7 +6,7 @@ class Context {
   runServer = false;
   getConfig = () =>
     fusebox({
-      cache: true,
+      cache: false,
       entry: './src/index.ts',
       hmr: true,
       logging: {

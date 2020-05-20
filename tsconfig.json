@@ -1,6 +1,6 @@
 {
-  "extends": "@cleric/tsconfig/watch.json",
+  "extends": "@cleric/tsconfig/tsconfig.base.json",
   "exclude": [
     "**/*.spec.ts"
-  ],
+  ]
 }
