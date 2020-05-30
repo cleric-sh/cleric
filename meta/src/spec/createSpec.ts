@@ -7,5 +7,5 @@ export type CreateSpec = <TSpec extends Spec>(
 ) => [TSpec, RefsOf<TSpec>];
 
 export const createSpec: CreateSpec = spec => {
-  return [spec, createRefs() as any];
+  return [spec, createRefs(spec) as any];
 };

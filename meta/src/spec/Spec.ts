@@ -1,4 +1,4 @@
 import {MaybePromise} from '../util/MaybePromise';
-import {TupleOf} from '../util/TupleOf';
+import {Nodes} from './Nodes';
 
-export type Spec = (...args: never[]) => MaybePromise<TupleOf<unknown>>;
+export type Spec = (...args: never[]) => MaybePromise<Nodes>;

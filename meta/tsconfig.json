@@ -9,9 +9,6 @@
     "src/**/*",
     "src/**/*.json"
   ],
-  "exclude": [
-    "src/**/*.spec.ts"
-  ],
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",

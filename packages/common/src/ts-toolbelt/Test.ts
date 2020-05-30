@@ -1,25 +1,16 @@
 import {Compute, Equals, Extends} from 'Any/_api';
-import * as TT from 'ts-toolbelt';
-
-const Test = {
-  check: () => 1 as 1,
-  checks: () => 1,
-};
+import TT, {Test as TTest} from 'ts-toolbelt';
 
 /**
- * Install dummy function implementations for checks and check, since
- * 'ts-toolbelt' only declares the ambient function definitions. This lets us
- * mix type-level and runtime tests.
+ * Get types of existing implementations
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(TT as any).default = {
-  Test,
-};
+const _check = TTest.check;
+const _checks = TTest.checks;
+type _Check = typeof _check;
+type _Checks = typeof _checks;
 
-const checks = Test.checks;
-const _check = Test.check;
-type Pass = TT.Test.Pass;
-type Fail = TT.Test.Fail;
+type Pass = TTest.Pass;
+type Fail = TTest.Fail;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
@@ -30,17 +21,32 @@ function checkExtends<Sub, Super, Outcome extends Pass | Fail>(
   return {} as any;
 }
 
-type Check = typeof _check & {
+type Checks = _Checks & {
+  // add extensions here.
+};
+
+type Check = _Check & {
   extends: typeof checkExtends;
 };
 
-const check = _check as Check;
-check.extends = checkExtends;
+const Test = {
+  check: ((() => undefined) as unknown) as Check,
+  checks: ((() => undefined) as unknown) as Checks,
+};
 
-// function checkExtends<Type, Expect, Outcome extends Pass | Fail>(
-//   debug?: Compute<Type>
-// ): Equals<Extends<Type, Expect>, Outcome> {
-//   return {} as any;
-// }
+const check = Test.check;
+Test.check.extends = checkExtends;
+
+const checks = Test.checks;
+
+/**
+ * Install dummy function implementations for checks and check, since
+ * 'ts-toolbelt' only declares the ambient function definitions. This lets us
+ * mix type-level and runtime tests.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(TT as any).default = {
+  Test,
+};
 
 export {Fail, Pass, check, checkExtends, checks};

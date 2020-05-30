@@ -12,11 +12,16 @@ export const generateFile = async (
   source: MaybePromise<Template | string>
 ) => {
   const {basePath, currentPath} = ctx;
+
   const filePath = path.join(basePath, currentPath, filename);
+
   console.log('f:', path.join('/', currentPath, filename));
+
   const templateOrString = await source;
+
   const content = isTemplate(templateOrString)
     ? await templateOrString.generate(ctx)
     : source;
+
   await writeFile(filePath, content);
 };
