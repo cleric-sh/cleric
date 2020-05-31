@@ -4,6 +4,7 @@ import {promisify} from 'util';
 export const _readFile = promisify(readFile);
 
 export const TSCONFIG_FILE_NAME = 'tsconfig.json';
+export const IGNORE_FILE_NAME = '.yprignore';
 
 export type Reference = {
   path: string;

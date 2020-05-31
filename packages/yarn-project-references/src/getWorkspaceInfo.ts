@@ -33,7 +33,7 @@ export const getWorkspaceInfo = async (
   const packageJsonPath = join(path, PACKAGE_JSON_FILE_NAME);
   const packageJson = await getJson<PackageJson>(packageJsonPath);
 
-  if (!packageJson) throw `Unable to find'package.json' at workspace: ${path}`;
+  if (!packageJson) throw `Unable to find 'package.json' at workspace: ${path}`;
 
   const immediatePath = join(path, TSCONFIG_FILE_NAME);
   const immediate = await getJson<TsConfigJson>(immediatePath);

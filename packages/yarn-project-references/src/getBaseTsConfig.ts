@@ -8,13 +8,16 @@ export const getBaseTsConfig = async (
 ) => {
   if (!tsConfig.extends) return undefined;
 
-  let basePath = resolve(wsRoot, tsConfig.extends);
-  let base = await getJson<TsConfigJson>(basePath);
+  const basePath = require.resolve(tsConfig.extends, {paths: [wsRoot]});
+  const base = await getJson<TsConfigJson>(basePath);
 
-  if (!base) {
-    basePath = require.resolve(tsConfig.extends);
-    base = await getJson<TsConfigJson>(basePath);
-  }
+  // let basePath = resolve(wsRoot, tsConfig.extends);
+  // let base = await getJson<TsConfigJson>(basePath);
+
+  // if (!base) {
+  //   basePath = require.resolve(tsConfig.extends);
+  //   base = await getJson<TsConfigJson>(basePath);
+  // }
 
   return base ? ({base, basePath} as const) : undefined;
 };

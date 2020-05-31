@@ -1,6 +1,11 @@
 {
   "extends": "@cleric/base/tsconfig.jest",
   "include": [
-    "packages/**/*.spec.{ts,tsx}"
+    "**/*.spec.{ts,tsx}"
+  ],
+  "references": [
+    {
+      "path": "./packages/common"
+    }
   ]
 }

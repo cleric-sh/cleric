@@ -4,7 +4,7 @@
   "description": "Shared base configuration files for typescript projects",
   "license": "MIT",
   "author": "Sebastian Nemeth",
-  "main": "tsconfig.json",
+  "main": "dist/index.js",
   "files": [
     "tsconfig.json",
     "tsconfig.jest.json",
