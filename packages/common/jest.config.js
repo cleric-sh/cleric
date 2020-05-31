@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'meta',
-  name: 'meta',
+  displayName: 'common',
+  name: 'common',
   preset: 'ts-jest',
   testEnvironment: 'node',
 };

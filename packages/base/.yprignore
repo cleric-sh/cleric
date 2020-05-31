@@ -1,0 +1,2 @@
+// This file indicates to yarn-project-references that it shouldn't update project references on this workspace's tsconfig.json.
+// This workspace's tsconfig.json is purely for sharing configurations.

@@ -1,9 +1,7 @@
-import {existsSync} from 'fs';
 import {flatMap} from 'lodash';
-import {join} from 'path';
-import {TSCONFIG_FILE_NAME, IGNORE_FILE_NAME} from './getTsConfigJson';
-import {Workspaces, getWorkspaces} from './getWorkspaces';
+import {Workspace, Workspaces, getWorkspaces} from './getWorkspaces';
 import {getYarnLockFilePath} from './getYarnLockFilePath';
+import {tsConfigExists} from './tsConfigExists';
 
 export type RootInfo = {
   packages: {
@@ -21,11 +19,7 @@ export const getRootInfo = (): RootInfo => {
   const hasTsConfig = new Set(
     Object.keys(workspaces).filter(pkg => {
       const ws = workspaces[pkg];
-      const tsConfigPath = join(path, ws.location, TSCONFIG_FILE_NAME);
-      const exists = existsSync(tsConfigPath);
-      const ignoreFilePath = join(path, ws.location, IGNORE_FILE_NAME);
-      const ignore = existsSync(ignoreFilePath);
-      return exists && !ignore;
+      return tsConfigExists(path, ws.location);
     })
   );
 
