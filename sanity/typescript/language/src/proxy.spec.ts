@@ -18,6 +18,7 @@ describe('proxy', () => {
         return 42;
       }
     }
+
     class TestClass {
       public readonly impl: TestClassImpl;
       constructor() {
