@@ -1,6 +1,7 @@
 import {f} from '../../spec/file/f';
 export const Api = (i: number) => {
   const typeName = `Type${i}`;
+
   return f(
     `${typeName}Api.ts`,
     `import * as t from 'io-ts';

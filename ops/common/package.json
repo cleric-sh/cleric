@@ -1,0 +1,10 @@
+{
+  "name": "@cleric/ops-common",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "author": "Sebastian Nemeth",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@pulumi/gcp": "^4.1.0"
+  }
+}

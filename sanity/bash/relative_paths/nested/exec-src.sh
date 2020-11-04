@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 
-. ./.vars.sh
+#. $(dirname ${BASH_SOURCE[0]})/../.vars.sh
 
-echo BASH_SOURCE_0: "${BASH_SOURCE[0]}"
-echo \$0: "$0"
+#setopt EXTENDED_GLOB
 
-expect $(src $0) "./nested"
+echo Foo
+echo $0
 
-printf "\n"
-echo "Test 'src \$0' should return script's actual path, even when nested:"
-$(src $0)/nested/exec-src.sh
+#echo BASH_SOURCE_0: "${BASH_SOURCE[0]}"
+#echo \$0: "$0"
 
-printf "\n"
-echo "Test 'src \$0' should return script's actual path, even when nested and sourced:"
-. $(src $0)/nested/exec-src.sh
+#echo $(src "$0")
+
+#printf "\n"
+#echo "Test 'src \$0' should return script's actual path, even when nested:"
+#$(src $0)/nested/exec-src.sh
+
+#printf "\n"
+#echo "Test 'src \$0' should return script's actual path, even when nested and sourced:"
+#. $(src $0)/nested/exec-src.sh

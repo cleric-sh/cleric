@@ -1,0 +1,4 @@
+name: root
+runtime: nodejs
+description: Root-level resources, relevant to organization operations, but not to
+  the software stack. Deploys to the the 'root' GCP project.

@@ -8,6 +8,6 @@
     "noEmitHelpers": false
   },
   "include": [
-    "packages/**/*.spec.{ts,tsx}"
+    "libs/**/*.spec.{ts,tsx}"
   ]
 }

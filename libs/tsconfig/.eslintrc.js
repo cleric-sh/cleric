@@ -1,12 +1,8 @@
 module.exports = {
-  extends: "./node_modules/gts/",
-  plugins: [
-    "jest"
-  ],
   env: {
     "jest": true
   },
-  rules: {},
+  extends: "./node_modules/gts/",
   overrides: [
     {
       // Rules specifically for typescript files.
@@ -35,4 +31,8 @@ module.exports = {
       }
     }
   ],
+  plugins: [
+    "jest"
+  ],
+  rules: {},
 }

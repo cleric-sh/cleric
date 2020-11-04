@@ -166,7 +166,7 @@ export interface BugsObject {
 
 export interface Directories {
     /**
-     * If you specify a 'bin' directory, then all the files in that folder will be used as the
+     * If you specify a 'bin' common, then all the files in that folder will be used as the
      * 'bin' hash.
      */
     bin?: string;

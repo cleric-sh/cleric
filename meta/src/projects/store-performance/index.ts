@@ -14,7 +14,7 @@ const Spec = (args: Args) => [
 ];
 
 generate(
-  '~/Projects/bernie/git/app/cleric/packages/store-performance/src/perf',
+  '~/Projects/bernie/git/app/cleric/libs/store-performance/src/perf',
   Spec({numbers: [...Array(100).keys()].map(i => i + 1)}),
   false
 );

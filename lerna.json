@@ -1,9 +1,4 @@
 {
-  "packages": [
-    "packages/*",
-    "sanity/**",
-    "meta"
-  ],
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true

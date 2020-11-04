@@ -1,0 +1,3 @@
+config:
+  gcp:region: eu-north-1
+  gcp:zone: eu-north-1a

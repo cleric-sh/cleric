@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# The base directory relative to the script file. 
+# The base common relative to the script file.
 # Use this to resolve scripts relative to the script's location, as opposed to the location where the script was executed ($PWD).
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -56,7 +56,7 @@ function dockerComposeJson() {
 }
 
 function versions() {
-     dockerComposeJson | jq '.services'   
+     dockerComposeJson | jq '.services'
 }
 
 function workspaces() {
@@ -64,7 +64,7 @@ function workspaces() {
 }
 
 function packageJson() {
-    
+
     cat $1/package.json | envsubst | jq '.'
 }
 
@@ -78,7 +78,7 @@ function getStackName() {
 
 function getStackPackageNamespace() {
     if [[ $STACK_PACKAGE_NAMESPACE -eq "" ]];
-    then        
+    then
         export STACK_PACKAGE_NAMESPACE="@$(getStackName)/"
     fi
     echo $STACK_PACKAGE_NAMESPACE
@@ -95,17 +95,17 @@ function writeVersions() {
     while read -r WORKSPACE_ENTRY; do
         # A workspace defined in package.json might be a wildcard i.e. '*'.
         # In this case, expand them to all matching directories under the root.
-        WORKSPACE_ENTRY=$(ls -d -- $ROOT_DIR/$WORKSPACE_ENTRY)        
-        
-        for WORKSPACE in $WORKSPACE_ENTRY; do            
+        WORKSPACE_ENTRY=$(ls -d -- $ROOT_DIR/$WORKSPACE_ENTRY)
+
+        for WORKSPACE in $WORKSPACE_ENTRY; do
             packageJson $WORKSPACE | jq -r '[.name, .version] | @tsv' |
-            while ISV=$'\t' read -r package_name version; do                   
-                service_name=$(trimStackPackageNamespace $package_name)                   
+            while ISV=$'\t' read -r package_name version; do
+                service_name=$(trimStackPackageNamespace $package_name)
                 echo ${service_name^^}_TAG=$version >> .versions
             done
-        done        
+        done
     done
-    source .versions    
+    source .versions
     export $(cut -d= -f1 .versions)
     rm .versions
 }
@@ -119,7 +119,7 @@ function writeVersions() {
 #         if [[ $CTX = 'dev' ]]; then export TAG="dev"; fi
 #         if [[ $CTX = 'dist' ]]; then export TAG="local"; fi
 #         if [[ $CTX = 'review' ]]; then export TAG="$(branch)"; fi
-#         if [[ $CTX = 'staging' ]]; then export TAG="staging"; fi    
+#         if [[ $CTX = 'staging' ]]; then export TAG="staging"; fi
 #         if [[ $CTX = 'production' ]]; then export TAG="production"; fi
 #     fi
 #     echo $TAG
@@ -132,22 +132,22 @@ function writeVersions() {
 #     if [[ $CTX = 'dev' ]]; then _TAG="-$(tag)"; fi
 #     if [[ $CTX = 'dist' ]]; then _TAG="-$(tag)"; fi
 #     if [[ $CTX = 'review' ]]; then _TAG="-$(tag)"; fi
-#     if [[ $CTX = 'staging' ]]; then _TAG="-$(tag)"; fi    
+#     if [[ $CTX = 'staging' ]]; then _TAG="-$(tag)"; fi
 #     if [[ $CTX = 'production' ]]; then _TAG=""; fi
 #     echo $(version $_PACKAGE_DIR)$_TAG
 # }
 
 # function targetDomain() {
-    
+
 #     if [[ -z $TARGET_DOMAIN ]];
 #     then
 #         if [[ $CTX = 'ops' ]]; then export TARGET_DOMAIN=$DOMAIN; fi
 #         if [[ $CTX = 'dev' ]]; then export TARGET_DOMAIN=$DOMAIN; fi
 #         if [[ $CTX = 'dist' ]]; then export TARGET_DOMAIN=$DOMAIN; fi
 #         if [[ $CTX = 'review' ]]; then export TARGET_DOMAIN="$(branch).$DOMAIN"; fi
-#         if [[ $CTX = 'staging' ]]; then export TARGET_DOMAIN="staging.$DOMAIN"; fi    
+#         if [[ $CTX = 'staging' ]]; then export TARGET_DOMAIN="staging.$DOMAIN"; fi
 #         if [[ $CTX = 'production' ]]; then export TARGET_DOMAIN=$DOMAIN; fi
-#     fi    
+#     fi
 #     echo $TARGET_DOMAIN
 # }
 
@@ -169,7 +169,7 @@ function writeVersions() {
 
 # function tagPackages() {
 #     export DOCKER_COMPOSE_DIR=$PACKAGES_DIR
-#     export COMPOSE="docker-compose -f $DOCKER_COMPOSE_DIR/docker-compose.yaml"  
+#     export COMPOSE="docker-compose -f $DOCKER_COMPOSE_DIR/docker-compose.yaml"
 
 #     export TARGET_DOMAIN=$(targetDomain)
 
@@ -218,21 +218,21 @@ then
 fi
 
 # if [[ $CTX == 'review' ]]
-# then        
+# then
 #     # Override our local stack configuration with the cluster's
 #     endpoints 'cluster'
 #     tagPackages
 # fi
 
 # if [[ $CTX == 'staging' ]]
-# then    
+# then
 #     # Override our local stack configuration with the cluster's
-#     endpoints 'cluster'   
+#     endpoints 'cluster'
 #     tagPackages
 # fi
 
 # if [[ $CTX == 'production' ]]
-# then    
+# then
 #     # Override our local stack configuration with the cluster's
 #     endpoints 'cluster'
 #     tagPackages

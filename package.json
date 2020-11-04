@@ -11,8 +11,9 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "sanity/**",
+      "apps/*",
+      "libs/*",
+      "ops/**",
       "meta"
     ],
     "nohoist": [
@@ -28,6 +29,7 @@
     "jest": "^25.1.0",
     "lerna": "^3.19.0",
     "lint-staged": "^10.0.9",
+    "run.env": "^1.1.0",
     "ts-jest": "^25.2.0",
     "typescript": "^3.8.3"
   },

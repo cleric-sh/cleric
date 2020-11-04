@@ -30,7 +30,7 @@ export interface Tsconfig {
     extends?: string;
     /**
      * If no 'files' or 'include' property is present in a tsconfig.json, the compiler defaults
-     * to including all files in the containing directory and subdirectories except those
+     * to including all files in the containing common and subdirectories except those
      * specified by 'exclude'. When a 'files' property is specified, only those files and those
      * specified by 'include' are included.
      */
@@ -38,7 +38,7 @@ export interface Tsconfig {
     /**
      * Specifies a list of glob patterns that match files to be included in compilation. If no
      * 'files' or 'include' property is present in a tsconfig.json, the compiler defaults to
-     * including all files in the containing directory and subdirectories except those specified
+     * including all files in the containing common and subdirectories except those specified
      * by 'exclude'. Requires TypeScript version 2.0 or later.
      */
     include?: string[];
@@ -95,7 +95,7 @@ export interface TsconfigCompilerOptions {
      */
     assumeChangesOnlyAffectDirectDependencies?: boolean;
     /**
-     * Base directory to resolve non-relative module names.
+     * Base common to resolve non-relative module names.
      */
     baseUrl?: string;
     /**
@@ -115,7 +115,7 @@ export interface TsconfigCompilerOptions {
      */
     declaration?: boolean;
     /**
-     * Specify output directory for generated declaration files. Requires TypeScript version 2.0
+     * Specify output common for generated declaration files. Requires TypeScript version 2.0
      * or later.
      */
     declarationDir?: string;
@@ -304,7 +304,7 @@ export interface TsconfigCompilerOptions {
      */
     noUnusedParameters?: boolean;
     /**
-     * Redirect output structure to the directory.
+     * Redirect output structure to the common.
      */
     outDir?: string;
     /**
@@ -350,7 +350,7 @@ export interface TsconfigCompilerOptions {
      */
     resolveJsonModule?: boolean;
     /**
-     * Specifies the root directory of input files. Use to control the output directory
+     * Specifies the root common of input files. Use to control the output common
      * structure with --outDir.
      */
     rootDir?: string;
@@ -493,7 +493,7 @@ export interface TsNode {
      */
     compilerOptions?: TsNodeCompilerOptions;
     /**
-     * Emit output files into `.ts-node` directory.
+     * Emit output files into `.ts-node` common.
      */
     emit?: boolean;
     /**
@@ -576,7 +576,7 @@ export interface TsNodeCompilerOptions {
      */
     assumeChangesOnlyAffectDirectDependencies?: boolean;
     /**
-     * Base directory to resolve non-relative module names.
+     * Base common to resolve non-relative module names.
      */
     baseUrl?: string;
     /**
@@ -596,7 +596,7 @@ export interface TsNodeCompilerOptions {
      */
     declaration?: boolean;
     /**
-     * Specify output directory for generated declaration files. Requires TypeScript version 2.0
+     * Specify output common for generated declaration files. Requires TypeScript version 2.0
      * or later.
      */
     declarationDir?: string;
@@ -785,7 +785,7 @@ export interface TsNodeCompilerOptions {
      */
     noUnusedParameters?: boolean;
     /**
-     * Redirect output structure to the directory.
+     * Redirect output structure to the common.
      */
     outDir?: string;
     /**
@@ -831,7 +831,7 @@ export interface TsNodeCompilerOptions {
      */
     resolveJsonModule?: boolean;
     /**
-     * Specifies the root directory of input files. Use to control the output directory
+     * Specifies the root common of input files. Use to control the output common
      * structure with --outDir.
      */
     rootDir?: string;
