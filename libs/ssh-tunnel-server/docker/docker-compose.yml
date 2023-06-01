@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  tunnel-server:
+    build:
+      context: .
+    volumes:      
+      - ${SSH_TUNNEL_SERVER_CERTIFICATE_PATH}:/cert.pem:ro
+      - ${SSH_TUNNEL_SERVER_PROFILES_PATH}:/tunnels.json:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - PROFILE

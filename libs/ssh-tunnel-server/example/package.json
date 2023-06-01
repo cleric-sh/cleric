@@ -1,0 +1,14 @@
+{
+  "name": "@cleric/ssh-tunnel-server-example",
+  "version": "0.0.1",
+  "description": "Example configuration of @cleric/ssh-tunnel-server",
+  "author": "Sebastian Nemeth",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@cleric/ssh-tunnel-server": "0.0.1"
+  },
+  "scripts": {
+    "tunnel": "./ssh-tunnel-server/start.sh dev",
+    "tunnel:prod": "./ssh-tunnel-server/start.sh prod"
+  }
+}

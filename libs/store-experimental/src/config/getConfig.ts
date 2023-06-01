@@ -22,6 +22,6 @@ export type GetConfig<
   ? Args['apis'] extends List<unknown>
     ? TConfig
     : TError<
-        "Configuration's 'apis' property must be an Array or Tuple of SliceApis."
+        "Configuration's 'apis' property must be an Array or InferredTuple of SliceApis."
       >
   : TError<"Configuration is not assignable to interface 'Config'.">;

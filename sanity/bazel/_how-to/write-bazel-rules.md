@@ -1,0 +1,1 @@
+https://jayconrod.com/posts/106/writing-bazel-rules--simple-binary-rule

@@ -1,0 +1,11 @@
+{
+  "name": "@cleric/ssh-tunnel-server",
+  "version": "0.0.1",
+  "description": "manages /etc/host, an nginx proxy and ssh to create tunnels according to a json configuration",
+  "author": "Sebastian Nemeth",
+  "license": "UNLICENSED",
+  "scripts": {
+    "tunnel": "./ssh-tunnel-server/start.sh dev",
+    "tunnel:prod": "./ssh-tunnel-server/start.sh prod"
+  }
+}

@@ -9,6 +9,6 @@ You can't compare ___C classes for extensibility as per their props.
 
 You can compare ___Type classes for extensibility as per their props.
 
-CS (Tuple of types) cannot be compared naturally.
+CS (InferredTuple of types) cannot be compared naturally.
 
 Props can be compared naturally.

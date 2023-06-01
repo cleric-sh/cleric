@@ -1,0 +1,1 @@
+https://blog.aspect.dev/bazel-can-write-to-the-source-folder

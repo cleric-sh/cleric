@@ -1,0 +1,1 @@
+https://docs.bazel.build/versions/main/output_directories.html

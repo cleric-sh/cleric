@@ -1,0 +1,10 @@
+{
+  "name": "@cleric/circleci-context-sync",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Sebastian Nemeth",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}

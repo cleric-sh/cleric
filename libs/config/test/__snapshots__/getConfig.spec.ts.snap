@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getConfig prod config selected values are written to log 1`] = `
+"SELECTED CONFIGURATION: {
+  \\"environment\\": {
+    \\"applicationName\\": \\"tibber-configuration-tests\\",
+    \\"env\\": \\"PROD\\",
+    \\"environmentPrefix\\": \\"prod\\"
+  },
+  \\"platform\\": {
+    \\"postgresConnection\\": \\"[**********]\\",
+    \\"redisConnection\\": \\"[**********]\\"
+  },
+  \\"serviceUrls\\": {
+    \\"analytics\\": \\"http://url.from.process.env/analytics\\",
+    \\"appGateway\\": \\"http://tibber_app_gateway.production:3038\\",
+    \\"cersei\\": \\"http://url.from.config.file/cersei\\"
+  }
+}"
+`;
+
+exports[`getConfig test config selected values are written to log 1`] = `
+"SELECTED CONFIGURATION: {
+  \\"environment\\": {
+    \\"applicationName\\": \\"tibber-configuration-tests\\",
+    \\"env\\": \\"TEST\\",
+    \\"environmentPrefix\\": \\"test\\"
+  },
+  \\"platform\\": {
+    \\"postgresConnection\\": \\"[**********]\\",
+    \\"redisConnection\\": \\"[**********]\\"
+  },
+  \\"serviceUrls\\": {
+    \\"analytics\\": \\"http://url.from.process.env/analytics\\",
+    \\"appGateway\\": \\"http://tibber_app_gateway.dev:3038\\",
+    \\"cersei\\": \\"http://url.from.config.file/cersei\\"
+  }
+}"
+`;

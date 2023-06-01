@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+#
+# This hook is intended to run after pulling new commits from remote.
+#
+
+#echo 'POST-MERGE'
+./scripts/products/pull.sh

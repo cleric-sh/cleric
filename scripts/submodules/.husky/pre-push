@@ -1,0 +1,13 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+#
+# This hook is intended to run before pushing new commits to remote.
+#
+
+#echo 'PRE-PUSH - ' "$@"
+branch="$(git rev-parse --abbrev-ref HEAD)"
+toPush="$(git log origin/"$branch".."$branch")"
+if [ -n "$toPush" ]; then
+  ./scripts/products/push.sh
+fi
